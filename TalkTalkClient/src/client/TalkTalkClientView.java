@@ -27,7 +27,7 @@ public class TalkTalkClientView extends JFrame{
 		setVisible(true);
 		
 		splitPane();
-	
+		repaint();
 	}
 	
 	public void splitPane() {
