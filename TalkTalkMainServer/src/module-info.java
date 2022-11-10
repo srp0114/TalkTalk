@@ -5,5 +5,5 @@
  * @author user
  *
  */
-module TalkTalkServer {
+module TalkTalkMainServer {
 }
