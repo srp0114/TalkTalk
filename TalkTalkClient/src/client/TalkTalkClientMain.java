@@ -68,7 +68,11 @@ public class TalkTalkClientMain extends JFrame {
 		btnLogin.setForeground(new Color(255, 255, 255));
 		btnLogin.setBounds(80, 300, 205, 38);
 		btnLogin.setBackground(new Color(66, 54, 48));
+		btnLogin.setBorderPainted(false);
+		btnLogin.setFocusPainted(false);
 		contentPane.add(btnLogin);
+		
+		
 		Myaction action = new Myaction();
 		btnLogin.addActionListener(action);
 	}

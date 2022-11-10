@@ -19,23 +19,26 @@ public class TalkTalkClientView extends JFrame{
 		setBounds(100, 100,390,600);
 		contentPane = new JPanel();
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new BorderLayout());
 		
 		setResizable(false);
 		setVisible(true);
 		
 		splitPane();
-		this.repaint();
+	
 	}
 	
 	public void splitPane() {
-		JSplitPane hPane = new JSplitPane();  
-		getContentPane().add(hPane, BorderLayout.CENTER);
+		JSplitPane hPane = new JSplitPane();   // JSplitPane 생성
 		
 		hPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-		hPane.setDividerLocation(30);
+		hPane.setDividerLocation(70);
 		hPane.setEnabled(false);
-		hPane.setLeftComponent(menuPanel);
 		
+		menuPanel = new MenuPanel();
+		hPane.setLeftComponent(menuPanel);
+		friendPanel = new FriendPanel();
+		hPane.setRightComponent(friendPanel);
+		getContentPane().add(hPane, BorderLayout.CENTER);
 	}
 }
