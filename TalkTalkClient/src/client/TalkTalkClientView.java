@@ -9,7 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 public class TalkTalkClientView extends JFrame{
 	private JPanel contentPane;
-	private String UserName;
+	private String username;
 	
 	private MenuPanel menuPanel;  // 메뉴 패널
 	private FriendPanel friendPanel;  // 친구창 패널
@@ -20,6 +20,8 @@ public class TalkTalkClientView extends JFrame{
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout());
+		
+		this.username = username;
 		
 		setResizable(false);
 		setVisible(true);
@@ -33,11 +35,12 @@ public class TalkTalkClientView extends JFrame{
 		
 		hPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		hPane.setDividerLocation(70);
+		hPane.setDividerSize(0);
 		hPane.setEnabled(false);
 		
 		menuPanel = new MenuPanel();
 		hPane.setLeftComponent(menuPanel);
-		friendPanel = new FriendPanel();
+		friendPanel = new FriendPanel(username);
 		hPane.setRightComponent(friendPanel);
 		getContentPane().add(hPane, BorderLayout.CENTER);
 	}
