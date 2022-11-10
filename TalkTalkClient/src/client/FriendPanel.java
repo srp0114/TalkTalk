@@ -1,7 +1,9 @@
 package client;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 
@@ -9,8 +11,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 
 public class FriendPanel extends JPanel{
+	JScrollPane scrollPane;
+	JTextPane textArea;
+	
 	private JLabel lblFriend;  // 친구 레이블
 	 
 	private String userName;  // 로그인한 client 이름
@@ -64,6 +71,17 @@ public class FriendPanel extends JPanel{
 		btnAddFriendIcon.setBounds(267, 32, 25, 25);
 		this.add(btnAddFriendIcon);
 		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 10, 330, 500);
+		scrollPane.setBackground(new Color(255,255,255));
+		scrollPane.setBorder(null);
+		this.add(scrollPane);
+		
+		textArea = new JTextPane();
+		textArea.setEditable(false);
+		scrollPane.setViewportView(textArea);
+		
+		
 		profileImg = profileImg.getScaledInstance(50, 50,  Image.SCALE_DEFAULT);
 		profileIcon = new ImageIcon(profileImg);
 		btnProfileImg = new JButton(profileIcon);
@@ -72,13 +90,19 @@ public class FriendPanel extends JPanel{
 		btnProfileImg.setContentAreaFilled(false);
 		btnProfileImg.setOpaque(false);
 		btnProfileImg.setBounds(23, 80, 50, 50);
-		this.add(btnProfileImg);
+		textArea.add(btnProfileImg);
 		
 		
 		lblUserName = new JLabel(userName);
 		lblUserName.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		lblUserName.setBounds(90, 76, 50, 50);
-		this.add(lblUserName);
+		textArea.add(lblUserName);
 		
+	}
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setColor(new Color(234, 234, 234));
+		g.drawLine(10, 150, 300, 150);
 	}
 }
