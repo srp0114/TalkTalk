@@ -22,6 +22,7 @@ public class TalkTalkClientMain extends JFrame {
 	private JLabel lblTalkLogo;
 	private JPanel contentPane;
 	private JTextField txtUserName;
+	private JButton btnLogin;
 	
 	// application 시작
 	public static void main(String[] args) {
@@ -46,35 +47,38 @@ public class TalkTalkClientMain extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		uiInit();
+		
+		Myaction action = new Myaction();
+		btnLogin.addActionListener(action);
+	}
+	
+	public void uiInit() {
 		// 이미지 크기 조정
 		logoImg = logoImg.getScaledInstance(100,  100,  Image.SCALE_DEFAULT);
 		talkLogo = new ImageIcon(logoImg);
 		lblTalkLogo = new JLabel(talkLogo);
 		lblTalkLogo.setBounds(106, 70, 150, 130);
 		contentPane.add(lblTalkLogo);
-		
-		
+				
+				
 		JLabel lblUserName = new JLabel("이름");
 		lblUserName.setBounds(80, 220, 100, 38);
 		contentPane.add(lblUserName);
-		
+				
 		txtUserName = new JTextField();
 		txtUserName.setHorizontalAlignment(SwingConstants.CENTER);
 		txtUserName.setBounds(80, 250, 205, 38);
 		contentPane.add(txtUserName);
 		txtUserName.setColumns(10);
-		
-		JButton btnLogin = new JButton("로그인");
+				
+		btnLogin = new JButton("로그인");
 		btnLogin.setForeground(new Color(255, 255, 255));
 		btnLogin.setBounds(80, 300, 205, 38);
 		btnLogin.setBackground(new Color(66, 54, 48));
 		btnLogin.setBorderPainted(false);
 		btnLogin.setFocusPainted(false);
 		contentPane.add(btnLogin);
-		
-		
-		Myaction action = new Myaction();
-		btnLogin.addActionListener(action);
 	}
 
 	class Myaction implements ActionListener {

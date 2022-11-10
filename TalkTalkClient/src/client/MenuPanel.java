@@ -22,6 +22,11 @@ public class MenuPanel extends JPanel{
 		this.setBackground(new Color(236, 236, 237));
 		setLayout(null);
 		
+		uiInit();
+		
+	}
+	
+	public void uiInit() {
 		profileIconImg = profileIconImg.getScaledInstance(28, 28,  Image.SCALE_DEFAULT);
 		profileIcon = new ImageIcon(profileIconImg);
 		btnprofileIcon = new JButton(profileIcon);
@@ -41,6 +46,5 @@ public class MenuPanel extends JPanel{
 		btnchatIcon.setOpaque(false);
 		btnchatIcon.setBounds(20, 90, 28, 28);
 		this.add(btnchatIcon);
-		
 	}
 }
