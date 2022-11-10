@@ -1,5 +1,6 @@
 package client;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,25 +35,27 @@ public class TalkTalkClientMain extends JFrame {
 	// Frame 만들기
 	public TalkTalkClientMain() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 390, 600);
+		setBounds(100, 100, 380, 600);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBackground(new Color(249,229,93));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		
 		JLabel lblUserName = new JLabel("User Name");
-		lblUserName.setBounds(12, 39, 82, 33);
+		lblUserName.setBounds(80, 200, 100, 38);
 		contentPane.add(lblUserName);
 		
 		txtUserName = new JTextField();
 		txtUserName.setHorizontalAlignment(SwingConstants.CENTER);
-		txtUserName.setBounds(101, 39, 116, 33);
+		txtUserName.setBounds(80, 230, 205, 38);
 		contentPane.add(txtUserName);
 		txtUserName.setColumns(10);
 		
-		JButton btnLogin = new JButton("Login");
-		btnLogin.setBounds(12, 223, 205, 38);
+		JButton btnLogin = new JButton("로그인");
+		btnLogin.setForeground(new Color(245, 245, 245));
+		btnLogin.setBounds(80, 300, 205, 38);
+		btnLogin.setBackground(new Color(66, 45, 45));
 		contentPane.add(btnLogin);
 		Myaction action = new Myaction();
 		btnLogin.addActionListener(action);
