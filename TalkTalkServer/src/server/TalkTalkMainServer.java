@@ -139,7 +139,9 @@ public class TalkTalkMainServer extends JFrame {
 		}
 		
 		public void run() {
-			
+			while(true) {
+				
+			}
 		}
 	}
 
