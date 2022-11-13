@@ -47,6 +47,7 @@ public class TalkTalkMainServer extends JFrame {
 		});
 	}
 
+	// 생성자
 	public TalkTalkMainServer() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 338, 440);
@@ -84,11 +85,19 @@ public class TalkTalkMainServer extends JFrame {
 		
 	}
 	
+	// 텍스트 업로드하기
 	public void AppendText(String str) {
 		textArea.append(str + "\n");
 		textArea.setCaretPosition(textArea.getText().length());
 	}
 	
+	// 
+	public void AppendObject(UserInfo userInfo) {
+		//textArea.append("사용자로부터 들어온 object: " + str + "\n");
+		textArea.append("code = " + userInfo.getCode() + "\n");
+		textArea.append("id = " + userInfo.getUsername() +"\n");
+		textArea.setCaretPosition(textArea.getText().length());
+	}
 	class AcceptServer extends Thread {
 		@SuppressWarnings("unchecked")
 		public void run() {
