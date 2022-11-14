@@ -196,5 +196,4 @@ public class TalkTalkMainServer extends JFrame {
 			AppendText("User " + "[" + username + "] 로그아웃. 현재 User 수 " + UserVec.size());
 		}
 	}
-
 }
