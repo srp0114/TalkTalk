@@ -1,15 +1,36 @@
 package client;
 
 import java.awt.BorderLayout;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import javax.swing.border.EmptyBorder;
 
 public class TalkTalkClientView extends JFrame{
 	private JPanel contentPane;
 	private String username;
+	private String ip_addr;
+	private String port_no;
+	private UserInfo obui;
+	
+	private static final int BUF_LEN = 128;
+	private Socket socket;
+	private InputStream is;
+	private OutputStream os;
+	private DataInputStream dis;
+	private DataOutputStream dos;
+	
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
+	
 	
 	private MenuPanel menuPanel;  // 메뉴 패널
 	private FriendPanel friendPanel;  // 친구창 패널
@@ -22,9 +43,26 @@ public class TalkTalkClientView extends JFrame{
 		contentPane.setLayout(new BorderLayout());
 		
 		this.username = username;
+		this.ip_addr = ip_addr;
+		this.port_no = port_no;
 		
 		setResizable(false);
 		setVisible(true);
+		
+		
+		
+		try {
+			socket = new Socket(ip_addr, Integer.parseInt(port_no));
+			
+			oos = new ObjectOutputStream(socket.getOutputStream());
+			oos.flush();
+			ois = new ObjectInputStream(socket.getInputStream());
+			
+			obui = new UserInfo(username, "100");
+		}catch(NumberFormatException | IOException e) {
+			e.printStackTrace();
+			System.out.println("connect error");
+		}
 		
 		splitPane();
 		repaint();
@@ -43,5 +81,13 @@ public class TalkTalkClientView extends JFrame{
 		friendPanel = new FriendPanel(username);
 		hPane.setRightComponent(friendPanel);
 		getContentPane().add(hPane, BorderLayout.CENTER);
+	}
+	
+	public void SendObject(Object ob) {
+		try {
+			oos.writeObject(ob);
+		} catch(IOException e) {
+			System.out.println("SendObject Error");
+		}
 	}
 }

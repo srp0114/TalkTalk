@@ -8,8 +8,8 @@ import javax.swing.ImageIcon;
 
 public class UserInfo {
 	private String username;
-	private ImageIcon profileImg;
 	private String code;
+	private ImageIcon profileImg;
 	private int friendNumber = 0;
 	private ArrayList<UserInfo> friendsUserInfo;
 	
@@ -39,7 +39,9 @@ public class UserInfo {
 	public int getFriendNumber() {
 		return friendNumber;
 	}
-	
+	public void setFriendsUserInfo(ArrayList<UserInfo> friendsUserInfo) {
+		this.friendsUserInfo = friendsUserInfo;
+	}
 	public ArrayList<UserInfo> getFriendsUserInfo() {
 		return friendsUserInfo;
 	}
