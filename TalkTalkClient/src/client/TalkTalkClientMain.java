@@ -41,7 +41,7 @@ public class TalkTalkClientMain extends JFrame {
 	// Frame 만들기
 	public TalkTalkClientMain() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 380, 600);
+		setBounds(200, 100, 380, 600);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(254,229,0));
 		setContentPane(contentPane);
