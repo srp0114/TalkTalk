@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -33,6 +34,7 @@ public class TalkTalkMainServer extends JFrame {
 	private ServerSocket socket;
 	private Socket client_socket;
 	private Vector UserVec = new Vector();
+	private Vector<UserInfo> userInfos = new Vector();
 	private static final int BUF_LEN = 128;
 
 	
@@ -173,6 +175,7 @@ public class TalkTalkMainServer extends JFrame {
 					}
 					if(obui instanceof UserInfo) {
 						ui = (UserInfo)obui;
+						userInfos.add(ui);
 						System.out.println(ui.getUsername());
 						System.out.println(ui.getCode());
 					} else

@@ -6,6 +6,11 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,6 +25,7 @@ public class FriendPanel extends JPanel{
 	
 	private JLabel lblFriend;  // 친구 레이블
 	 
+	private Socket socket;
 	private UserInfo userInfo;
 	private String userName;  // 로그인한 client 이름
 	private JLabel lblUserName;  // username 레이블
@@ -36,7 +42,13 @@ public class FriendPanel extends JPanel{
 	private ImageIcon profileIcon;
 	private JButton btnProfileImg;
 	
-	public FriendPanel(UserInfo userInfo) {  // 매개변수로 username 받는 생성자
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
+	
+	public FriendPanel(Socket socket, ObjectInputStream ois, ObjectOutputStream oos, UserInfo userInfo) {  // 매개변수로 username 받는 생성자
+		this.socket = socket;
+		this.ois = ois;
+		this.oos = oos;
 		this.userInfo = userInfo;
 		
 		this.setBackground(new Color(255,255,255));  // 배경색: 흰색
@@ -101,9 +113,22 @@ public class FriendPanel extends JPanel{
 		
 	}
 	
+	public void setUserInfo(UserInfo userInfo) {
+		this.userInfo = userInfo;
+	}
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(new Color(234, 234, 234));
 		g.drawLine(10, 150, 300, 150);
+	}
+	
+	
+	class AddFriendIconAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			setVisible(false);
+		}
 	}
 }
