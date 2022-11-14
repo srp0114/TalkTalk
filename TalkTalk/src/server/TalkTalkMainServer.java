@@ -147,8 +147,6 @@ public class TalkTalkMainServer extends JFrame {
 			} catch(Exception e) {
 				AppendText("UserService error");
 			}
-			
-			
 		}
 		
 		public void run() {
