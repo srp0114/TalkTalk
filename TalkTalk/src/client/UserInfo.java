@@ -1,4 +1,4 @@
-package server;
+package client;
 
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -37,6 +37,9 @@ public class UserInfo implements Serializable{
 		this.profileImg = profileImg;
 	}
 	
+	public void setFriendNumber(int n) {
+		this.friendNumber = n;
+	}
 	public int getFriendNumber() {
 		return friendNumber;
 	}

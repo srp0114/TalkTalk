@@ -22,6 +22,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import client.UserInfo;
+
 public class TalkTalkMainServer extends JFrame {
 
 	private JPanel contentPane;
@@ -121,17 +123,17 @@ public class TalkTalkMainServer extends JFrame {
 	}
 	
 	class UserService extends Thread {
-		private InputStream is;
-		private OutputStream os;
-		private DataInputStream dis;
-		private DataOutputStream dos;
+		//private InputStream is;
+		//private OutputStream os;
+		//private DataInputStream dis;
+		//private DataOutputStream dos;
 		
 		private ObjectInputStream ois;
 		private ObjectOutputStream oos;
 		
 		private Socket client_socket;
 		private Vector user_vc;
-		public String username;
+		public String username="";
 		
 		public UserService(Socket client_socket) {
 			this.client_socket = client_socket;
@@ -164,6 +166,7 @@ public class TalkTalkMainServer extends JFrame {
 						e.printStackTrace();
 						return;
 					}
+					
 					if(obui == null) {
 						System.out.println("obui is null");
 						break;
@@ -193,7 +196,6 @@ public class TalkTalkMainServer extends JFrame {
 				}
 			}
 		}
-		
 		public void Login() {
 			AppendText("새로운 User " + username + " 로그인");
 		}
@@ -201,5 +203,6 @@ public class TalkTalkMainServer extends JFrame {
 			UserVec.removeElement(this);
 			AppendText("User " + "[" + username + "] 로그아웃. 현재 User 수 " + UserVec.size());
 		}
+		
 	}
 }
