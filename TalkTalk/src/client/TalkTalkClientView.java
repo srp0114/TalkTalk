@@ -50,9 +50,6 @@ public class TalkTalkClientView extends JFrame{
 		this.ip_addr = ip_addr;
 		this.port_no = port_no;
 		
-		setResizable(false);
-		setVisible(true);
-		
 		try {
 			socket = new Socket(ip_addr, Integer.parseInt(port_no));
 			
@@ -68,6 +65,8 @@ public class TalkTalkClientView extends JFrame{
 		}
 		
 		splitPane();
+		setResizable(false);
+		setVisible(true);
 	}
 	
 	public void splitPane() {

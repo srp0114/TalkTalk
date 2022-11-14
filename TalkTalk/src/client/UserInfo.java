@@ -13,6 +13,7 @@ public class UserInfo implements Serializable{
 	private ImageIcon profileImg;
 	private int friendNumber = 0;
 	private ArrayList<UserInfo> friendsUserInfo;
+	private String searchFriend;
 	
 	public UserInfo(String username, String code) {
 		this.username = username;
@@ -48,5 +49,9 @@ public class UserInfo implements Serializable{
 	}
 	public ArrayList<UserInfo> getFriendsUserInfo() {
 		return friendsUserInfo;
+	}
+	
+	public void setSearchFriend(String searchFriend) {
+		this.searchFriend = searchFriend;
 	}
 }

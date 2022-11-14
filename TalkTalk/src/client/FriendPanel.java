@@ -19,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
+import client.TalkTalkClientMain.Myaction;
+
 public class FriendPanel extends JPanel{
 	JScrollPane scrollPane;
 	JTextPane textArea;
@@ -54,6 +56,9 @@ public class FriendPanel extends JPanel{
 		this.setBackground(new Color(255,255,255));  // 배경색: 흰색
 		setLayout(null);
 		UIInit();  // ui 세팅
+		
+		AddFriendIconAction action = new AddFriendIconAction();
+		btnAddFriendIcon.addActionListener(action);
 	}
 	
 	public void UIInit() {
@@ -123,12 +128,10 @@ public class FriendPanel extends JPanel{
 		g.drawLine(10, 150, 300, 150);
 	}
 	
-	
 	class AddFriendIconAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
-			setVisible(false);
+			AddFriendFrame addFriendFrame = new AddFriendFrame(socket, ois, oos, userInfo);
 		}
 	}
 }

@@ -54,7 +54,7 @@ public class TalkTalkMainServer extends JFrame {
 	// 생성자
 	public TalkTalkMainServer(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 338, 440);
+		setBounds(500, 100, 338, 440);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -181,9 +181,12 @@ public class TalkTalkMainServer extends JFrame {
 					} else
 						continue;
 					
-					if(ui.getCode().matches("100")) {
+					if(ui.getCode().matches("100")) { // 로그인
 						username = ui.getUsername();
 						Login();
+					}
+					if(ui.getCode().matches("302")) { // 친구 검색
+						
 					}
 				} catch(IOException e) {
 					AppendText("ois.readObject() error");
@@ -205,6 +208,10 @@ public class TalkTalkMainServer extends JFrame {
 		public void Logout() {
 			UserVec.removeElement(this);
 			AppendText("User " + "[" + username + "] 로그아웃. 현재 User 수 " + UserVec.size());
+		}
+		
+		public void searchFriend() {
+			
 		}
 		
 	}
