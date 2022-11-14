@@ -2,11 +2,12 @@ package client;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
-public class UserInfo {
+public class UserInfo implements Serializable{
 	private String username;
 	private String code;
 	private ImageIcon profileImg;

@@ -55,7 +55,7 @@ public class TalkTalkClientMain extends JFrame {
 	
 	public void uiInit() {
 		// 이미지 크기 조정
-		logoImg = logoImg.getScaledInstance(100,  100,  Image.SCALE_DEFAULT);
+		logoImg = logoImg.getScaledInstance(100,  100,  Image.SCALE_SMOOTH);
 		talkLogo = new ImageIcon(logoImg);
 		lblTalkLogo = new JLabel(talkLogo);
 		lblTalkLogo.setBounds(106, 70, 150, 130);

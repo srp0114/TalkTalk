@@ -27,7 +27,7 @@ public class MenuPanel extends JPanel{
 	}
 	
 	public void uiInit() {
-		profileIconImg = profileIconImg.getScaledInstance(28, 28,  Image.SCALE_DEFAULT);
+		profileIconImg = profileIconImg.getScaledInstance(28, 28,  Image.SCALE_SMOOTH);
 		profileIcon = new ImageIcon(profileIconImg);
 		btnprofileIcon = new JButton(profileIcon);
 		btnprofileIcon.setBorderPainted(false);
@@ -37,7 +37,7 @@ public class MenuPanel extends JPanel{
 		btnprofileIcon.setBounds(20, 30, 28, 28);
 		this.add(btnprofileIcon);
 		
-		chatIconImg = chatIconImg.getScaledInstance(28, 28,  Image.SCALE_DEFAULT);
+		chatIconImg = chatIconImg.getScaledInstance(28, 28,  Image.SCALE_SMOOTH);
 		chatIcon = new ImageIcon(chatIconImg);
 		btnchatIcon = new JButton(chatIcon);
 		btnchatIcon.setBorderPainted(false);

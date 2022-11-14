@@ -34,7 +34,7 @@ public class TalkTalkMainServer extends JFrame {
 	private static final int BUF_LEN = 128;
 
 	
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -48,7 +48,7 @@ public class TalkTalkMainServer extends JFrame {
 	}
 
 	// 생성자
-	public TalkTalkMainServer() {
+	public TalkTalkMainServer(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 338, 440);
 		contentPane = new JPanel();
@@ -152,16 +152,22 @@ public class TalkTalkMainServer extends JFrame {
 				try {
 					Object obui = null;
 					UserInfo ui = null;
-					if(socket == null)
+					if(socket == null) {
+						System.out.println("socket is null");
 						break;
+					}
+					
 					try {
 						obui = ois.readObject();
+						System.out.println("obui success read");
 					}catch(ClassNotFoundException e) {
 						e.printStackTrace();
 						return;
 					}
-					if(obui == null)
+					if(obui == null) {
+						System.out.println("obui is null");
 						break;
+					}
 					if(obui instanceof UserInfo) {
 						ui = (UserInfo)obui;
 						System.out.println(ui.getUsername());

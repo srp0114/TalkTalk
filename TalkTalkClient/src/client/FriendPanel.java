@@ -52,7 +52,7 @@ public class FriendPanel extends JPanel{
 		this.add(lblFriend);
 		
 		
-		searchIconImg = searchIconImg.getScaledInstance(25, 25,  Image.SCALE_DEFAULT);
+		searchIconImg = searchIconImg.getScaledInstance(25, 25,  Image.SCALE_SMOOTH);
 		searchIcon = new ImageIcon(searchIconImg);
 		btnSearchIcon = new JButton(searchIcon);
 		btnSearchIcon.setBorderPainted(false);
@@ -62,7 +62,7 @@ public class FriendPanel extends JPanel{
 		btnSearchIcon.setBounds(230, 32, 25, 25);
 		this.add(btnSearchIcon);
 		
-		addFriendIconImg = addFriendIconImg.getScaledInstance(25, 25,  Image.SCALE_DEFAULT);
+		addFriendIconImg = addFriendIconImg.getScaledInstance(25, 25,  Image.SCALE_SMOOTH);
 		addFriendIcon = new ImageIcon(addFriendIconImg);
 		btnAddFriendIcon = new JButton(addFriendIcon);
 		btnAddFriendIcon.setBorderPainted(false);
@@ -83,7 +83,7 @@ public class FriendPanel extends JPanel{
 		scrollPane.setViewportView(textArea);
 		
 		
-		profileImg = profileImg.getScaledInstance(50, 50,  Image.SCALE_DEFAULT);
+		profileImg = profileImg.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
 		profileIcon = new ImageIcon(profileImg);
 		btnProfileImg = new JButton(profileIcon);
 		btnProfileImg.setBorderPainted(false);

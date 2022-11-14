@@ -16,17 +16,18 @@ import javax.swing.JSplitPane;
 
 public class TalkTalkClientView extends JFrame{
 	private JPanel contentPane;
-	private String username;
+	private String username;  // username
 	private String ip_addr;
 	private String port_no;
-	private UserInfo obui;
+	private UserInfo obui;		// obui
+
 	
 	private static final int BUF_LEN = 128;
 	private Socket socket;
-	private InputStream is;
-	private OutputStream os;
-	private DataInputStream dis;
-	private DataOutputStream dos;
+	//private InputStream is;
+	//private OutputStream os;
+	//private DataInputStream dis;
+	//private DataOutputStream dos;
 	
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
@@ -49,8 +50,6 @@ public class TalkTalkClientView extends JFrame{
 		setResizable(false);
 		setVisible(true);
 		
-		
-		
 		try {
 			socket = new Socket(ip_addr, Integer.parseInt(port_no));
 			
@@ -58,8 +57,7 @@ public class TalkTalkClientView extends JFrame{
 			oos.flush();
 			ois = new ObjectInputStream(socket.getInputStream());
 			
-			obui = new UserInfo(username, "100");
-			System.out.println(username);
+			obui = new UserInfo(username, "100");			
 			SendObject(obui);
 		}catch(NumberFormatException | IOException e) {
 			e.printStackTrace();
@@ -67,7 +65,6 @@ public class TalkTalkClientView extends JFrame{
 		}
 		
 		splitPane();
-		repaint();
 	}
 	
 	public void splitPane() {
