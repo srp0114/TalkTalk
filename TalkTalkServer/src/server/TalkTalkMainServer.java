@@ -109,7 +109,7 @@ public class TalkTalkMainServer extends JFrame {
 					
 					// User 당 하나씩 Thread 생성
 					UserService new_user = new UserService(client_socket);
-					UserVec.add(new_user);
+					UserVec.add(new_user);   // 로그인한 user 추가
 					new_user.start();
 					AppendText("현재 user 수 " + UserVec.size());
 					

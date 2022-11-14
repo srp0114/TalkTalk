@@ -20,6 +20,7 @@ public class FriendPanel extends JPanel{
 	
 	private JLabel lblFriend;  // 친구 레이블
 	 
+	private UserInfo userInfo;
 	private String userName;  // 로그인한 client 이름
 	private JLabel lblUserName;  // username 레이블
 	
@@ -35,8 +36,8 @@ public class FriendPanel extends JPanel{
 	private ImageIcon profileIcon;
 	private JButton btnProfileImg;
 	
-	public FriendPanel(String userName) {  // 매개변수로 username 받는 생성자
-		this.userName = userName;  // username 지정
+	public FriendPanel(UserInfo userInfo) {  // 매개변수로 username 받는 생성자
+		this.userInfo = userInfo;
 		
 		this.setBackground(new Color(255,255,255));  // 배경색: 흰색
 		setLayout(null);
@@ -93,7 +94,7 @@ public class FriendPanel extends JPanel{
 		textArea.add(btnProfileImg);
 		
 		
-		lblUserName = new JLabel(userName);
+		lblUserName = new JLabel(userInfo.getUsername());
 		lblUserName.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		lblUserName.setBounds(90, 76, 50, 50);
 		textArea.add(lblUserName);

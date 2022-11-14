@@ -78,7 +78,7 @@ public class TalkTalkClientView extends JFrame{
 		
 		menuPanel = new MenuPanel();
 		hPane.setLeftComponent(menuPanel);
-		friendPanel = new FriendPanel(username);
+		friendPanel = new FriendPanel(obui);
 		hPane.setRightComponent(friendPanel);
 		getContentPane().add(hPane, BorderLayout.CENTER);
 	}
