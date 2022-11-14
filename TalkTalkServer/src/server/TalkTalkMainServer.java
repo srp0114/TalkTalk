@@ -131,7 +131,7 @@ public class TalkTalkMainServer extends JFrame {
 		
 		private Socket client_socket;
 		private Vector user_vc;
-		public String username = "";
+		public String username;
 		
 		public UserService(Socket client_socket) {
 			this.client_socket = client_socket;
@@ -149,8 +149,51 @@ public class TalkTalkMainServer extends JFrame {
 		
 		public void run() {
 			while(true) {
-				
+				try {
+					Object obui = null;
+					UserInfo ui = null;
+					if(socket == null)
+						break;
+					try {
+						obui = ois.readObject();
+					}catch(ClassNotFoundException e) {
+						e.printStackTrace();
+						return;
+					}
+					if(obui == null)
+						break;
+					if(obui instanceof UserInfo) {
+						ui = (UserInfo)obui;
+						System.out.println(ui.getUsername());
+						System.out.println(ui.getCode());
+					} else
+						continue;
+					
+					if(ui.getCode().matches("100")) {
+						username = ui.getUsername();
+						Login();
+					}
+				} catch(IOException e) {
+					AppendText("ois.readObject() error");
+					try {
+						ois.close();
+						oos.close();
+						client_socket.close();
+						Logout();
+						break;
+					} catch(Exception ee) {
+						break;
+					}
+				}
 			}
+		}
+		
+		public void Login() {
+			AppendText("새로운 User " + username + " 로그인");
+		}
+		public void Logout() {
+			UserVec.removeElement(this);
+			AppendText("User " + "[" + username + "] 로그아웃. 현재 User 수 " + UserVec.size());
 		}
 	}
 

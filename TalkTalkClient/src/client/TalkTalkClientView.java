@@ -59,6 +59,8 @@ public class TalkTalkClientView extends JFrame{
 			ois = new ObjectInputStream(socket.getInputStream());
 			
 			obui = new UserInfo(username, "100");
+			System.out.println(username);
+			SendObject(obui);
 		}catch(NumberFormatException | IOException e) {
 			e.printStackTrace();
 			System.out.println("connect error");
