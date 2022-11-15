@@ -3,9 +3,11 @@ package client;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -42,7 +44,7 @@ public class AddFriendFrame extends JFrame{
 		this.userInfo = userInfo;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(150, 170, 290, 450);
+		setBounds(150, 170, 270, 400);
 		contentPane = new MyPanel();
 		contentPane.setBackground(new Color(255,255,255));
 		setContentPane(contentPane);
@@ -65,6 +67,7 @@ public class AddFriendFrame extends JFrame{
 		addFriendByName.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
 		addFriendByName.setBounds(30, 55, 130, 55);
 		contentPane.add(addFriendByName);
+
 		
 		tfUserName = new JTextField();
 		tfUserName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -105,7 +108,10 @@ public class AddFriendFrame extends JFrame{
 			System.out.println("SendObject Error");
 		}
 	}
+
 }
+
+
 
 class MyPanel extends JPanel {
 	public MyPanel() {
@@ -114,7 +120,7 @@ class MyPanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(new Color(200, 200, 200));
-		g.drawLine(10, 100, 260, 100);
+		g.drawLine(10, 100, 240, 100);
 		System.out.println("drawLine");
 	}
 }
