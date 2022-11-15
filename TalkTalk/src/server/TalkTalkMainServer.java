@@ -150,7 +150,7 @@ public class TalkTalkMainServer extends JFrame {
 			}
 		}
 		
-		public void run() {
+		public synchronized void run() {
 			while(true) {
 				try {
 					Object obui = null;
@@ -172,12 +172,14 @@ public class TalkTalkMainServer extends JFrame {
 						System.out.println("obui is null");
 						break;
 					}
+					
 					if(obui instanceof UserInfo) {
 						ui = (UserInfo)obui;
 						System.out.println(ui.getUsername());
 						System.out.println(ui.getCode());
 					} else
 						continue;
+					System.out.println("실제 받아온 프로토콜: " + ui.getCode());
 					
 					if(ui.getCode().matches("100")) { // 로그인
 						username = ui.getUsername();
@@ -206,15 +208,15 @@ public class TalkTalkMainServer extends JFrame {
 				}
 			}
 		}
-		public void Login() {
+		public void Login() {  // 로그인 100
 			AppendText("새로운 User " + username + " 로그인");
 		}
-		public void Logout() {
+		public void Logout() {  // 로그아웃  101
 			UserVec.removeElement(this);
 			AppendText("User " + "[" + username + "] 로그아웃. 현재 User 수 " + UserVec.size());
 		}
 		
-		public void SearchFriend() {
+		public void SearchFriend() {  // 친구 검색 302
 			System.out.println("SearchFriend function");
 			AppendText("[" + username + "] searchFriend " + searchFriendName);
 			for(int i = 0; i < userInfos.size(); i++) {

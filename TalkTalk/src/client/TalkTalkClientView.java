@@ -87,6 +87,7 @@ public class TalkTalkClientView extends JFrame{
 	public void SendObject(Object ob) {
 		try {
 			oos.writeObject(ob);
+			oos.flush();
 		} catch(IOException e) {
 			System.out.println("SendObject Error");
 		}

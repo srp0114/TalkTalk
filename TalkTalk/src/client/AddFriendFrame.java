@@ -40,12 +40,7 @@ public class AddFriendFrame extends JFrame{
 	public AddFriendFrame(Socket socket, ObjectOutputStream oos, ObjectInputStream ois, UserInfo userInfo) {
 		this.socket = socket;
 		this.oos = oos;
-		try {
-			oos.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		this.ois = ois;
 		this.userInfo = userInfo;
 		
@@ -104,15 +99,17 @@ public class AddFriendFrame extends JFrame{
 			SendObject(userInfo);
 		}
 	}
-	
 	public void SendObject(Object ob) {
 		try {
-			oos.flush();
+			System.out.println(((UserInfo)ob).getCode());
+			// oos.flush();
 			oos.writeObject(ob);
+			oos.flush();
 		} catch(IOException e) {
 			System.out.println("SendObject Error");
 		}
 	}
+
 
 }
 
