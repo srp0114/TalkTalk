@@ -37,10 +37,16 @@ public class AddFriendFrame extends JFrame{
 	private JButton btnAddFriend;
 	
 	
-	public AddFriendFrame(Socket socket, ObjectInputStream ois, ObjectOutputStream oos, UserInfo userInfo) {
+	public AddFriendFrame(Socket socket, ObjectOutputStream oos, ObjectInputStream ois, UserInfo userInfo) {
 		this.socket = socket;
-		this.ois = ois;
 		this.oos = oos;
+		try {
+			oos.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.ois = ois;
 		this.userInfo = userInfo;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -88,17 +94,20 @@ public class AddFriendFrame extends JFrame{
 	class Myaction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			System.out.println("tfUserName actionPerformed");
 			String friendName = tfUserName.getText().trim();
+			System.out.println("tfUserName: " + friendName);
 			userInfo.setCode("302");
-			System.out.println(userInfo.getCode());
 			userInfo.setSearchFriend(friendName);
-			System.out.println(userInfo.getFriendName());
+			System.out.println(userInfo.getCode());
+			System.out.println(userInfo.getSearchFriend());
 			SendObject(userInfo);
 		}
 	}
 	
 	public void SendObject(Object ob) {
 		try {
+			oos.flush();
 			oos.writeObject(ob);
 		} catch(IOException e) {
 			System.out.println("SendObject Error");

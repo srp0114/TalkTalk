@@ -185,10 +185,13 @@ public class TalkTalkMainServer extends JFrame {
 						Login();
 					}
 					else if(ui.getCode().matches("302")) { // 친구 검색
+						System.out.println("ui.getCode() matches 302");
 						searchFriendName = ui.getSearchFriend();
 						System.out.println(searchFriendName);
 						SearchFriend();
 					}
+					
+					
 				} catch(IOException e) {
 					AppendText("ois.readObject() error");
 					try {
@@ -212,6 +215,7 @@ public class TalkTalkMainServer extends JFrame {
 		}
 		
 		public void SearchFriend() {
+			System.out.println("SearchFriend function");
 			AppendText("[" + username + "] searchFriend " + searchFriendName);
 			for(int i = 0; i < userInfos.size(); i++) {
 				UserInfo userinfo = userInfos.get(i);

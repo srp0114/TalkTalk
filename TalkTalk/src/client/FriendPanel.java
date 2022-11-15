@@ -48,6 +48,8 @@ public class FriendPanel extends JPanel{
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
 	
+	AddFriendFrame addFriendFrame;
+	
 	public FriendPanel(Socket socket, ObjectInputStream ois, ObjectOutputStream oos, UserInfo userInfo) {  // 매개변수로 username 받는 생성자
 		this.socket = socket;
 		this.ois = ois;
@@ -119,9 +121,6 @@ public class FriendPanel extends JPanel{
 		
 	}
 	
-	public void setUserInfo(UserInfo userInfo) {
-		this.userInfo = userInfo;
-	}
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -132,7 +131,7 @@ public class FriendPanel extends JPanel{
 	class AddFriendIconAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			AddFriendFrame addFriendFrame = new AddFriendFrame(socket, ois, oos, userInfo);
+			addFriendFrame = new AddFriendFrame(socket, oos, ois, userInfo);
 		}
 	}
 }
