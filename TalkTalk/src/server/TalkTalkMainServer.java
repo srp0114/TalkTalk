@@ -174,7 +174,6 @@ public class TalkTalkMainServer extends JFrame {
 					}
 					if(obui instanceof UserInfo) {
 						ui = (UserInfo)obui;
-						userInfos.add(ui);
 						System.out.println(ui.getUsername());
 						System.out.println(ui.getCode());
 					} else
@@ -182,10 +181,12 @@ public class TalkTalkMainServer extends JFrame {
 					
 					if(ui.getCode().matches("100")) { // 로그인
 						username = ui.getUsername();
+						userInfos.add(ui);
 						Login();
 					}
-					if(ui.getCode().matches("302")) { // 친구 검색
+					else if(ui.getCode().matches("302")) { // 친구 검색
 						searchFriendName = ui.getSearchFriend();
+						System.out.println(searchFriendName);
 						SearchFriend();
 					}
 				} catch(IOException e) {
@@ -218,9 +219,6 @@ public class TalkTalkMainServer extends JFrame {
 					AppendText("user들 중 " + userinfo.getUsername() + "검색됨.");
 				}
 			}
-			
-				
-	
 		}
 		
 	}

@@ -89,15 +89,11 @@ public class AddFriendFrame extends JFrame{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String friendName = tfUserName.getText().trim();
-			try {
-				oos.flush();
-				userInfo.setCode("302");
-				userInfo.setSearchFriend(friendName);
-				System.out.println(userInfo.getCode());
-				SendObject(userInfo);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+			userInfo.setCode("302");
+			System.out.println(userInfo.getCode());
+			userInfo.setSearchFriend(friendName);
+			System.out.println(userInfo.getFriendName());
+			SendObject(userInfo);
 		}
 	}
 	
@@ -110,8 +106,6 @@ public class AddFriendFrame extends JFrame{
 	}
 
 }
-
-
 
 class MyPanel extends JPanel {
 	public MyPanel() {

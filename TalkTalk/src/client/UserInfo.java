@@ -14,6 +14,7 @@ public class UserInfo implements Serializable{
 	private int friendNumber = 0;
 	private ArrayList<UserInfo> friendsUserInfo;
 	private String searchFriend;
+	public String friendName;
 	
 	public UserInfo(String username, String code) {
 		this.username = username;
@@ -70,5 +71,12 @@ public class UserInfo implements Serializable{
 	}
 	public void addFriend(UserInfo friendInfo) {
 		friendsUserInfo.add(friendInfo);
+	}
+	
+	public void setFriendName(String friendName) {
+		this.friendName = friendName;
+	}
+	public String getFriendName() {
+		return friendName;
 	}
 }

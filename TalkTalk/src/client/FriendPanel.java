@@ -29,6 +29,7 @@ public class FriendPanel extends JPanel{
 	 
 	private Socket socket;
 	private UserInfo userInfo;
+	
 	private String userName;  // 로그인한 client 이름
 	private JLabel lblUserName;  // username 레이블
 	
@@ -113,7 +114,7 @@ public class FriendPanel extends JPanel{
 		
 		lblUserName = new JLabel(userInfo.getUsername());
 		lblUserName.setFont(new Font("맑은 고딕", Font.BOLD, 12));
-		lblUserName.setBounds(90, 76, 50, 50);
+		lblUserName.setBounds(90, 76, 100, 50);
 		textArea.add(lblUserName);
 		
 	}
