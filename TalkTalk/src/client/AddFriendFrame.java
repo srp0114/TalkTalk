@@ -44,7 +44,7 @@ public class AddFriendFrame extends JFrame{
 		this.userInfo = userInfo;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(150, 170, 270, 400);
+		setBounds(150, 170, 290, 450);
 		contentPane = new MyPanel();
 		contentPane.setBackground(new Color(255,255,255));
 		setContentPane(contentPane);
@@ -120,7 +120,7 @@ class MyPanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(new Color(200, 200, 200));
-		g.drawLine(10, 100, 240, 100);
+		g.drawLine(10, 100, 260, 100);
 		System.out.println("drawLine");
 	}
 }
