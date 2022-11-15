@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -21,6 +22,7 @@ import util.ColorDefinition;
 public class AddFriendFrame extends JFrame{
 	private Socket socket;
 	private UserInfo userInfo;
+	private UserInfo friendUserInfo;
 	
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
@@ -47,6 +49,7 @@ public class AddFriendFrame extends JFrame{
 		contentPane.setLayout(null);
 		
 		uiInit();
+		tfUserName.addActionListener(new Myaction());
 		
 		setResizable(false);
 		setVisible(true);
@@ -83,10 +86,25 @@ public class AddFriendFrame extends JFrame{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String friendName = tfUserName.getText().trim();
-			
+			try {
+				oos.flush();
+				userInfo.setCode("302");
+				userInfo.setSearchFriend(friendName);
+				System.out.println(userInfo.getCode());
+				SendObject(userInfo);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 	
+	public void SendObject(Object ob) {
+		try {
+			oos.writeObject(ob);
+		} catch(IOException e) {
+			System.out.println("SendObject Error");
+		}
+	}
 }
 
 class MyPanel extends JPanel {

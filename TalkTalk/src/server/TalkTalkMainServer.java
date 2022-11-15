@@ -136,6 +136,7 @@ public class TalkTalkMainServer extends JFrame {
 		private Socket client_socket;
 		private Vector user_vc;
 		public String username="";
+		public String searchFriendName="";
 		
 		public UserService(Socket client_socket) {
 			this.client_socket = client_socket;
@@ -184,7 +185,8 @@ public class TalkTalkMainServer extends JFrame {
 						Login();
 					}
 					if(ui.getCode().matches("302")) { // 친구 검색
-						
+						searchFriendName = ui.getSearchFriend();
+						SearchFriend();
 					}
 				} catch(IOException e) {
 					AppendText("ois.readObject() error");
@@ -208,8 +210,17 @@ public class TalkTalkMainServer extends JFrame {
 			AppendText("User " + "[" + username + "] 로그아웃. 현재 User 수 " + UserVec.size());
 		}
 		
-		public void searchFriend() {
+		public void SearchFriend() {
+			AppendText("[" + username + "] searchFriend " + searchFriendName);
+			for(int i = 0; i < userInfos.size(); i++) {
+				UserInfo userinfo = userInfos.get(i);
+				if(userinfo.getUsername().equals(searchFriendName)) {
+					AppendText("user들 중 " + userinfo.getUsername() + "검색됨.");
+				}
+			}
 			
+				
+	
 		}
 		
 	}

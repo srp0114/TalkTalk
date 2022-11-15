@@ -20,6 +20,8 @@ public class UserInfo implements Serializable{
 		this.code = code;		
 	}
 	
+	
+	// username
 	public String getUsername() {
 		return username;
 	}
@@ -27,6 +29,7 @@ public class UserInfo implements Serializable{
 		this.username = username;
 	}
 	
+	// code
 	public String getCode() {
 		return code;
 	}
@@ -34,16 +37,23 @@ public class UserInfo implements Serializable{
 		this.code = code;
 	}
 	
+	// Img
 	public void setImg(ImageIcon profileImg) {
 		this.profileImg = profileImg;
 	}
+	public ImageIcon getImg() {
+		return profileImg;
+	}
 	
+	// friendNumber
 	public void setFriendNumber(int n) {
 		this.friendNumber = n;
 	}
 	public int getFriendNumber() {
 		return friendNumber;
 	}
+	
+	// friendsUserInfo
 	public void setFriendsUserInfo(ArrayList<UserInfo> friendsUserInfo) {
 		this.friendsUserInfo = friendsUserInfo;
 	}
@@ -51,7 +61,14 @@ public class UserInfo implements Serializable{
 		return friendsUserInfo;
 	}
 	
+	// searchFrined
 	public void setSearchFriend(String searchFriend) {
 		this.searchFriend = searchFriend;
+	}
+	public String getSearchFriend() {
+		return searchFriend;
+	}
+	public void addFriend(UserInfo friendInfo) {
+		friendsUserInfo.add(friendInfo);
 	}
 }
