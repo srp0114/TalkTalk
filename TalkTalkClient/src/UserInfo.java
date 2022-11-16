@@ -1,24 +1,20 @@
-package server;
-
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.io.Serializable;
-import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 
 public class UserInfo implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private String username;
 	private String code;
-	private ImageIcon profileImg;
+	public ImageIcon profileImg;
 	private int friendNumber = 0;
-	private ArrayList<UserInfo> friendsUserInfo;
+	//private ArrayList<UserInfo> friendsUserInfo;
 	private String searchFriend;
 	
-	public UserInfo(String username, String code) { // 생성자
+	public UserInfo(String username, String code) {
 		this.username = username;
 		this.code = code;		
 	}
+	
 	
 	// username
 	public String getUsername() {
@@ -53,13 +49,14 @@ public class UserInfo implements Serializable{
 	}
 	
 	// friendsUserInfo
+	/*
 	public void setFriendsUserInfo(ArrayList<UserInfo> friendsUserInfo) {
 		this.friendsUserInfo = friendsUserInfo;
 	}
 	public ArrayList<UserInfo> getFriendsUserInfo() {
 		return friendsUserInfo;
 	}
-	
+	*/
 	// searchFrined
 	public void setSearchFriend(String searchFriend) {
 		this.searchFriend = searchFriend;
@@ -68,9 +65,10 @@ public class UserInfo implements Serializable{
 		return searchFriend;
 	}
 	
+	/*
 	public void addFriend(UserInfo friendInfo) {
 		friendsUserInfo.add(friendInfo);
 	}
-	
+	*/
 	
 }

@@ -1,4 +1,3 @@
-package client;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -37,7 +36,7 @@ public class TalkTalkClientView extends JFrame{
 	
 	
 	private MenuPanel menuPanel;  // 메뉴 패널
-	private FriendPanel friendPanel;  // 친구창 패널
+	private FriendListPanel friendPanel;  // 친구창 패널
 
 	public TalkTalkClientView(String username, String ip_addr, String port_no) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,7 +78,7 @@ public class TalkTalkClientView extends JFrame{
 		
 		menuPanel = new MenuPanel();
 		hPane.setLeftComponent(menuPanel);
-		friendPanel = new FriendPanel(socket, ois, oos, obui);
+		friendPanel = new FriendListPanel(socket, ois, oos, obui);
 		hPane.setRightComponent(friendPanel);
 		getContentPane().add(hPane, BorderLayout.CENTER);
 	}
@@ -140,8 +139,4 @@ public class TalkTalkClientView extends JFrame{
 			}
 		}
 	}
-	
-	
 }
-
-

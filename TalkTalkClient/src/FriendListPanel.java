@@ -1,5 +1,3 @@
-package client;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -19,9 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
-import client.TalkTalkClientMain.Myaction;
 
-public class FriendPanel extends JPanel{
+public class FriendListPanel extends JPanel{
 	JScrollPane scrollPane;
 	JTextPane textArea;
 	
@@ -50,7 +47,7 @@ public class FriendPanel extends JPanel{
 	
 	AddFriendFrame addFriendFrame;
 	
-	public FriendPanel(Socket socket, ObjectInputStream ois, ObjectOutputStream oos, UserInfo userInfo) {  // 매개변수로 username 받는 생성자
+	public FriendListPanel(Socket socket, ObjectInputStream ois, ObjectOutputStream oos, UserInfo userInfo) {  // 매개변수로 username 받는 생성자
 		this.socket = socket;
 		this.ois = ois;
 		this.oos = oos;
