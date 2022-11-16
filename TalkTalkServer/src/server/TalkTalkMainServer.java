@@ -3,13 +3,9 @@ package server;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -23,7 +19,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import client.UserInfo;
+import server.UserInfo;
 
 public class TalkTalkMainServer extends JFrame {
 
@@ -124,6 +120,7 @@ public class TalkTalkMainServer extends JFrame {
 		}
 	}
 	
+	// User 당 생성되는 스레드
 	class UserService extends Thread {
 		//private InputStream is;
 		//private OutputStream os;
@@ -221,9 +218,33 @@ public class TalkTalkMainServer extends JFrame {
 			AppendText("[" + username + "] searchFriend " + searchFriendName);
 			for(int i = 0; i < userInfos.size(); i++) {
 				UserInfo userinfo = userInfos.get(i);
+				if(userinfo.getUsername().equals(username))
+					break;
 				if(userinfo.getUsername().equals(searchFriendName)) {
 					AppendText("user들 중 " + userinfo.getUsername() + "검색됨.");
 				}
+			}
+		}
+		
+		// UserService Thread가 담당하는 Client 에게 1:1 전송
+		public void WriteOne(String msg) {
+			try {
+				UserInfo obui = new UserInfo("SERVER", "200");
+				oos.writeObject(obui);
+			} catch (IOException e) {
+				AppendText("dos.writeObject() error");
+				try {
+					ois.close();
+					oos.close();
+					client_socket.close();
+					client_socket = null;
+					ois = null;
+					oos = null;
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Logout(); // 에러가난 현재 객체를 벡터에서 지운다
 			}
 		}
 		
