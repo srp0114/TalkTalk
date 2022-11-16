@@ -1,11 +1,18 @@
 package client;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -16,14 +23,14 @@ public class TalkTalkClientView extends JFrame{
 	private String ip_addr;
 	private String port_no;
 	private UserInfo obui;		// obui
+	
+	private JSplitPane hPane;
 
+	private JButton btnprofileIcon;
+	private JButton btnchatIcon;
 	
 	private static final int BUF_LEN = 128;
 	private Socket socket;
-	//private InputStream is;
-	//private OutputStream os;
-	//private DataInputStream dis;
-	//private DataOutputStream dos;
 	
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
@@ -43,9 +50,6 @@ public class TalkTalkClientView extends JFrame{
 		this.ip_addr = ip_addr;
 		this.port_no = port_no;
 		
-		setResizable(false);
-		setVisible(true);
-		
 		try {
 			socket = new Socket(ip_addr, Integer.parseInt(port_no));
 			
@@ -61,10 +65,12 @@ public class TalkTalkClientView extends JFrame{
 		}
 		
 		splitPane();
+		setResizable(false);
+		setVisible(true);
 	}
 	
 	public void splitPane() {
-		JSplitPane hPane = new JSplitPane();   // JSplitPane 생성
+		hPane = new JSplitPane();   // JSplitPane 생성
 		
 		hPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		hPane.setDividerLocation(70);
@@ -73,7 +79,7 @@ public class TalkTalkClientView extends JFrame{
 		
 		menuPanel = new MenuPanel();
 		hPane.setLeftComponent(menuPanel);
-		friendPanel = new FriendPanel(obui);
+		friendPanel = new FriendPanel(socket, ois, oos, obui);
 		hPane.setRightComponent(friendPanel);
 		getContentPane().add(hPane, BorderLayout.CENTER);
 	}
@@ -81,8 +87,61 @@ public class TalkTalkClientView extends JFrame{
 	public void SendObject(Object ob) {
 		try {
 			oos.writeObject(ob);
+			oos.flush();
 		} catch(IOException e) {
 			System.out.println("SendObject Error");
 		}
 	}
+	
+	
+	
+	class MenuPanel extends JPanel{
+		private Image profileIconImg = Toolkit.getDefaultToolkit().getImage("src/profileIcon.png");
+		private ImageIcon profileIcon;
+		
+		private Image chatIconImg = Toolkit.getDefaultToolkit().getImage("src/chatIcon.png");
+		private ImageIcon chatIcon;
+
+		
+		public MenuPanel() {
+			this.setBackground(new Color(236, 236, 237));
+			setLayout(null);
+			
+			uiInit();
+			
+		}
+		
+		public void uiInit() {
+			profileIconImg = profileIconImg.getScaledInstance(28, 28,  Image.SCALE_SMOOTH);
+			profileIcon = new ImageIcon(profileIconImg);
+			btnprofileIcon = new JButton(profileIcon);
+			btnprofileIcon.setBorderPainted(false);
+			btnprofileIcon.setFocusPainted(false);
+			btnprofileIcon.setContentAreaFilled(false);
+			btnprofileIcon.setOpaque(false);
+			btnprofileIcon.setBounds(20, 30, 28, 28);
+			this.add(btnprofileIcon);
+			
+			chatIconImg = chatIconImg.getScaledInstance(28, 28,  Image.SCALE_SMOOTH);
+			chatIcon = new ImageIcon(chatIconImg);
+			btnchatIcon = new JButton(chatIcon);
+			btnchatIcon.setBorderPainted(false);
+			btnchatIcon.setFocusPainted(false);
+			btnchatIcon.setContentAreaFilled(false);
+			btnchatIcon.setOpaque(false);
+			btnchatIcon.setBounds(20, 90, 28, 28);
+			this.add(btnchatIcon);
+		}
+		class MyChangeaction implements ActionListener {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				setVisible(false);
+			}
+		}
+	}
+	
+	
 }
+
+

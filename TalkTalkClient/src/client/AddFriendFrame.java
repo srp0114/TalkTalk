@@ -40,7 +40,6 @@ public class AddFriendFrame extends JFrame{
 	public AddFriendFrame(Socket socket, ObjectOutputStream oos, ObjectInputStream ois, UserInfo userInfo) {
 		this.socket = socket;
 		this.oos = oos;
-		
 		this.ois = ois;
 		this.userInfo = userInfo;
 		
@@ -92,11 +91,13 @@ public class AddFriendFrame extends JFrame{
 			System.out.println("tfUserName actionPerformed");
 			String friendName = tfUserName.getText().trim();
 			System.out.println("tfUserName: " + friendName);
-			userInfo.setCode("302");
-			userInfo.setSearchFriend(friendName);
+			UserInfo userinfo = new UserInfo(userInfo.getUsername(), "302");
+			userinfo.setSearchFriend(friendName);
+			//userInfo.setCode("302");
+			//userInfo.setSearchFriend(friendName);
 			System.out.println(userInfo.getCode());
 			System.out.println(userInfo.getSearchFriend());
-			SendObject(userInfo);
+			SendObject(userinfo);
 		}
 	}
 	public void SendObject(Object ob) {
@@ -104,7 +105,7 @@ public class AddFriendFrame extends JFrame{
 			System.out.println(((UserInfo)ob).getCode());
 			// oos.flush();
 			oos.writeObject(ob);
-			oos.flush();
+			//oos.flush();
 		} catch(IOException e) {
 			System.out.println("SendObject Error");
 		}

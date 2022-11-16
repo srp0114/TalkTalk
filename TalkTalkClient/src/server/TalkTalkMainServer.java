@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -33,6 +34,7 @@ public class TalkTalkMainServer extends JFrame {
 	private ServerSocket socket;
 	private Socket client_socket;
 	private Vector UserVec = new Vector();
+	private Vector<UserInfo> userInfos = new Vector();
 	private static final int BUF_LEN = 128;
 
 	
@@ -52,7 +54,7 @@ public class TalkTalkMainServer extends JFrame {
 	// 생성자
 	public TalkTalkMainServer(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 338, 440);
+		setBounds(500, 100, 338, 440);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -134,6 +136,7 @@ public class TalkTalkMainServer extends JFrame {
 		private Socket client_socket;
 		private Vector user_vc;
 		public String username="";
+		public String searchFriendName="";
 		
 		public UserService(Socket client_socket) {
 			this.client_socket = client_socket;
@@ -145,11 +148,9 @@ public class TalkTalkMainServer extends JFrame {
 			} catch(Exception e) {
 				AppendText("UserService error");
 			}
-			
-			
 		}
 		
-		public void run() {
+		public synchronized void run() {
 			while(true) {
 				try {
 					Object obui = null;
@@ -171,17 +172,28 @@ public class TalkTalkMainServer extends JFrame {
 						System.out.println("obui is null");
 						break;
 					}
+					
 					if(obui instanceof UserInfo) {
 						ui = (UserInfo)obui;
 						System.out.println(ui.getUsername());
 						System.out.println(ui.getCode());
 					} else
 						continue;
+					System.out.println("실제 받아온 프로토콜: " + ui.getCode());
 					
-					if(ui.getCode().matches("100")) {
+					if(ui.getCode().matches("100")) { // 로그인
 						username = ui.getUsername();
+						userInfos.add(ui);
 						Login();
 					}
+					else if(ui.getCode().matches("302")) { // 친구 검색
+						System.out.println("ui.getCode() matches 302");
+						searchFriendName = ui.getSearchFriend();
+						System.out.println(searchFriendName);
+						SearchFriend();
+					}
+					
+					
 				} catch(IOException e) {
 					AppendText("ois.readObject() error");
 					try {
@@ -196,12 +208,23 @@ public class TalkTalkMainServer extends JFrame {
 				}
 			}
 		}
-		public void Login() {
+		public void Login() {  // 로그인 100
 			AppendText("새로운 User " + username + " 로그인");
 		}
-		public void Logout() {
+		public void Logout() {  // 로그아웃  101
 			UserVec.removeElement(this);
 			AppendText("User " + "[" + username + "] 로그아웃. 현재 User 수 " + UserVec.size());
+		}
+		
+		public void SearchFriend() {  // 친구 검색 302
+			System.out.println("SearchFriend function");
+			AppendText("[" + username + "] searchFriend " + searchFriendName);
+			for(int i = 0; i < userInfos.size(); i++) {
+				UserInfo userinfo = userInfos.get(i);
+				if(userinfo.getUsername().equals(searchFriendName)) {
+					AppendText("user들 중 " + userinfo.getUsername() + "검색됨.");
+				}
+			}
 		}
 		
 	}

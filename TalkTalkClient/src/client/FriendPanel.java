@@ -6,6 +6,11 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,13 +19,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
+import client.TalkTalkClientMain.Myaction;
+
 public class FriendPanel extends JPanel{
 	JScrollPane scrollPane;
 	JTextPane textArea;
 	
 	private JLabel lblFriend;  // 친구 레이블
 	 
+	private Socket socket;
 	private UserInfo userInfo;
+	
 	private String userName;  // 로그인한 client 이름
 	private JLabel lblUserName;  // username 레이블
 	
@@ -36,12 +45,23 @@ public class FriendPanel extends JPanel{
 	private ImageIcon profileIcon;
 	private JButton btnProfileImg;
 	
-	public FriendPanel(UserInfo userInfo) {  // 매개변수로 username 받는 생성자
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
+	
+	AddFriendFrame addFriendFrame;
+	
+	public FriendPanel(Socket socket, ObjectInputStream ois, ObjectOutputStream oos, UserInfo userInfo) {  // 매개변수로 username 받는 생성자
+		this.socket = socket;
+		this.ois = ois;
+		this.oos = oos;
 		this.userInfo = userInfo;
 		
 		this.setBackground(new Color(255,255,255));  // 배경색: 흰색
 		setLayout(null);
 		UIInit();  // ui 세팅
+		
+		AddFriendIconAction action = new AddFriendIconAction();
+		btnAddFriendIcon.addActionListener(action);
 	}
 	
 	public void UIInit() {
@@ -96,14 +116,22 @@ public class FriendPanel extends JPanel{
 		
 		lblUserName = new JLabel(userInfo.getUsername());
 		lblUserName.setFont(new Font("맑은 고딕", Font.BOLD, 12));
-		lblUserName.setBounds(90, 76, 50, 50);
+		lblUserName.setBounds(90, 76, 100, 50);
 		textArea.add(lblUserName);
 		
 	}
+	
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(new Color(234, 234, 234));
 		g.drawLine(10, 150, 300, 150);
+	}
+	
+	class AddFriendIconAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			addFriendFrame = new AddFriendFrame(socket, oos, ois, userInfo);
+		}
 	}
 }
