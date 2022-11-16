@@ -20,12 +20,9 @@ import javax.swing.SwingConstants;
 import util.ColorDefinition;
 
 public class AddFriendFrame extends JFrame{
-	private Socket socket;
+	private TalkTalkClientView clientView;
 	private UserInfo userInfo;
 	private UserInfo friendUserInfo;
-	
-	private ObjectInputStream ois;
-	private ObjectOutputStream oos;
 	
 	private MyPanel contentPane;
 	
@@ -35,10 +32,8 @@ public class AddFriendFrame extends JFrame{
 	private JButton btnAddFriend;
 	
 	
-	public AddFriendFrame(Socket socket, ObjectOutputStream oos, ObjectInputStream ois, UserInfo userInfo) {
-		this.socket = socket;
-		this.oos = oos;
-		this.ois = ois;
+	public AddFriendFrame(TalkTalkClientView clientView, UserInfo userInfo) {
+		this.clientView = clientView;
 		this.userInfo = userInfo;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -102,7 +97,7 @@ public class AddFriendFrame extends JFrame{
 		try {
 			System.out.println(((UserInfo)ob).getCode());
 			// oos.flush();
-			oos.writeObject(ob);
+			clientView.oos.writeObject(ob);
 			//oos.flush();
 		} catch(IOException e) {
 			System.out.println("SendObject Error");

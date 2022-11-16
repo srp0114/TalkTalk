@@ -24,7 +24,7 @@ public class FriendListPanel extends JPanel{
 	
 	private JLabel lblFriend;  // 친구 레이블
 	 
-	private Socket socket;
+	private TalkTalkClientView clientView;
 	private UserInfo userInfo;
 	
 	private String userName;  // 로그인한 client 이름
@@ -42,15 +42,10 @@ public class FriendListPanel extends JPanel{
 	private ImageIcon profileIcon;
 	private JButton btnProfileImg;
 	
-	private ObjectInputStream ois;
-	private ObjectOutputStream oos;
-	
 	AddFriendFrame addFriendFrame;
 	
-	public FriendListPanel(Socket socket, ObjectInputStream ois, ObjectOutputStream oos, UserInfo userInfo) {  // 매개변수로 username 받는 생성자
-		this.socket = socket;
-		this.ois = ois;
-		this.oos = oos;
+	public FriendListPanel(TalkTalkClientView clientView, UserInfo userInfo) {  // 매개변수로 username 받는 생성자
+		this.clientView = clientView;
 		this.userInfo = userInfo;
 		
 		this.setBackground(new Color(255,255,255));  // 배경색: 흰색
@@ -128,7 +123,7 @@ public class FriendListPanel extends JPanel{
 	class AddFriendIconAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			addFriendFrame = new AddFriendFrame(socket, oos, ois, userInfo);
+			addFriendFrame = new AddFriendFrame(clientView, userInfo);
 		}
 	}
 }

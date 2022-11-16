@@ -31,8 +31,8 @@ public class TalkTalkClientView extends JFrame{
 	private static final int BUF_LEN = 128;
 	private Socket socket;
 	
-	private ObjectInputStream ois;
-	private ObjectOutputStream oos;
+	public ObjectInputStream ois;
+	public ObjectOutputStream oos;
 	
 	
 	private MenuPanel menuPanel;  // 메뉴 패널
@@ -78,7 +78,7 @@ public class TalkTalkClientView extends JFrame{
 		
 		menuPanel = new MenuPanel();
 		hPane.setLeftComponent(menuPanel);
-		friendPanel = new FriendListPanel(socket, ois, oos, obui);
+		friendPanel = new FriendListPanel(this, obui);
 		hPane.setRightComponent(friendPanel);
 		getContentPane().add(hPane, BorderLayout.CENTER);
 	}
