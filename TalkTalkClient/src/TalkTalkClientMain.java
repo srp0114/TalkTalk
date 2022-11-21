@@ -51,7 +51,19 @@ public class TalkTalkClientMain extends JFrame {
 		uiInit();
 		
 		Myaction action = new Myaction();
+		txtUserName.addActionListener(action);
 		btnLogin.addActionListener(action);
+	}
+
+	class Myaction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String username = txtUserName.getText().trim();
+			String ip_addr = "127.0.0.1";
+			String port_no = "30000";
+			TalkTalkClientView view = new TalkTalkClientView(username, ip_addr, port_no);
+			setVisible(false);
+		}
 	}
 	
 	public void uiInit() {
@@ -83,16 +95,5 @@ public class TalkTalkClientMain extends JFrame {
 		btnLogin.setBorderPainted(false);
 		btnLogin.setFocusPainted(false);
 		contentPane.add(btnLogin);
-	}
-
-	class Myaction implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			String username = txtUserName.getText().trim();
-			String ip_addr = "127.0.0.1";
-			String port_no = "30000";
-			TalkTalkClientView view = new TalkTalkClientView(username, ip_addr, port_no);
-			setVisible(false);
-		}
 	}
 }

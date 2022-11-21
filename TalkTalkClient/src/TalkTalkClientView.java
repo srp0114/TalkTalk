@@ -22,7 +22,7 @@ public class TalkTalkClientView extends JFrame{
    private String username;  // username
    private String ip_addr;
    private String port_no;
-   private UserInfo obui;      // obui
+   private ChatMsg obcm;      // obui
    
    public static JSplitPane hPane;
 
@@ -61,8 +61,8 @@ public class TalkTalkClientView extends JFrame{
          oos.flush();
          ois = new ObjectInputStream(socket.getInputStream());
          
-         obui = new UserInfo(username, "100");         
-         SendObject(obui);
+         obcm = new ChatMsg(username, "100");         
+         SendObject(obcm);
       }catch(NumberFormatException | IOException e) {
          e.printStackTrace();
          System.out.println("connect error");
@@ -80,8 +80,8 @@ public class TalkTalkClientView extends JFrame{
       hPane.setDividerSize(0);
       hPane.setEnabled(false);
       menuPanel = new MenuPanel(this);
-      friendListPanel = new FriendListPanel(this, obui);
-      chatListPanel = new ChatListPanel(this, obui);
+      friendListPanel = new FriendListPanel(this, obcm);
+      chatListPanel = new ChatListPanel(this, obcm);
       
       hPane.setLeftComponent(menuPanel);
       hPane.setRightComponent(friendListPanel);
@@ -104,9 +104,9 @@ public class TalkTalkClientView extends JFrame{
       oldChild = (JPanel) hPane.getRightComponent();
       switch (paneName) {
       case "flp":
-         newChild = new FriendListPanel(this, obui); break;
+         newChild = new FriendListPanel(this, obcm); break;
       case "clp":
-         newChild = new ChatListPanel(this, obui); break;
+         newChild = new ChatListPanel(this, obcm); break;
       }
       JSplitPane parent = (JSplitPane) oldChild.getParent();
       int dividerLocation = parent.getDividerLocation();

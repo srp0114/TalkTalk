@@ -21,8 +21,8 @@ import util.ColorDefinition;
 
 public class AddFriendFrame extends JFrame{
 	private TalkTalkClientView clientView = null;
-	private UserInfo userInfo;
-	private UserInfo friendUserInfo;
+	private ChatMsg chatMsg;
+	private ChatMsg friendUserInfo;
 	
 	private MyPanel contentPane;
 	
@@ -31,10 +31,9 @@ public class AddFriendFrame extends JFrame{
 	private JTextField tfUserName;
 	private JButton btnAddFriend;
 	
-	
-	public AddFriendFrame(TalkTalkClientView clientView, UserInfo userInfo) {
+	public AddFriendFrame(TalkTalkClientView clientView, ChatMsg chatMsg) {
 		this.clientView = clientView;
-		this.userInfo = userInfo;
+		this.chatMsg = chatMsg;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(150, 170, 290, 450);
@@ -48,6 +47,21 @@ public class AddFriendFrame extends JFrame{
 		
 		setResizable(false);
 		setVisible(true);
+	}
+	
+	class Myaction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("tfUserName actionPerformed");
+			String friendName = tfUserName.getText().trim();
+			System.out.println("tfUserName: " + friendName);
+			ChatMsg chatmsg = new ChatMsg(chatMsg.getUsername(), "302");
+			chatmsg.setSearchFriend(friendName);
+			System.out.println(chatmsg.getCode());
+			System.out.println(chatmsg.getSearchFriend());
+			clientView.SendObject(chatmsg);
+			
+		}
 	}
 	
 	public void uiInit() {
@@ -78,33 +92,6 @@ public class AddFriendFrame extends JFrame{
 		btnAddFriend.setFocusPainted(false);
 		contentPane.add(btnAddFriend);
 	}
-	class Myaction implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("tfUserName actionPerformed");
-			String friendName = tfUserName.getText().trim();
-			System.out.println("tfUserName: " + friendName);
-			UserInfo userinfo = new UserInfo(userInfo.getUsername(), "302");
-			userinfo.setSearchFriend(friendName);
-			//userInfo.setCode("302");
-			//userInfo.setSearchFriend(friendName);
-			System.out.println(userInfo.getCode());
-			System.out.println(userInfo.getSearchFriend());
-			clientView.SendObject(userinfo);
-		}
-	}
-//	public void SendObject(Object ob) {
-//		try {
-//			System.out.println(((UserInfo)ob).getCode());
-//			// oos.flush();
-//			clientView.oos.writeObject(ob);
-//			//oos.flush();
-//		} catch(IOException e) {
-//			System.out.println("SendObject Error");
-//		}
-//	}
-
-
 }
 
 class MyPanel extends JPanel {

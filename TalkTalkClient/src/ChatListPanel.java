@@ -6,16 +6,16 @@ import javax.swing.JPanel;
 
 public class ChatListPanel extends JPanel{
 	private TalkTalkClientView clientView;
-	private UserInfo userInfo;
+	private ChatMsg chatMsg;
 	
 	private JLabel lblChating;
 	
 	
 	
 	
-	public ChatListPanel(TalkTalkClientView clientView, UserInfo userInfo) {
+	public ChatListPanel(TalkTalkClientView clientView, ChatMsg chatMsg) {
 		this.clientView = clientView;
-		this.userInfo = userInfo;
+		this.chatMsg = chatMsg;
 		
 		this.setBackground(new Color(255, 255, 255));
 		setLayout(null);

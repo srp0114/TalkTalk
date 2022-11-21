@@ -26,7 +26,7 @@ public class TalkTalkMainServer extends JFrame {
 	private ServerSocket socket;
 	private Socket client_socket;
 	private Vector UserVec = new Vector();
-	private Vector<UserInfo> userInfos = new Vector();
+	private Vector<ChatMsg> userInfos = new Vector();
 	private static final int BUF_LEN = 128;
 
 	
@@ -88,10 +88,10 @@ public class TalkTalkMainServer extends JFrame {
 	}
 	
 	// 
-	public void AppendObject(UserInfo userInfo) {
+	public void AppendObject(ChatMsg chatMsg) {
 		//textArea.append("사용자로부터 들어온 object: " + str + "\n");
-		textArea.append("code = " + userInfo.getCode() + "\n");
-		textArea.append("id = " + userInfo.getUsername() +"\n");
+		textArea.append("code = " + chatMsg.getCode() + "\n");
+		textArea.append("id = " + chatMsg.getUsername() +"\n");
 		textArea.setCaretPosition(textArea.getText().length());
 	}
 	class AcceptServer extends Thread {
@@ -118,10 +118,6 @@ public class TalkTalkMainServer extends JFrame {
 	
 	// User 당 생성되는 스레드
 	class UserService extends Thread {
-		//private InputStream is;
-		//private OutputStream os;
-		//private DataInputStream dis;
-		//private DataOutputStream dos;
 		
 		private ObjectInputStream ois;
 		private ObjectOutputStream oos;
@@ -146,42 +142,42 @@ public class TalkTalkMainServer extends JFrame {
 		public synchronized void run() {
 			while(true) {
 				try {
-					Object obui = null;
-					UserInfo ui = null;
+					Object obcm = null;
+					ChatMsg cm = null;
 					if(socket == null) {
 						System.out.println("socket is null");
 						break;
 					}
 					
 					try {
-						obui = ois.readObject();
+						obcm = ois.readObject();
 						System.out.println("obui success read");
 					}catch(ClassNotFoundException e) {
 						e.printStackTrace();
 						return;
 					}
 					
-					if(obui == null) {
+					if(obcm == null) {
 						System.out.println("obui is null");
 						break;
 					}
 					
-					if(obui instanceof UserInfo) {
-						ui = (UserInfo)obui;
-						System.out.println(ui.getUsername());
-						System.out.println(ui.getCode());
+					if(obcm instanceof ChatMsg) {
+						cm = (ChatMsg)obcm;
+						System.out.println(cm.getUsername());
+						System.out.println(cm.getCode());
 					} else
 						continue;
-					System.out.println("실제 받아온 프로토콜: " + ui.getCode());
+					System.out.println("실제 받아온 프로토콜: " + cm.getCode());
 					
-					if(ui.getCode().matches("100")) { // 로그인
-						username = ui.getUsername();
-						userInfos.add(ui);
+					if(cm.getCode().matches("100")) { // 로그인
+						username = cm.getUsername();
+						userInfos.add(cm);
 						Login();
 					}
-					else if(ui.getCode().matches("302")) { // 친구 검색
+					else if(cm.getCode().matches("302")) { // 친구 검색
 						System.out.println("ui.getCode() matches 302");
-						searchFriendName = ui.getSearchFriend();
+						searchFriendName = cm.getSearchFriend();
 						System.out.println(searchFriendName);
 						SearchFriend();
 					}
@@ -213,7 +209,7 @@ public class TalkTalkMainServer extends JFrame {
 			System.out.println("SearchFriend function");
 			AppendText("[" + username + "] searchFriend " + searchFriendName);
 			for(int i = 0; i < userInfos.size(); i++) {
-				UserInfo userinfo = userInfos.get(i);
+				ChatMsg userinfo = userInfos.get(i);
 				if(userinfo.getUsername().equals(username))
 					break;
 				if(userinfo.getUsername().equals(searchFriendName)) {
@@ -225,7 +221,7 @@ public class TalkTalkMainServer extends JFrame {
 		// UserService Thread가 담당하는 Client 에게 1:1 전송
 		public void WriteOne(String msg) {
 			try {
-				UserInfo obui = new UserInfo("SERVER", "200");
+				ChatMsg obui = new ChatMsg("SERVER", "200");
 				oos.writeObject(obui);
 			} catch (IOException e) {
 				AppendText("dos.writeObject() error");

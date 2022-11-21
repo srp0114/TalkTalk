@@ -25,7 +25,7 @@ public class FriendListPanel extends JPanel{
 	private JLabel lblFriend;  // 친구 레이블
 	 
 	private TalkTalkClientView clientView;
-	private UserInfo userInfo;
+	private ChatMsg chatMsg;
 	
 	private String userName;  // 로그인한 client 이름
 	private JLabel lblUserName;  // username 레이블
@@ -44,9 +44,9 @@ public class FriendListPanel extends JPanel{
 	
 	AddFriendFrame addFriendFrame;
 	
-	public FriendListPanel(TalkTalkClientView clientView, UserInfo userInfo) {  // 매개변수로 username 받는 생성자
+	public FriendListPanel(TalkTalkClientView clientView, ChatMsg chatMsg) {  // 매개변수로 username 받는 생성자
 		this.clientView = clientView;
-		this.userInfo = userInfo;
+		this.chatMsg = chatMsg;
 		
 		this.setBackground(new Color(255,255,255));  // 배경색: 흰색
 		setLayout(null);
@@ -54,9 +54,22 @@ public class FriendListPanel extends JPanel{
 		
 		AddFriendIconAction action = new AddFriendIconAction();
 		btnAddFriendIcon.addActionListener(action);
+	}	
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setColor(new Color(234, 234, 234));
+		g.drawLine(10, 150, 300, 150);
 	}
 	
-	public void UIInit() {
+	class AddFriendIconAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			addFriendFrame = new AddFriendFrame(clientView, chatMsg);
+		}
+	}
+	
+public void UIInit() {
 		
 		lblFriend = new JLabel("친구");
 		lblFriend.setFont(new Font("맑은 고딕", Font.BOLD, 18));
@@ -106,24 +119,10 @@ public class FriendListPanel extends JPanel{
 		textArea.add(btnProfileImg);
 		
 		
-		lblUserName = new JLabel(userInfo.getUsername());
+		lblUserName = new JLabel(chatMsg.getUsername());
 		lblUserName.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		lblUserName.setBounds(90, 76, 100, 50);
 		textArea.add(lblUserName);
 		
-	}
-	
-	
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		g.setColor(new Color(234, 234, 234));
-		g.drawLine(10, 150, 300, 150);
-	}
-	
-	class AddFriendIconAction implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			addFriendFrame = new AddFriendFrame(clientView, userInfo);
-		}
 	}
 }
