@@ -5,14 +5,18 @@ public class ChatMsg implements Serializable{
    private static final long serialVersionUID = 1L;
    private String username;
    private String code;
+   private String userlist;
+   private String roomId;
    public ImageIcon profileImg;
    private int friendNumber = 0;
    private String searchFriend;
+   private String friendlist;
+   private String roomlist;
    
-   private String id;
-   private String data;
+   private String msg;
    public ImageIcon img;
-   private String roomId;
+   public ImageIcon imoji;
+   
 
    public ChatMsg(String username, String code) {
       this.username = username;
@@ -35,12 +39,12 @@ public class ChatMsg implements Serializable{
       this.code = code;
    }
    
-   // Img
-   public void setImg(ImageIcon profileImg) {
-      this.profileImg = profileImg;
+   // userlist
+   public String getUserlist() {
+	   return userlist;
    }
-   public ImageIcon getImg() {
-      return profileImg;
+   public void setUserlist(String userlist) {
+	   this.userlist = userlist;
    }
    
    // friendNumber
@@ -60,23 +64,54 @@ public class ChatMsg implements Serializable{
       return searchFriend;
    }
    
-   public String getId() {
-	  return id;
+   // friendlist
+   public void setFriendlist(String friendlist) {
+	   this.friendlist = friendlist;
    }
-
-   public void setId(String id) {
-	  this.id = id;
-   }
-
-   public String getData() {
-      return data;
-   }
-   public void setData(String data) {
-	  this.data = data;
-   }
-
-   public void setChatImg(ImageIcon img) {
-      this.img = img;
+   public String getFriendlist() {
+	   return friendlist;
    }
    
+   // roomlist
+   public void setRoomlist(String roomlist) {
+	   this.roomlist = roomlist;
+   }
+   public String getRoomlist() {
+	   return roomlist;
+   }
+   
+   // profileImg
+   public void setProfileImg(ImageIcon profileImg) {
+      this.profileImg = profileImg;
+   }
+   public ImageIcon getProfileImg() {
+	   return profileImg;
+   }
+
+   
+   // msg
+   public String getMsg() {
+      return msg;
+   }
+   public void setMsg(String msg) {
+	  this.msg = msg;
+   }
+
+   
+   // img
+   public void setImg(ImageIcon img) {
+      this.img = img;
+   }
+   public ImageIcon getImg() {
+	      return img;
+   }
+   
+   
+   // imoji
+   public void setImoji(ImageIcon imoji) {
+      this.imoji = imoji;
+   }
+   public ImageIcon getImoji() {
+	      return imoji;
+   }
 }
