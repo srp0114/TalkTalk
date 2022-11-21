@@ -210,11 +210,11 @@ public class TalkTalkMainServer extends JFrame {
 			AppendText("[" + username + "] searchFriend " + searchFriendName);
 			for(int i = 0; i < userInfos.size(); i++) {
 				ChatMsg userinfo = userInfos.get(i);
-				if(userinfo.getUsername().equals(username))
-					break;
 				if(userinfo.getUsername().equals(searchFriendName)) {
 					AppendText("user들 중 " + userinfo.getUsername() + "검색됨.");
-					WriteObject(userinfo);
+				
+					WriteObject(new ChatMsg(userinfo.getUsername(), "302"));
+				
 				}
 			}
 		}
@@ -222,7 +222,8 @@ public class TalkTalkMainServer extends JFrame {
 		// UserService Thread가 담당하는 Client 에게 1:1 전송
 		public void WriteOne(String msg) {
 			try {
-				ChatMsg obcm = new ChatMsg("SERVER", "200");
+				ChatMsg obcm = new ChatMsg("SERVER", "500");
+				obcm.setMsg(msg);
 				oos.writeObject(obcm);
 			} catch (IOException e) {
 				AppendText("dos.writeObject() error");
@@ -241,12 +242,12 @@ public class TalkTalkMainServer extends JFrame {
 			}
 		}
 		
-		public void WriteObject(ChatMsg cm) {
+		public void WriteObject(Object ob) {
 			try {
-				ChatMsg Cm= new ChatMsg(cm.getUsername(), "302");
-				AppendText("WriteObject()로 검색된 ChatMsg 전송 "+ Cm.getUsername());
-				Cm.setProfileImg(cm.getProfileImg());
-				oos.writeObject(Cm);
+//				ChatMsg Cm= new ChatMsg(cm.getUsername(), cm.getCode());
+//				AppendText("WriteObject()로 검색된 ChatMsg 전송 "+ Cm.getUsername());
+//				Cm.setProfileImg(cm.getProfileImg());
+				oos.writeObject(ob);
 			}catch (IOException e) {
 				AppendText("dos.writeObject() error");
 				try {

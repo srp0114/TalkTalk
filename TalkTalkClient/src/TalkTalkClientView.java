@@ -42,7 +42,7 @@ public class TalkTalkClientView extends JFrame{
    public static FriendListPanel friendListPanel;  // 친구창 패널
    public static ChatListPanel chatListPanel;
 
-   public ChatMsg resultCm = null;
+
 
    public TalkTalkClientView(String username, String ip_addr, String port_no) {
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -121,12 +121,9 @@ public class TalkTalkClientView extends JFrame{
       newChild.repaint();
    
    }
-   public ChatMsg getSearchResult() {
-		return resultCm;
-   }
+   
  //Server Message를 수신해서 화면에 표시
    class ListenNetwork extends Thread {
-	   
    		public void run() {
    			while (true) {
    				try {
@@ -136,7 +133,6 @@ public class TalkTalkClientView extends JFrame{
    					try {
    						obcm = ois.readObject();
    					} catch (ClassNotFoundException e) {
-   						// TODO Auto-generated catch block
    						e.printStackTrace();
    						break;
    					}
@@ -144,16 +140,15 @@ public class TalkTalkClientView extends JFrame{
    						break;
    					if (obcm instanceof ChatMsg) {
    						cm = (ChatMsg) obcm;
+   						System.out.println(cm.getCode());
    					} 
    					else
    						continue;
    					
    					switch(cm.getCode()) {
    					case "302":  // 친구 검색
-   						System.out.println("검색한 친구 받아옴:" + cm.getUsername());
-   						resultCm = new ChatMsg(cm.getUsername(), "302");
-   						System.out.println("resultCm: " + resultCm.getUsername());
-   						//resultCm.setProfileImg(cm.getProfileImg());
+   						ChatMsg resultCm = new ChatMsg(cm.getUsername(), cm.getCode());
+   						resultCm.setProfileImg(cm.getProfileImg());
    						friendListPanel.addFriendFrame.updateSearchResult(resultCm);
    						break;
    						
@@ -162,7 +157,7 @@ public class TalkTalkClientView extends JFrame{
    						
    					case "400":  // 채팅방 생성
    						break;
-   						
+   					
    						
    					}
    					
@@ -180,8 +175,6 @@ public class TalkTalkClientView extends JFrame{
    				} // 바깥 catch문끝
    			}
    		}
-   		
-   		
    }
 
 }
