@@ -222,8 +222,8 @@ public class TalkTalkMainServer extends JFrame {
 		// UserService Thread가 담당하는 Client 에게 1:1 전송
 		public void WriteOne(String msg) {
 			try {
-				ChatMsg obui = new ChatMsg("SERVER", "200");
-				oos.writeObject(obui);
+				ChatMsg obcm = new ChatMsg("SERVER", "200");
+				oos.writeObject(obcm);
 			} catch (IOException e) {
 				AppendText("dos.writeObject() error");
 				try {
@@ -244,6 +244,7 @@ public class TalkTalkMainServer extends JFrame {
 		public void WriteObject(ChatMsg cm) {
 			try {
 				ChatMsg Cm= new ChatMsg(cm.getUsername(), "302");
+				AppendText("WriteObject()로 검색된 ChatMsg 전송 "+ Cm.getUsername());
 				Cm.setProfileImg(cm.getProfileImg());
 				oos.writeObject(Cm);
 			}catch (IOException e) {

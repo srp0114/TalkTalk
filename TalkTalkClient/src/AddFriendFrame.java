@@ -61,8 +61,16 @@ public class AddFriendFrame extends JFrame{
 			System.out.println(chatmsg.getCode());
 			System.out.println(chatmsg.getSearchFriend());
 			clientView.SendObject(chatmsg);
-			
 		}
+	}
+	
+	public void updateSearchResult(ChatMsg cm) {
+		System.out.println("setSearchResult(): "+cm.getUsername());
+		//ImageIcon resultIcon = clientView.getSearchResult().getProfileImg();
+		//JLabel image = new JLabel(resultIcon);
+		//image.setBounds(70, 230, 50, 50);
+		//this.add(image);
+		
 	}
 	
 	public void uiInit() {
@@ -92,10 +100,6 @@ public class AddFriendFrame extends JFrame{
 		btnAddFriend.setBorderPainted(false);
 		btnAddFriend.setFocusPainted(false);
 		contentPane.add(btnAddFriend);
-	}
-	public static void setSearchResult(ChatMsg searchResult) {
-		ImageIcon resultIcon = searchResult.getProfileImg();
-		resultIcon.setBounds(70, 200, 50, 50);
 	}
 }
 

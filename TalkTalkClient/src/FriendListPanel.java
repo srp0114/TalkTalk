@@ -42,7 +42,7 @@ public class FriendListPanel extends JPanel{
 	private ImageIcon profileIcon;
 	private JButton btnProfileImg;
 	
-	AddFriendFrame addFriendFrame;
+	public AddFriendFrame addFriendFrame;
 	
 	public FriendListPanel(TalkTalkClientView clientView, ChatMsg chatMsg) {  // 매개변수로 username 받는 생성자
 		this.clientView = clientView;
@@ -110,6 +110,7 @@ public void UIInit() {
 		
 		profileImg = profileImg.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
 		profileIcon = new ImageIcon(profileImg);
+		chatMsg.setProfileImg(profileIcon);
 		btnProfileImg = new JButton(profileIcon);
 		btnProfileImg.setBorderPainted(false);
 		btnProfileImg.setFocusPainted(false);
