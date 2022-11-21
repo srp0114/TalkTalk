@@ -214,6 +214,7 @@ public class TalkTalkMainServer extends JFrame {
 					break;
 				if(userinfo.getUsername().equals(searchFriendName)) {
 					AppendText("user들 중 " + userinfo.getUsername() + "검색됨.");
+					WriteObject(userinfo);
 				}
 			}
 		}
@@ -224,6 +225,28 @@ public class TalkTalkMainServer extends JFrame {
 				ChatMsg obui = new ChatMsg("SERVER", "200");
 				oos.writeObject(obui);
 			} catch (IOException e) {
+				AppendText("dos.writeObject() error");
+				try {
+					ois.close();
+					oos.close();
+					client_socket.close();
+					client_socket = null;
+					ois = null;
+					oos = null;
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Logout(); // 에러가난 현재 객체를 벡터에서 지운다
+			}
+		}
+		
+		public void WriteObject(ChatMsg cm) {
+			try {
+				ChatMsg Cm= new ChatMsg(cm.getUsername(), "302");
+				Cm.setProfileImg(cm.getProfileImg());
+				oos.writeObject(Cm);
+			}catch (IOException e) {
 				AppendText("dos.writeObject() error");
 				try {
 					ois.close();

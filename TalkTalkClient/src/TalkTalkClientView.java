@@ -18,7 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 public class TalkTalkClientView extends JFrame{
-   public static JPanel contentPane;
+	private static final long serialVersionUID = 1L;
+	public static JPanel contentPane;
    private String username;  // username
    private String ip_addr;
    private String port_no;
@@ -63,6 +64,9 @@ public class TalkTalkClientView extends JFrame{
          
          obcm = new ChatMsg(username, "100");         
          SendObject(obcm);
+         
+         ListenNetwork net = new ListenNetwork();
+         net.start();
       }catch(NumberFormatException | IOException e) {
          e.printStackTrace();
          System.out.println("connect error");
@@ -117,5 +121,59 @@ public class TalkTalkClientView extends JFrame{
       newChild.repaint();
    
    }
+   
+ //Server Message를 수신해서 화면에 표시
+   class ListenNetwork extends Thread {
+   		public void run() {
+   			while (true) {
+   				try {
+   					Object obcm = null;
+   					String msg = null;
+   					ChatMsg cm;
+   					try {
+   						obcm = ois.readObject();
+   					} catch (ClassNotFoundException e) {
+   						// TODO Auto-generated catch block
+   						e.printStackTrace();
+   						break;
+   					}
+   					if (obcm == null)
+   						break;
+   					if (obcm instanceof ChatMsg) {
+   						cm = (ChatMsg) obcm;
+   					} 
+   					else
+   						continue;
+   					
+   					switch(cm.getCode()) {
+   					case "302":  // 친구 검색
+   						
+   						break;
+   						
+   					case "303":  // 친구 추가
+   						break;
+   						
+   					case "400":  // 채팅방 생성
+   						break;
+   						
+   						
+   					}
+   					
+   				} catch (IOException e) {
+   					System.out.println("ois.readObject() error");
+   					try {
+   						ois.close();
+   						oos.close();
+   						socket.close();
+
+   						break;
+   					} catch (Exception ee) {
+   						break;
+   					} // catch문 끝
+   				} // 바깥 catch문끝
+   			}
+   		}
+   }
 
 }
+

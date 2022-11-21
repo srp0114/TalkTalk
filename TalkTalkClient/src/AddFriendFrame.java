@@ -10,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -91,6 +92,10 @@ public class AddFriendFrame extends JFrame{
 		btnAddFriend.setBorderPainted(false);
 		btnAddFriend.setFocusPainted(false);
 		contentPane.add(btnAddFriend);
+	}
+	public static void setSearchResult(ChatMsg searchResult) {
+		ImageIcon resultIcon = searchResult.getProfileImg();
+		resultIcon.setBounds(70, 200, 50, 50);
 	}
 }
 
