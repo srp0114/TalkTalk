@@ -20,7 +20,7 @@ import javax.swing.SwingConstants;
 import util.ColorDefinition;
 
 public class AddFriendFrame extends JFrame{
-	private TalkTalkClientView clientView;
+	private TalkTalkClientView clientView = null;
 	private UserInfo userInfo;
 	private UserInfo friendUserInfo;
 	
@@ -90,19 +90,19 @@ public class AddFriendFrame extends JFrame{
 			//userInfo.setSearchFriend(friendName);
 			System.out.println(userInfo.getCode());
 			System.out.println(userInfo.getSearchFriend());
-			SendObject(userinfo);
+			clientView.SendObject(userinfo);
 		}
 	}
-	public void SendObject(Object ob) {
-		try {
-			System.out.println(((UserInfo)ob).getCode());
-			// oos.flush();
-			clientView.oos.writeObject(ob);
-			//oos.flush();
-		} catch(IOException e) {
-			System.out.println("SendObject Error");
-		}
-	}
+//	public void SendObject(Object ob) {
+//		try {
+//			System.out.println(((UserInfo)ob).getCode());
+//			// oos.flush();
+//			clientView.oos.writeObject(ob);
+//			//oos.flush();
+//		} catch(IOException e) {
+//			System.out.println("SendObject Error");
+//		}
+//	}
 
 
 }
