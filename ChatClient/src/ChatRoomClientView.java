@@ -1,6 +1,4 @@
 
-// JavaObjClientView.java ObjecStram ±â¹Ý Client
-//½ÇÁúÀûÀÎ Ã¤ÆÃ Ã¢
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.FileDialog;
@@ -43,7 +41,7 @@ import javax.swing.text.StyledDocument;
 import javax.swing.JToggleButton;
 import javax.swing.JList;
 
-public class JavaObjClientView extends JFrame {
+public class ChatRoomClientView extends JFrame {
 	/**
 	 * 
 	 */
@@ -53,8 +51,8 @@ public class JavaObjClientView extends JFrame {
 	private JTextField txtInput;
 	private String UserName;
 	private JButton btnSend;
-	private static final int BUF_LEN = 128; // Windows Ã³·³ BUF_LEN À» Á¤ÀÇ
-	private Socket socket; // ¿¬°á¼ÒÄÏ
+	private static final int BUF_LEN = 128; 
+	private Socket socket; 
 	private InputStream is;
 	private OutputStream os;
 	private DataInputStream dis;
@@ -81,7 +79,7 @@ public class JavaObjClientView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public JavaObjClientView(String username, String ip_addr, String port_no) {
+	public ChatRoomClientView(String username, String ip_addr, String port_no) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 400, 640);
 		contentPane = new JPanel();
@@ -103,13 +101,13 @@ public class JavaObjClientView extends JFrame {
 		
 		textArea = new JTextPane();
 		textArea.setEditable(true);
-		textArea.setFont(new Font("±¼¸²Ã¼", Font.PLAIN, 14));
+		textArea.setFont(new Font("ï¿½ï¿½ï¿½ï¿½Ã¼", Font.PLAIN, 14));
 		textArea.setBounds(0, 0, 386, 480);
 		textArea.setBackground(skyblue);
 		scrollPane.add(textArea);
 
 
-		txtInput = new JTextField() {//ÀÔ·ÂÃ¢ Å×µÎ¸® ¾ø¾Ö±â
+		txtInput = new JTextField() {//ï¿½Ô·ï¿½Ã¢ ï¿½×µÎ¸ï¿½ ï¿½ï¿½ï¿½Ö±ï¿½
             @Override
             public void setBorder(Border border) {
                 
@@ -120,8 +118,8 @@ public class JavaObjClientView extends JFrame {
 		contentPane.add(txtInput);
 		txtInput.setColumns(10);
 
-		btnSend = new JButton("Àü¼Û");
-		btnSend.setFont(new Font("±¼¸²", Font.PLAIN, 12));
+		btnSend = new JButton("ï¿½ï¿½ï¿½ï¿½");
+		btnSend.setFont(new Font("ï¿½ï¿½ï¿½ï¿½", Font.PLAIN, 12));
 		btnSend.setBounds(320, 565, 59, 30);
 		btnSend.setBorderPainted(false);
 		btnSend.setBackground(yellow);
@@ -130,18 +128,16 @@ public class JavaObjClientView extends JFrame {
 		lblUserName = new JLabel("Name");
 		lblUserName.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblUserName.setBackground(Color.WHITE);
-		lblUserName.setFont(new Font("±¼¸²", Font.BOLD, 14));
+		lblUserName.setFont(new Font("ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 14));
 		lblUserName.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUserName.setBounds(12, 539, 62, 40);
-		//contentPane.add(lblUserName);
 		setVisible(true);
 
-		//AppendText("User " + username + " connecting " + ip_addr + " " + port_no);
 		UserName = username;
 		lblUserName.setText(username);
 
 		imgBtn = new JButton(Emogi);
-		imgBtn.setFont(new Font("±¼¸²", Font.PLAIN, 16));
+		imgBtn.setFont(new Font("ï¿½ï¿½ï¿½ï¿½", Font.PLAIN, 16));
 		imgBtn.setBounds(0, 565, 40, 30);
 		imgBtn.setBorderPainted(false);
 		imgBtn.setFocusPainted(false);
@@ -149,8 +145,8 @@ public class JavaObjClientView extends JFrame {
 		
 		contentPane.add(imgBtn);
 		
-		JButton btnNewButton = new JButton("Á¾ ·á");
-		btnNewButton.setFont(new Font("±¼¸²", Font.PLAIN, 14));
+		JButton btnNewButton = new JButton("ï¿½ï¿½ ï¿½ï¿½");
+		btnNewButton.setFont(new Font("ï¿½ï¿½ï¿½ï¿½", Font.PLAIN, 14));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ChatMsg msg = new ChatMsg(UserName, "400", "Bye");
@@ -159,7 +155,6 @@ public class JavaObjClientView extends JFrame {
 			}
 		});
 		btnNewButton.setBounds(295, 539, 69, 40);
-		//contentPane.add(btnNewButton);
 
 		try {
 			socket = new Socket(ip_addr, Integer.parseInt(port_no));
@@ -168,7 +163,6 @@ public class JavaObjClientView extends JFrame {
 			oos.flush();
 			ois = new ObjectInputStream(socket.getInputStream());
 
-			//SendMessage("/login " + UserName);
 			ChatMsg obcm = new ChatMsg(UserName, "100", "Hello");
 			SendObject(obcm);
 			
@@ -189,7 +183,6 @@ public class JavaObjClientView extends JFrame {
 
 	}
 
-	// Server Message¸¦ ¼ö½ÅÇØ¼­ È­¸é¿¡ Ç¥½Ã
 	class ListenNetwork extends Thread {
 		public void run() {
 			while (true) {
@@ -219,7 +212,7 @@ public class JavaObjClientView extends JFrame {
 							AppendText(msg);
 						break;
 						
-					case "300": // Image Ã·ºÎ
+					case "300": // Image Ã·ï¿½ï¿½
 						AppendText("[" + cm.getId() + "]");
 						AppendImage(cm.img);
 						break;
@@ -234,25 +227,23 @@ public class JavaObjClientView extends JFrame {
 						break;
 					} catch (Exception ee) {
 						break;
-					} // catch¹® ³¡
-				} // ¹Ù±ù catch¹®³¡
+					} // catchï¿½ï¿½ ï¿½ï¿½
+				} // ï¿½Ù±ï¿½ catchï¿½ï¿½ï¿½ï¿½
 
 			}
 		}
 	}
 
-	// keyboard enter key Ä¡¸é ¼­¹ö·Î Àü¼Û
 	class TextSendAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// Send buttonÀ» ´©¸£°Å³ª ¸Þ½ÃÁö ÀÔ·ÂÇÏ°í Enter key Ä¡¸é
 			if (e.getSource() == btnSend || e.getSource() == txtInput) {
 				String msg = null;
 				msg = txtInput.getText();
 				SendMessage(msg);
-				txtInput.setText(""); // ¸Þ¼¼Áö¸¦ º¸³»°í ³ª¸é ¸Þ¼¼Áö ¾²´ÂÃ¢À» ºñ¿î´Ù.
-				txtInput.requestFocus(); // ¸Þ¼¼Áö¸¦ º¸³»°í Ä¿¼­¸¦ ´Ù½Ã ÅØ½ºÆ® ÇÊµå·Î À§Ä¡½ÃÅ²´Ù
-				if (msg.contains("/exit")) // Á¾·á Ã³¸®
+				txtInput.setText(""); 
+				txtInput.requestFocus();
+				if (msg.contains("/exit"))
 					System.exit(0);
 			}
 		}
@@ -261,10 +252,9 @@ public class JavaObjClientView extends JFrame {
 	class ImageSendAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// ¾×¼Ç ÀÌº¥Æ®°¡ sendBtnÀÏ¶§ ¶Ç´Â textField ¿¡¼¼ Enter key Ä¡¸é
 			if (e.getSource() == imgBtn) {
-				frame = new Frame("ÀÌ¹ÌÁöÃ·ºÎ");
-				fd = new FileDialog(frame, "ÀÌ¹ÌÁö ¼±ÅÃ", FileDialog.LOAD);
+				frame = new Frame("ï¿½Ì¹ï¿½ï¿½ï¿½Ã·ï¿½ï¿½");
+				fd = new FileDialog(frame, "ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", FileDialog.LOAD);
 				// frame.setVisible(true);
 				// fd.setDirectory(".\\");
 				fd.setVisible(true);
@@ -279,16 +269,13 @@ public class JavaObjClientView extends JFrame {
 
 	public void AppendIcon(ImageIcon icon) {
 		int len = textArea.getDocument().getLength();
-		// ³¡À¸·Î ÀÌµ¿
 		textArea.setCaretPosition(len);
 		textArea.insertIcon(icon);
 	}
 
-	// È­¸é¿¡ Ãâ·Â
 	public void AppendText(String msg) {
-		msg = msg.trim(); // ¾ÕµÚ blank¿Í \nÀ» Á¦°ÅÇÑ´Ù.
+		msg = msg.trim(); 
 		int len = textArea.getDocument().getLength();
-		// ³¡À¸·Î ÀÌµ¿
 		StyledDocument doc = textArea.getStyledDocument();
 		SimpleAttributeSet left = new SimpleAttributeSet();
 		StyleConstants.setAlignment(left, StyleConstants.ALIGN_LEFT);
@@ -305,9 +292,8 @@ public class JavaObjClientView extends JFrame {
 		textArea.setCaretPosition(len);
 	}
 	
-	// È­¸é ¿ìÃø¿¡ Ãâ·Â
 	public void AppendTextUser(String msg) {
-		msg = msg.trim(); // ¾ÕµÚ blank¿Í \nÀ» Á¦°ÅÇÑ´Ù.	
+		msg = msg.trim();
 		StyledDocument doc = textArea.getStyledDocument();
 		SimpleAttributeSet right = new SimpleAttributeSet();
 		StyleConstants.setAlignment(right, StyleConstants.ALIGN_RIGHT);
@@ -332,30 +318,27 @@ public class JavaObjClientView extends JFrame {
 		double ratio;
 		width = ori_icon.getIconWidth();
 		height = ori_icon.getIconHeight();
-		// Image°¡ ³Ê¹« Å©¸é ÃÖ´ë °¡·Î ¶Ç´Â ¼¼·Î 200 ±âÁØÀ¸·Î Ãà¼Ò½ÃÅ²´Ù.
+
 		if (width > 200 || height > 200) {
-			if (width > height) { // °¡·Î »çÁø
+			if (width > height) { 
 				ratio = (double) height / width;
 				width = 200;
 				height = (int) (width * ratio);
-			} else { // ¼¼·Î »çÁø
+			} else { 
 				ratio = (double) width / height;
 				height = 200;
 				width = (int) (height * ratio);
 			}
 			Image new_img = ori_img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-			ImageIcon new_icon = new ImageIcon(new_img); //ÀÌ¹ÌÁö ¾ÆÀÌÄÜÀ¸·Î º¯È¯
+			ImageIcon new_icon = new ImageIcon(new_img);
 			textArea.insertIcon(new_icon);
 		} else
 			textArea.insertIcon(ori_icon);
 		len = textArea.getDocument().getLength();
 		textArea.setCaretPosition(len);
 		textArea.replaceSelection("\n");
-		// ImageViewAction viewaction = new ImageViewAction();
-		// new_icon.addActionListener(viewaction); // ³»ºÎÅ¬·¡½º·Î ¾×¼Ç ¸®½º³Ê¸¦ »ó¼Ó¹ÞÀº Å¬·¡½º·Î
 	}
 
-	// Windows Ã³·³ message Á¦¿ÜÇÑ ³ª¸ÓÁö ºÎºÐÀº NULL ·Î ¸¸µé±â À§ÇÑ ÇÔ¼ö
 	public byte[] MakePacket(String msg) {
 		byte[] packet = new byte[BUF_LEN];
 		byte[] bb = null;
@@ -374,7 +357,6 @@ public class JavaObjClientView extends JFrame {
 		return packet;
 	}
 
-	// Server¿¡°Ô networkÀ¸·Î Àü¼Û
 	public void SendMessage(String msg) {
 		try {
 			ChatMsg obcm = new ChatMsg(UserName, "200", msg);
@@ -394,11 +376,10 @@ public class JavaObjClientView extends JFrame {
 		}
 	}
 
-	public void SendObject(Object ob) { // ¼­¹ö·Î ¸Þ¼¼Áö¸¦ º¸³»´Â ¸Þ¼Òµå
+	public void SendObject(Object ob) { 
 		try {
 			oos.writeObject(ob);
 		} catch (IOException e) {
-			// textArea.append("¸Þ¼¼Áö ¼Û½Å ¿¡·¯!!\n");
 			AppendText("SendObject Error");
 		}
 	}

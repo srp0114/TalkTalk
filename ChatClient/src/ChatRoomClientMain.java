@@ -1,5 +1,5 @@
 // JavaObjClient.java
-// ObjecStream »ç¿ëÇÏ´Â Ã¤ÆÃ Client
+// ObjecStream ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ Ã¤ï¿½ï¿½ Client
 
 import java.awt.EventQueue;
 
@@ -13,7 +13,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class JavaObjClientMain extends JFrame {
+public class ChatRoomClientMain extends JFrame {
 
 	/**
 	 * 
@@ -31,7 +31,7 @@ public class JavaObjClientMain extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					JavaObjClientMain frame = new JavaObjClientMain();
+					ChatRoomClientMain frame = new ChatRoomClientMain();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -43,7 +43,7 @@ public class JavaObjClientMain extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public JavaObjClientMain() {
+	public ChatRoomClientMain() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 254, 321);
 		contentPane = new JPanel();
@@ -92,14 +92,14 @@ public class JavaObjClientMain extends JFrame {
 		txtIpAddress.addActionListener(action);
 		txtPortNumber.addActionListener(action);
 	}
-	class Myaction implements ActionListener // ³»ºÎÅ¬·¡½º·Î ¾×¼Ç ÀÌº¥Æ® Ã³¸® Å¬·¡½º
+	class Myaction implements ActionListener // ï¿½ï¿½ï¿½ï¿½Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×¼ï¿½ ï¿½Ìºï¿½Æ® Ã³ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String username = txtUserName.getText().trim();
 			String ip_addr = txtIpAddress.getText().trim();
 			String port_no = txtPortNumber.getText().trim();
-			JavaObjClientView view = new JavaObjClientView(username, ip_addr, port_no);
+			ChatRoomClientView view = new ChatRoomClientView(username, ip_addr, port_no);
 			setVisible(false);
 		}
 	}
