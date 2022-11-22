@@ -1,7 +1,9 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.TextField;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -31,6 +33,11 @@ public class AddFriendFrame extends JFrame{
 	private JLabel addFriendByName;
 	private JTextField tfUserName;
 	private JButton btnAddFriend;
+	
+	private Image profileImg = Toolkit.getDefaultToolkit().getImage("src/noProfileImg.jpg");
+	private ImageIcon searchedIcon = null;
+	private JLabel searchedImg = null;
+	private JLabel searchedName = null;
 	
 	public AddFriendFrame(TalkTalkClientView clientView, ChatMsg chatMsg) {
 		this.clientView = clientView;
@@ -91,15 +98,38 @@ public class AddFriendFrame extends JFrame{
 		btnAddFriend.setBackground(ColorDefinition.kakaoYello);
 		btnAddFriend.setBorderPainted(false);
 		btnAddFriend.setFocusPainted(false);
+		btnAddFriend.setVisible(false);
 		contentPane.add(btnAddFriend);
+		
+		profileImg = profileImg.getScaledInstance(70, 70,  Image.SCALE_SMOOTH);
+		searchedIcon = new ImageIcon(profileImg);
+		searchedImg = new JLabel(searchedIcon);
+		searchedImg.setBounds(98, 201, 70, 70);
+		searchedImg.setVisible(false);
+		contentPane.add(searchedImg);
+	
+		
+		searchedName = new JLabel("유진");
+		searchedName.setHorizontalAlignment(SwingConstants.CENTER);
+		searchedName.setBounds(83, 270, 100, 50);
+		searchedName.setVisible(false);
+		contentPane.add(searchedName);
 	}
 	public void updateSearchResult(ChatMsg searchResult) {
 		System.out.println("updateSearchResult(): " + searchResult.getUsername());
 		ImageIcon resultIcon = searchResult.getProfileImg();
 		JLabel image = new JLabel(resultIcon);
 		image.setBounds(70, 230, 50, 50);
-		this.add(image);
+		//JLabel searchedName = new JLabel(searchResult.getUsername());
+		//searchedName.setBounds(70, 300, 100, 50);
+		//contentPane.add(image);
+		//contentPane.add(searchedName);
 		
+	
+		searchedImg.setIcon(resultIcon);
+		searchedName.setText(searchResult.getUsername());
+		searchedName.setVisible(true);
+		btnAddFriend.setVisible(true);
 	}
 }
 

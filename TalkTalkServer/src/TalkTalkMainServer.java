@@ -212,9 +212,9 @@ public class TalkTalkMainServer extends JFrame {
 				ChatMsg userinfo = userInfos.get(i);
 				if(userinfo.getUsername().equals(searchFriendName)) {
 					AppendText("user들 중 " + userinfo.getUsername() + "검색됨.");
-				
-					WriteObject(new ChatMsg(userinfo.getUsername(), "302"));
-				
+					ChatMsg searched = new ChatMsg(userinfo.getUsername(), "302");
+					searched.setProfileImg(userinfo.getProfileImg());
+					WriteObject(searched);
 				}
 			}
 		}
