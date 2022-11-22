@@ -101,33 +101,29 @@ public class AddFriendFrame extends JFrame{
 		btnAddFriend.setVisible(false);
 		contentPane.add(btnAddFriend);
 		
-		profileImg = profileImg.getScaledInstance(70, 70,  Image.SCALE_SMOOTH);
+		profileImg = profileImg.getScaledInstance(100, 100,  Image.SCALE_SMOOTH);
 		searchedIcon = new ImageIcon(profileImg);
-		searchedImg = new JLabel(searchedIcon);
-		searchedImg.setBounds(98, 201, 70, 70);
+		searchedImg = new JLabel();
+		searchedImg.setBounds(111, 180, 100, 100);
 		searchedImg.setVisible(false);
 		contentPane.add(searchedImg);
 	
 		
-		searchedName = new JLabel("유진");
+		searchedName = new JLabel("");
+		searchedName.setFont(new Font("맑은 고딕", Font.PLAIN, 13));
 		searchedName.setHorizontalAlignment(SwingConstants.CENTER);
-		searchedName.setBounds(83, 270, 100, 50);
+		searchedName.setBounds(86, 250, 100, 50);
 		searchedName.setVisible(false);
 		contentPane.add(searchedName);
 	}
 	public void updateSearchResult(ChatMsg searchResult) {
 		System.out.println("updateSearchResult(): " + searchResult.getUsername());
 		ImageIcon resultIcon = searchResult.getProfileImg();
-		JLabel image = new JLabel(resultIcon);
-		image.setBounds(70, 230, 50, 50);
-		//JLabel searchedName = new JLabel(searchResult.getUsername());
-		//searchedName.setBounds(70, 300, 100, 50);
-		//contentPane.add(image);
-		//contentPane.add(searchedName);
+		Image img = resultIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 		
-	
 		searchedImg.setIcon(resultIcon);
 		searchedName.setText(searchResult.getUsername());
+		searchedImg.setVisible(true);
 		searchedName.setVisible(true);
 		btnAddFriend.setVisible(true);
 	}

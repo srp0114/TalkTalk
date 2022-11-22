@@ -1,3 +1,5 @@
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
 
@@ -7,6 +9,7 @@ public class ChatMsg implements Serializable{
    private String code;
    private String userlist;
    private String roomId;
+   private Image profile;
    public ImageIcon profileImg;
    private int friendNumber = 0;
    private String searchFriend;
@@ -19,13 +22,19 @@ public class ChatMsg implements Serializable{
    
    public ChatMsg(String username, String code) {
       this.username = username;
-      this.code = code;      
+      this.code = code;  
+      Image profile = Toolkit.getDefaultToolkit().getImage("src/noProfileImg.jpg");
+      profile = profile.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
+      profileImg = new ImageIcon(profile);
    }
 
    public ChatMsg(String username, String code, String msg) {
       this.username = username;
       this.code = code;
       this.msg = msg;
+      Image profile = Toolkit.getDefaultToolkit().getImage("src/noProfileImg.jpg");
+      profile = profile.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
+      profileImg = new ImageIcon(profile);
    }
    
    //userName

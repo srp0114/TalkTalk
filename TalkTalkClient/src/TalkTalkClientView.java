@@ -147,9 +147,8 @@ public class TalkTalkClientView extends JFrame{
    					
    					switch(cm.getCode()) {
    					case "302":  // 친구 검색
-   						ChatMsg resultCm = new ChatMsg(cm.getUsername(), cm.getCode());
-   						resultCm.setProfileImg(cm.getProfileImg());
-   						friendListPanel.addFriendFrame.updateSearchResult(resultCm);
+   						friendListPanel.addFriendFrame.updateSearchResult(cm);
+   						System.out.println(cm.getProfileImg().toString()+" clientViewAccept");
    						break;
    						
    					case "303":  // 친구 추가

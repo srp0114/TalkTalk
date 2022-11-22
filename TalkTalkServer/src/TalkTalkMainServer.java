@@ -215,6 +215,7 @@ public class TalkTalkMainServer extends JFrame {
 					ChatMsg searched = new ChatMsg(userinfo.getUsername(), "302");
 					searched.setProfileImg(userinfo.getProfileImg());
 					WriteObject(searched);
+					System.out.println(searched.getProfileImg().toString());
 				}
 			}
 		}
