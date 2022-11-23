@@ -6,4 +6,7 @@ public class Room {
 		this.roomId = roomId;
 		this.userlist = userlist;
 	}
+	public void addUser(String username) {
+		this.userlist += " " + username;
+	}
 }

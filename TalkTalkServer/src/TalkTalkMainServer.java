@@ -28,6 +28,9 @@ public class TalkTalkMainServer extends JFrame {
 	private Vector UserVec = new Vector();
 	private Vector<ChatMsg> userInfos = new Vector();
 	private static final int BUF_LEN = 128;
+	
+	private Vector<Friend> FriendVector = new Vector();
+	private Vector<Room> RoomVector = new Vector();
 
 	
 	public static void main(String[] args){
@@ -176,10 +179,24 @@ public class TalkTalkMainServer extends JFrame {
 						Login();
 					}
 					else if(cm.getCode().matches("302")) { // 친구 검색
-						System.out.println("ui.getCode() matches 302");
+						System.out.println("cm.getCode() matches 302");
 						searchFriendName = cm.getSearchFriend();
 						System.out.println(searchFriendName);
 						SearchFriend();
+					}
+					else if(cm.getCode().matches("303")) {
+						System.out.println("cm.getCode() matches 303");
+						if(FriendVector.size() < 1) {
+							FriendVector.add(new Friend(cm.getUsername(), cm.getSearchFriend()));
+						}
+						else {
+							for(int i = 0; i < FriendVector.size(); i++) {
+								Friend user = FriendVector.get(i);
+								if(user.username.equals(cm.getUsername())) {
+									user.addFriend(cm.getSearchFriend());
+								}
+							}
+						}
 					}
 					
 					
@@ -220,34 +237,10 @@ public class TalkTalkMainServer extends JFrame {
 			}
 		}
 		
-		// UserService Thread가 담당하는 Client 에게 1:1 전송
-		public void WriteOne(String msg) {
-			try {
-				ChatMsg obcm = new ChatMsg("SERVER", "500");
-				obcm.setMsg(msg);
-				oos.writeObject(obcm);
-			} catch (IOException e) {
-				AppendText("dos.writeObject() error");
-				try {
-					ois.close();
-					oos.close();
-					client_socket.close();
-					client_socket = null;
-					ois = null;
-					oos = null;
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				Logout(); // 에러가난 현재 객체를 벡터에서 지운다
-			}
-		}
+		
 		
 		public void WriteObject(Object ob) {
 			try {
-//				ChatMsg Cm= new ChatMsg(cm.getUsername(), cm.getCode());
-//				AppendText("WriteObject()로 검색된 ChatMsg 전송 "+ Cm.getUsername());
-//				Cm.setProfileImg(cm.getProfileImg());
 				oos.writeObject(ob);
 			}catch (IOException e) {
 				AppendText("dos.writeObject() error");
@@ -259,7 +252,6 @@ public class TalkTalkMainServer extends JFrame {
 					ois = null;
 					oos = null;
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				Logout(); // 에러가난 현재 객체를 벡터에서 지운다

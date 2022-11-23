@@ -69,7 +69,12 @@ public class FriendListPanel extends JPanel{
 		}
 	}
 	
-public void UIInit() {
+	public void updateFriendList() {
+		
+	}
+	
+	
+	public void UIInit() {
 		
 		lblFriend = new JLabel("친구");
 		lblFriend.setFont(new Font("맑은 고딕", Font.BOLD, 18));

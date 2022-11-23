@@ -95,7 +95,7 @@ public class TalkTalkClientView extends JFrame{
       
    }
    
-   public void SendObject(Object ob) {
+   public synchronized void SendObject(Object ob) {
       try {
          oos.writeObject(ob);
          oos.flush();
@@ -152,6 +152,7 @@ public class TalkTalkClientView extends JFrame{
    						break;
    						
    					case "303":  // 친구 추가
+   						friendListPanel.updateFriendList(cm);
    						break;
    						
    					case "400":  // 채팅방 생성
