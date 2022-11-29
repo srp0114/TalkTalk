@@ -129,6 +129,7 @@ public class TalkTalkMainServer extends JFrame {
 		private Vector user_vc;
 		public String username="";
 		public String searchFriendName="";
+		int i = 0;
 		
 		public UserService(Socket client_socket) {
 			this.client_socket = client_socket;
@@ -186,17 +187,46 @@ public class TalkTalkMainServer extends JFrame {
 					}
 					else if(cm.getCode().matches("303")) {
 						System.out.println("cm.getCode() matches 303");
+						String username = cm.getUsername();
+						String friendName = cm.getSearchFriend();
+						
 						if(FriendVector.size() < 1) {
-							FriendVector.add(new Friend(cm.getUsername(), cm.getSearchFriend()));
+							FriendVector.add(new Friend(username, friendName));
+							FriendVector.add(new Friend(friendName, username));
 						}
 						else {
-							for(int i = 0; i < FriendVector.size(); i++) {
+							for(i = 0; i < FriendVector.size(); i++) {
 								Friend user = FriendVector.get(i);
-								if(user.username.equals(cm.getUsername())) {
+								if(user.username.equals(username)) {
 									user.addFriend(cm.getSearchFriend());
+									for(i = 0; i < userInfos.size(); i++) { 
+										ChatMsg userinfo = userInfos.get(i);
+										if(userinfo.getUsername().equals(user.username)) {
+											userinfo.setCode(friendName);
+											WriteOther(userinfo, friendName);
+										}
+									}
+								}
+								if(user.username.equals(friendName)) {
+									user.addFriend(username);
+									for(i = 0; i < userInfos.size(); i++) { 
+										ChatMsg userinfo = userInfos.get(i);
+										if(userinfo.getUsername().equals(user.username)) {
+											userinfo.setCode("303");
+											WriteOther(userinfo, username);
+										}
+									}
 								}
 							}
 						}
+						for(int i = 0; i < FriendVector.size();i++) {
+							Friend user = FriendVector.get(i);
+							System.out.println("이름: " + user.username);
+							System.out.println("친구 목록:" + user.friendlist);
+						}
+						
+						
+						
 					}
 					
 					
@@ -237,6 +267,16 @@ public class TalkTalkMainServer extends JFrame {
 			}
 		}
 		
+		// 특정 유저에게 ChatMsg 보내기
+		public void WriteOther(Object ob, String name) {
+			// 나를 제외한 User들에게 방송. 각각의 UserService Thread의 WriteONe() 을 호출한다.
+			for (int i = 0; i < user_vc.size(); i++) {
+				UserService user = (UserService) user_vc.elementAt(i);
+				if (user != this && user.username.equals(name))
+					user.WriteOneObject(ob);
+			}
+		}
+		
 		
 		
 		public void WriteObject(Object ob) {
@@ -255,6 +295,27 @@ public class TalkTalkMainServer extends JFrame {
 					e1.printStackTrace();
 				}
 				Logout(); // 에러가난 현재 객체를 벡터에서 지운다
+			}
+		}
+		
+		public void WriteOneObject(Object ob) {
+			try {
+			    oos.writeObject(ob);
+			} 
+			catch (IOException e) {
+				AppendText("oos.writeObject(ob) error");		
+				try {
+					ois.close();
+					oos.close();
+					client_socket.close();
+					client_socket = null;
+					ois = null;
+					oos = null;				
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Logout();
 			}
 		}
 		

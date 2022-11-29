@@ -25,6 +25,7 @@ public class ChatListPanel extends JPanel{
 		
 		this.setBackground(new Color(255, 255, 255));
 		setLayout(null);
+		setSize(315, 562);
 		
 		UIinit();
 	}

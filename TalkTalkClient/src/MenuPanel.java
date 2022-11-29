@@ -30,6 +30,7 @@ public class MenuPanel extends JPanel{
       this.clientView = clientView;
       this.setBackground(new Color(236, 236, 237));
       setLayout(null);
+      setSize(70, 562);
       
       isFriendListPanel = true;
       isChatListPanel = true;
@@ -41,11 +42,13 @@ public class MenuPanel extends JPanel{
             JButton b = (JButton)e.getSource();
             b.setEnabled(false);
             btnchatIcon.setEnabled(true);
-            if(isFriendListPanel == true) {
-               isFriendListPanel = false;
-               isChatListPanel = true;
-               clientView.replaceSplitPaneChild("flp");
-            }
+            clientView.friendListPanel.setVisible(true);
+            clientView.chatListPanel.setVisible(false);
+//            if(isFriendListPanel == true) {
+//               isFriendListPanel = false;
+//               isChatListPanel = true;
+//               clientView.replaceSplitPaneChild("flp");
+//            }
          
          }      
       });
@@ -55,12 +58,13 @@ public class MenuPanel extends JPanel{
             JButton b = (JButton)e.getSource();
             b.setEnabled(false);
             btnprofileIcon.setEnabled(true);
-            
-            if(isChatListPanel == true) {
-               isChatListPanel = false;
-               isFriendListPanel = true;
-               clientView.replaceSplitPaneChild("clp");
-            }
+            clientView.chatListPanel.setVisible(true);
+            clientView.friendListPanel.setVisible(false);
+//            if(isChatListPanel == true) {
+//               isChatListPanel = false;
+//               isFriendListPanel = true;
+//               clientView.replaceSplitPaneChild("clp");
+//            }
          }
       });
       

@@ -51,19 +51,47 @@ public class AddFriendFrame extends JFrame{
 		contentPane.setLayout(null);
 		
 		uiInit();
-		tfUserName.addActionListener(new Myaction());
+		tfUserName.addActionListener(new SearchAction());
+		btnAddFriend.addActionListener(new addFriendAction());
 		
 		setResizable(false);
 		setVisible(true);
 	}
 	
-	class Myaction implements ActionListener {
+	class SearchAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("tfUserName actionPerformed");
 			String friendName = tfUserName.getText().trim();
 			System.out.println("tfUserName: " + friendName);
 			ChatMsg chatmsg = new ChatMsg(chatMsg.getUsername(), "302");
+			chatmsg.setSearchFriend(friendName);
+			System.out.println(chatmsg.getCode());
+			System.out.println(chatmsg.getSearchFriend());
+			clientView.SendObject(chatmsg);
+			
+		}
+	}
+	
+	public void updateSearchResult(ChatMsg searchResult) {
+		System.out.println("updateSearchResult(): " + searchResult.getUsername());
+		ImageIcon resultIcon = searchResult.getProfileImg();
+		Image img = resultIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+		
+		searchedImg.setIcon(resultIcon);
+		searchedName.setText(searchResult.getUsername());
+		searchedImg.setVisible(true);
+		searchedName.setVisible(true);
+		btnAddFriend.setVisible(true);
+	}
+	
+	class addFriendAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("addFriendButton pressed");
+			String friendName = tfUserName.getText().trim();
+			System.out.println("tfUserName: " + friendName);
+			ChatMsg chatmsg = new ChatMsg(chatMsg.getUsername(), "303");
 			chatmsg.setSearchFriend(friendName);
 			System.out.println(chatmsg.getCode());
 			System.out.println(chatmsg.getSearchFriend());
@@ -115,17 +143,6 @@ public class AddFriendFrame extends JFrame{
 		searchedName.setBounds(86, 250, 100, 50);
 		searchedName.setVisible(false);
 		contentPane.add(searchedName);
-	}
-	public void updateSearchResult(ChatMsg searchResult) {
-		System.out.println("updateSearchResult(): " + searchResult.getUsername());
-		ImageIcon resultIcon = searchResult.getProfileImg();
-		Image img = resultIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-		
-		searchedImg.setIcon(resultIcon);
-		searchedName.setText(searchResult.getUsername());
-		searchedImg.setVisible(true);
-		searchedName.setVisible(true);
-		btnAddFriend.setVisible(true);
 	}
 }
 

@@ -49,7 +49,8 @@ public class TalkTalkClientView extends JFrame{
       setBounds(100, 100,390,600);
       contentPane = new JPanel();
       setContentPane(contentPane);
-      contentPane.setLayout(new BorderLayout());
+      // contentPane.setLayout(new BorderLayout());
+      contentPane.setLayout(null);
       
       this.username = username;
       this.ip_addr = ip_addr;
@@ -71,27 +72,25 @@ public class TalkTalkClientView extends JFrame{
          e.printStackTrace();
          System.out.println("connect error");
       }
-      splitPane();
+      setPanel();
       setResizable(false);
       setVisible(true);
    }
    
-   public void splitPane() {
-      hPane = new JSplitPane();   // JSplitPane 생성
+   public void setPanel() {
       
-      hPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-      hPane.setDividerLocation(70);
-      hPane.setDividerSize(0);
-      hPane.setEnabled(false);
       menuPanel = new MenuPanel(this);
+      menuPanel.setBounds(0, 2, 70, 562);
       friendListPanel = new FriendListPanel(this, obcm);
+      friendListPanel.setBounds(70, 0, 310, 561);
       chatListPanel = new ChatListPanel(this, obcm);
+      chatListPanel.setBounds(70, 0, 310, 562);
       
-      hPane.setLeftComponent(menuPanel);
-      hPane.setRightComponent(friendListPanel);
-      
-   
-      getContentPane().add(hPane, BorderLayout.CENTER);
+      contentPane.add(menuPanel);
+      contentPane.add(friendListPanel);
+      contentPane.add(chatListPanel);
+      friendListPanel.setVisible(true);
+      chatListPanel.setVisible(false);
       
    }
    
@@ -104,23 +103,6 @@ public class TalkTalkClientView extends JFrame{
       }
    }
    
-   public void replaceSplitPaneChild(String paneName) {
-      oldChild = (JPanel) hPane.getRightComponent();
-      switch (paneName) {
-      case "flp":
-         newChild = new FriendListPanel(this, obcm); break;
-      case "clp":
-         newChild = new ChatListPanel(this, obcm); break;
-      }
-      JSplitPane parent = (JSplitPane) oldChild.getParent();
-      int dividerLocation = parent.getDividerLocation();
-      parent.remove(oldChild);
-      parent.add(newChild);
-      parent.setDividerLocation(dividerLocation);
-      newChild.revalidate();
-      newChild.repaint();
-   
-   }
    
  //Server Message를 수신해서 화면에 표시
    class ListenNetwork extends Thread {
@@ -152,7 +134,7 @@ public class TalkTalkClientView extends JFrame{
    						break;
    						
    					case "303":  // 친구 추가
-   						friendListPanel.updateFriendList(cm);
+   						friendListPanel.friendListScrollPane.updateFriendList(cm);
    						break;
    						
    					case "400":  // 채팅방 생성
