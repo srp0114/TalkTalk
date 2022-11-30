@@ -51,11 +51,13 @@ public class FriendListPanel extends JPanel{
 		setLayout(null);
 	
 		friendListHeaderPanel = new FriendListHeaderPanel();
-		friendListHeaderPanel.setLocation(0, 0);
+		friendListHeaderPanel.setBounds(0, 0, 310, 410);
+		friendListHeaderPanel.setVisible(true);
 		this.add(friendListHeaderPanel);
 		
 		friendListScrollPane = new FriendListScrollPane();
 		friendListScrollPane.setLocation(0, 165);
+		friendListScrollPane.setVisible(true);
 		this.add(friendListScrollPane);
 	}	
 	
@@ -131,8 +133,10 @@ public class FriendListPanel extends JPanel{
 		FriendListScrollPane(){
 			this.setBackground(new Color(255,255,255));  // 배경색: 흰색
 			setSize(310,410);
-			//setBorder(null);
+			setLayout(null);
+			setBorder(null);
 			textPaneFriendList = new JTextPane();
+			textPaneFriendList.setBounds(0, 0, 300, 410);
 			textPaneFriendList.setEditable(false);
 			setViewportView(textPaneFriendList);
 		}
@@ -142,6 +146,10 @@ public class FriendListPanel extends JPanel{
 			Friend friend = new Friend(clientView, cm.img, cm.getUsername());
 			System.out.println(friend.getUsername());
 			clientView.FriendVector.add(friend);
+			System.out.print("친구이름들 : ");
+			for(int i = 0; i < clientView.FriendVector.size(); i++) {
+				System.out.print(clientView.FriendVector.get(i).getUsername());
+			}
 		}
 		
 		public void updateFriendList() {
@@ -150,7 +158,7 @@ public class FriendListPanel extends JPanel{
 				Friend friend = clientView.FriendVector.elementAt(i);
 				textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength());
 				textPaneFriendList.insertComponent(friend);
-				textPaneFriendList.replaceSelection("\n");
+				//textPaneFriendList.replaceSelection("\n");
 				textPaneFriendList.setCaretPosition(0);
 				System.out.println("friend: " + friend.getUsername());
 			}

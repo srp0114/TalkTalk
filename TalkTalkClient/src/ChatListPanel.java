@@ -28,6 +28,7 @@ public class ChatListPanel extends JPanel{
 		setSize(315, 562);
 		
 		UIinit();
+		setVisible(true);
 	}
 	
 	

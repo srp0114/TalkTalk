@@ -11,19 +11,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class MenuPanel extends JPanel{
-   private Image profileIconImg = Toolkit.getDefaultToolkit().getImage("src/profileIcon.png");
-   private ImageIcon profileIcon;
-   private JButton btnprofileIcon;
+ 
+	private static final long serialVersionUID = 1L;
+	private Image profileIconImg = Toolkit.getDefaultToolkit().getImage("src/profileIcon.png");
+	private ImageIcon profileIcon;
+	private JButton btnprofileIcon;
    
-   private Image chatIconImg = Toolkit.getDefaultToolkit().getImage("src/chatIcon.png");
-   private ImageIcon chatIcon;
-   private JButton btnchatIcon;
+	private Image chatIconImg = Toolkit.getDefaultToolkit().getImage("src/chatIcon.png");
+	private ImageIcon chatIcon;
+	private JButton btnchatIcon;
    
-   TalkTalkClientView clientView;
-   public static boolean isFriendListPanel;
-   public static boolean isChatListPanel;
-   public FriendListPanel flp = TalkTalkClientView.friendListPanel;
-   public ChatListPanel clp = TalkTalkClientView.chatListPanel;
+	TalkTalkClientView clientView;
+	public static boolean isFriendListPanel;
+	public static boolean isChatListPanel;
    
    
    public MenuPanel(TalkTalkClientView clientView) {
@@ -44,10 +44,6 @@ public class MenuPanel extends JPanel{
             btnchatIcon.setEnabled(true);
             clientView.friendListPanel.setVisible(true);
             clientView.chatListPanel.setVisible(false);
-//            if(isFriendListPanel == true) {
-//               isFriendListPanel = false;
-//               isChatListPanel = true;
-//               clientView.replaceSplitPaneChild("flp");
 //            }
          
          }      
@@ -60,14 +56,10 @@ public class MenuPanel extends JPanel{
             btnprofileIcon.setEnabled(true);
             clientView.chatListPanel.setVisible(true);
             clientView.friendListPanel.setVisible(false);
-//            if(isChatListPanel == true) {
-//               isChatListPanel = false;
-//               isFriendListPanel = true;
-//               clientView.replaceSplitPaneChild("clp");
-//            }
          }
       });
       
+      setVisible(true);
    }
    
    public void uiInit() {

@@ -1,6 +1,5 @@
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
+
+
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -20,13 +19,12 @@ import javax.swing.JSplitPane;
 
 public class TalkTalkClientView extends JFrame{
 	private static final long serialVersionUID = 1L;
-	public static JPanel contentPane;
+	public JPanel contentPane;
    private String username;  // username
    private String ip_addr;
    private String port_no;
    private ChatMsg obcm;      // obui
    
-   public static JSplitPane hPane;
 
    private JButton btnprofileIcon;
    private JButton btnchatIcon;
@@ -39,9 +37,9 @@ public class TalkTalkClientView extends JFrame{
    public JPanel oldChild;
    public JPanel newChild;
    
-   private MenuPanel menuPanel;  // 메뉴 패널
-   public static FriendListPanel friendListPanel;  // 친구창 패널
-   public static ChatListPanel chatListPanel;
+   private MenuPanel menuPanel = null;  // 메뉴 패널
+   public FriendListPanel friendListPanel = null;  // 친구창 패널
+   public ChatListPanel chatListPanel = null;
    public Vector<Friend> FriendVector = new Vector<Friend>();
 
 
@@ -50,7 +48,6 @@ public class TalkTalkClientView extends JFrame{
       setBounds(100, 100,390,600);
       contentPane = new JPanel();
       setContentPane(contentPane);
-      // contentPane.setLayout(new BorderLayout());
       contentPane.setLayout(null);
       
       this.username = username;
@@ -74,25 +71,27 @@ public class TalkTalkClientView extends JFrame{
          System.out.println("connect error");
       }
       setPanel();
+    
+
       setResizable(false);
       setVisible(true);
    }
    
    public void setPanel() {
-      
-      menuPanel = new MenuPanel(this);
-      menuPanel.setBounds(0, 2, 70, 562);
-      friendListPanel = new FriendListPanel(this, obcm);
-      friendListPanel.setBounds(70, 0, 310, 561);
-      chatListPanel = new ChatListPanel(this, obcm);
-      chatListPanel.setBounds(70, 0, 310, 562);
-      
-      contentPane.add(menuPanel);
-      contentPane.add(friendListPanel);
-      contentPane.add(chatListPanel);
-      friendListPanel.setVisible(true);
-      chatListPanel.setVisible(false);
-      
+	   menuPanel = new MenuPanel(this);
+	      menuPanel.setBounds(0, 0, 70, 562);
+	      menuPanel.setVisible(true);
+	      friendListPanel = new FriendListPanel(this, obcm);
+	      friendListPanel.setBounds(70, 0, 310, 561);
+	      chatListPanel = new ChatListPanel(this, obcm);
+	      chatListPanel.setBounds(70, 0, 310, 562);
+	      chatListPanel.setVisible(true);
+	      
+	      contentPane.add(menuPanel);
+	      contentPane.add(friendListPanel);
+	      contentPane.add(chatListPanel);
+	      chatListPanel.setVisible(false);
+       
    }
    
    public synchronized void SendObject(Object ob) {

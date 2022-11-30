@@ -84,6 +84,9 @@ public class ChatMsg implements Serializable{
    public String getFriendlist() {
       return friendlist;
    }
+   public void addFriend(String name) {
+	   friendlist += " " + name;
+   }
    
    // roomlist
    public void setRoomlist(String roomlist) {
@@ -92,7 +95,9 @@ public class ChatMsg implements Serializable{
    public String getRoomlist() {
       return roomlist;
    }
-   
+   public void addRoom(String roomId) {
+	   roomlist += " " + roomId;
+   }
    // profileImg
    public void setProfileImg(ImageIcon profileImg) {
       this.profileImg = profileImg;

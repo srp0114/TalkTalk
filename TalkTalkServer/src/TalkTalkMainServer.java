@@ -8,6 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -29,7 +30,7 @@ public class TalkTalkMainServer extends JFrame {
 	private Vector<ChatMsg> userInfos = new Vector();
 	private static final int BUF_LEN = 128;
 	
-	private Vector<Friend> FriendVector = new Vector();
+	//private Vector<Friend> FriendVector = new Vector();
 	private Vector<Room> RoomVector = new Vector();
 
 	
@@ -81,7 +82,6 @@ public class TalkTalkMainServer extends JFrame {
 		btnServerStart.setBounds(12, 356, 300, 35);
 		contentPane.add(btnServerStart);
 		
-		
 	}
 	
 	// 텍스트 업로드하기
@@ -127,9 +127,12 @@ public class TalkTalkMainServer extends JFrame {
 		
 		private Socket client_socket;
 		private Vector user_vc;
-		public String username="";
+		public String username="";   // 유저 이름
+		public ImageIcon profileImg;  // 프로필 사진
 		public String searchFriendName="";
 		int i = 0;
+		public Vector<UserService> FriendList = new Vector<UserService>();
+		public Vector<String> friendNames = new Vector<String>();
 		
 		public UserService(Socket client_socket) {
 			this.client_socket = client_socket;
@@ -176,7 +179,8 @@ public class TalkTalkMainServer extends JFrame {
 					
 					if(cm.getCode().matches("100")) { // 로그인
 						username = cm.getUsername();
-						userInfos.add(cm);
+						profileImg = cm.profileImg;
+						//userInfos.add(cm);
 						Login();
 					}
 					else if(cm.getCode().matches("302")) { // 친구 검색
@@ -187,56 +191,44 @@ public class TalkTalkMainServer extends JFrame {
 					}
 					else if(cm.getCode().matches("303")) {
 						System.out.println("cm.getCode() matches 303");
-						String username = cm.getUsername();
+						String userName = cm.getUsername();
 						String friendName = cm.getSearchFriend();
-						boolean isExist = false;
 						
-						if(FriendVector.size() < 1) {
-							System.out.println("FriendVector.size()" + FriendVector.size());
-							FriendVector.add(new Friend(username, friendName));
-							FriendVector.add(new Friend(friendName, username));
+						for(int i = 0; i < FriendList.size(); i++) {
+							if(friendNames.contains(((UserService)FriendList.get(i)).username))
+								continue;
+							friendNames.add(((UserService)FriendList.get(i)).username);
+						}
+						
+						if(friendNames.contains(friendName)) {
+							System.out.println("Server(303): " + friendName+ "은 이미 친구!");
 						}
 						else {
-							for(i = 0; i < FriendVector.size(); i++) {
-								Friend user = FriendVector.get(i);
-								if(user.username.equals(username)) {
-									user.addFriend(cm.getSearchFriend());
+							for(int i = 0; i < user_vc.size(); i++) {
+								UserService u = (UserService)user_vc.get(i);
+								if(u.username.equals(friendName)) {
+									FriendList.add(u);
+									friendNames.add(friendName);
+									
+									u.FriendList.add(this);
+									u.friendNames.add(this.username);
+									
+									ChatMsg friendCm = new ChatMsg(friendName, "303");
+									friendCm.setProfileImg(u.profileImg);
+									WriteObject(friendCm);
+									
+									ChatMsg selfCm = new ChatMsg(username, "303");
+									selfCm.setProfileImg(profileImg);
+									u.WriteObject(selfCm);
 								}
-								if(user.username.equals(friendName)) {
-									isExist = true;
-									if(user.friendlist.contains(friendName)) {
-										break;
-									}
-									else {
-										user.addFriend(username);
-										FriendVector.set(i, user);
-									}
-								}
-								
-								if(isExist == false) {
-									FriendVector.add(new Friend(friendName, username));
-								}
-							}
-						}
-						for(int i = 0; i < FriendVector.size();i++) {
-							Friend user = FriendVector.get(i);
-							System.out.println("이름: " + user.username);
-							System.out.println("친구 목록:" + user.friendlist);
-						}
-						for(int i = 0; i < userInfos.size(); i++) {
-							ChatMsg userInfo = userInfos.get(i);
-							if(userInfo.getUsername().equals(username)) {
-								ChatMsg cm2 = new ChatMsg(userInfo.getUsername(), "303");
-								cm2.setProfileImg(userInfo.profileImg);
-								WriteOther(cm2, friendName);
-							}
-							else if(userInfo.getUsername().equals(friendName)) {
-								ChatMsg cm3 = new ChatMsg(userInfo.getUsername(), "303");
-								cm3.setProfileImg(userInfo.profileImg);
-								WriteObject(cm3);
 							}
 						}
 						
+						System.out.println("유저 이름: "+ username);
+						System.out.print("친구 이름들 ");
+						for(int i = 0; i < friendNames.size(); i++) {
+							System.out.print(friendNames.get(i));
+						}		
 						
 					}
 					
@@ -266,12 +258,13 @@ public class TalkTalkMainServer extends JFrame {
 		public void SearchFriend() {  // 친구 검색 302
 			System.out.println("SearchFriend function");
 			AppendText("[" + username + "] searchFriend " + searchFriendName);
-			for(int i = 0; i < userInfos.size(); i++) {
-				ChatMsg userinfo = userInfos.get(i);
-				if(userinfo.getUsername().equals(searchFriendName)) {
-					AppendText("user들 중 " + userinfo.getUsername() + "검색됨.");
-					ChatMsg searched = new ChatMsg(userinfo.getUsername(), "302");
-					searched.setProfileImg(userinfo.profileImg);
+
+			for(int i = 0; i < user_vc.size(); i++) {
+				UserService u = (UserService) user_vc.get(i);
+				if(u.username.equals(searchFriendName)) {
+					AppendText("user들 중 " + u.username + "검색됨.");
+					ChatMsg searched = new ChatMsg(u.username, "302");
+					searched.setProfileImg(u.profileImg);
 					WriteObject(searched);
 					System.out.println(searched.profileImg.toString());
 				}
