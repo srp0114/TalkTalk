@@ -98,9 +98,6 @@ public class ChatMsg implements Serializable{
    public void setProfileImg(ImageIcon profileImg) {
       this.profileImg = profileImg;
    }
-   public ImageIcon getProfileImg() {
-      return profileImg;
-   }
 
    // msg
    public void setMsg(String msg) {
@@ -114,15 +111,9 @@ public class ChatMsg implements Serializable{
    public void setImg(ImageIcon img) {
       this.img = img;
    }
-   public ImageIcon getImg() {
-         return img;
-   }
    
    // imoji
    public void setEmoji(ImageIcon imoji) {
       this.emoji = emoji;
-   }
-   public ImageIcon getEmoji() {
-         return emoji;
    }
 }

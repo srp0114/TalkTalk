@@ -189,8 +189,10 @@ public class TalkTalkMainServer extends JFrame {
 						System.out.println("cm.getCode() matches 303");
 						String username = cm.getUsername();
 						String friendName = cm.getSearchFriend();
+						boolean isExist = false;
 						
 						if(FriendVector.size() < 1) {
+							System.out.println("FriendVector.size()" + FriendVector.size());
 							FriendVector.add(new Friend(username, friendName));
 							FriendVector.add(new Friend(friendName, username));
 						}
@@ -199,23 +201,20 @@ public class TalkTalkMainServer extends JFrame {
 								Friend user = FriendVector.get(i);
 								if(user.username.equals(username)) {
 									user.addFriend(cm.getSearchFriend());
-									for(i = 0; i < userInfos.size(); i++) { 
-										ChatMsg userinfo = userInfos.get(i);
-										if(userinfo.getUsername().equals(user.username)) {
-											userinfo.setCode(friendName);
-											WriteOther(userinfo, friendName);
-										}
-									}
 								}
 								if(user.username.equals(friendName)) {
-									user.addFriend(username);
-									for(i = 0; i < userInfos.size(); i++) { 
-										ChatMsg userinfo = userInfos.get(i);
-										if(userinfo.getUsername().equals(user.username)) {
-											userinfo.setCode("303");
-											WriteOther(userinfo, username);
-										}
+									isExist = true;
+									if(user.friendlist.contains(friendName)) {
+										break;
 									}
+									else {
+										user.addFriend(username);
+										FriendVector.set(i, user);
+									}
+								}
+								
+								if(isExist == false) {
+									FriendVector.add(new Friend(friendName, username));
 								}
 							}
 						}
@@ -224,7 +223,19 @@ public class TalkTalkMainServer extends JFrame {
 							System.out.println("이름: " + user.username);
 							System.out.println("친구 목록:" + user.friendlist);
 						}
-						
+						for(int i = 0; i < userInfos.size(); i++) {
+							ChatMsg userInfo = userInfos.get(i);
+							if(userInfo.getUsername().equals(username)) {
+								ChatMsg cm2 = new ChatMsg(userInfo.getUsername(), "303");
+								cm2.setProfileImg(userInfo.profileImg);
+								WriteOther(cm2, friendName);
+							}
+							else if(userInfo.getUsername().equals(friendName)) {
+								ChatMsg cm3 = new ChatMsg(userInfo.getUsername(), "303");
+								cm3.setProfileImg(userInfo.profileImg);
+								WriteObject(cm3);
+							}
+						}
 						
 						
 					}
@@ -260,9 +271,9 @@ public class TalkTalkMainServer extends JFrame {
 				if(userinfo.getUsername().equals(searchFriendName)) {
 					AppendText("user들 중 " + userinfo.getUsername() + "검색됨.");
 					ChatMsg searched = new ChatMsg(userinfo.getUsername(), "302");
-					searched.setProfileImg(userinfo.getProfileImg());
+					searched.setProfileImg(userinfo.profileImg);
 					WriteObject(searched);
-					System.out.println(searched.getProfileImg().toString());
+					System.out.println(searched.profileImg.toString());
 				}
 			}
 		}
@@ -273,7 +284,7 @@ public class TalkTalkMainServer extends JFrame {
 			for (int i = 0; i < user_vc.size(); i++) {
 				UserService user = (UserService) user_vc.elementAt(i);
 				if (user != this && user.username.equals(name))
-					user.WriteOneObject(ob);
+					user.WriteObject(ob);
 			}
 		}
 		
@@ -296,28 +307,6 @@ public class TalkTalkMainServer extends JFrame {
 				}
 				Logout(); // 에러가난 현재 객체를 벡터에서 지운다
 			}
-		}
-		
-		public void WriteOneObject(Object ob) {
-			try {
-			    oos.writeObject(ob);
-			} 
-			catch (IOException e) {
-				AppendText("oos.writeObject(ob) error");		
-				try {
-					ois.close();
-					oos.close();
-					client_socket.close();
-					client_socket = null;
-					ois = null;
-					oos = null;				
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				Logout();
-			}
-		}
-		
+		}	
 	}
 }

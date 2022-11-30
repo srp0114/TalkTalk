@@ -22,7 +22,7 @@ public class ChatMsg implements Serializable{
    
    public ChatMsg(String username, String code) {
       this.username = username;
-      this.code = code;  
+      this.code = code; 
       Image profile = Toolkit.getDefaultToolkit().getImage("src/noProfileImg.jpg");
       profile = profile.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
       profileImg = new ImageIcon(profile);
@@ -97,9 +97,6 @@ public class ChatMsg implements Serializable{
    public void setProfileImg(ImageIcon profileImg) {
       this.profileImg = profileImg;
    }
-   public ImageIcon getProfileImg() {
-      return profileImg;
-   }
 
    // msg
    public void setMsg(String msg) {
@@ -113,15 +110,9 @@ public class ChatMsg implements Serializable{
    public void setImg(ImageIcon img) {
       this.img = img;
    }
-   public ImageIcon getImg() {
-         return img;
-   }
    
    // imoji
    public void setEmoji(ImageIcon imoji) {
       this.emoji = emoji;
-   }
-   public ImageIcon getEmoji() {
-         return emoji;
    }
 }

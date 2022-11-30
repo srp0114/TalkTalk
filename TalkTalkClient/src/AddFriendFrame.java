@@ -58,6 +58,7 @@ public class AddFriendFrame extends JFrame{
 		setVisible(true);
 	}
 	
+	
 	class SearchAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -75,14 +76,17 @@ public class AddFriendFrame extends JFrame{
 	
 	public void updateSearchResult(ChatMsg searchResult) {
 		System.out.println("updateSearchResult(): " + searchResult.getUsername());
-		ImageIcon resultIcon = searchResult.getProfileImg();
+		ImageIcon resultIcon = searchResult.profileImg;
 		Image img = resultIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 		
 		searchedImg.setIcon(resultIcon);
 		searchedName.setText(searchResult.getUsername());
 		searchedImg.setVisible(true);
 		searchedName.setVisible(true);
-		btnAddFriend.setVisible(true);
+		btnAddFriend.setVisible(true); // 친구추가 버튼 활성화
+		
+		revalidate();
+		contentPane.repaint();
 	}
 	
 	class addFriendAction implements ActionListener {
@@ -93,8 +97,8 @@ public class AddFriendFrame extends JFrame{
 			System.out.println("tfUserName: " + friendName);
 			ChatMsg chatmsg = new ChatMsg(chatMsg.getUsername(), "303");
 			chatmsg.setSearchFriend(friendName);
-			System.out.println(chatmsg.getCode());
-			System.out.println(chatmsg.getSearchFriend());
+			System.out.println("addFriendAction():" + chatmsg.getCode());
+			System.out.println("addFriendAction():" + chatmsg.getSearchFriend());
 			clientView.SendObject(chatmsg);
 			
 		}

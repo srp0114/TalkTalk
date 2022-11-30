@@ -20,7 +20,7 @@ import javax.swing.JTextPane;
 
 
 public class FriendListPanel extends JPanel{
-	private JTextPane textArea;
+	private JTextPane textPaneFriendList;
 	
 	private JLabel lblFriend;  // 친구 레이블
 	 
@@ -29,7 +29,6 @@ public class FriendListPanel extends JPanel{
 	
 	private String userName;  // 로그인한 client 이름
 	private JLabel lblUserName;  // username 레이블
-	
 	
 	private Image addFriendIconImg = Toolkit.getDefaultToolkit().getImage("src/addFriendIcon.png");
 	private ImageIcon addFriendIcon;
@@ -50,7 +49,7 @@ public class FriendListPanel extends JPanel{
 		this.setBackground(new Color(255,255,255));
 		setSize(310, 562);
 		setLayout(null);
-		//UIInit();  // ui 세팅
+	
 		friendListHeaderPanel = new FriendListHeaderPanel();
 		friendListHeaderPanel.setLocation(0, 0);
 		this.add(friendListHeaderPanel);
@@ -58,7 +57,6 @@ public class FriendListPanel extends JPanel{
 		friendListScrollPane = new FriendListScrollPane();
 		friendListScrollPane.setLocation(0, 165);
 		this.add(friendListScrollPane);
-		friendListScrollPane.setViewportView(textArea);
 	}	
 	
 	
@@ -72,10 +70,11 @@ public class FriendListPanel extends JPanel{
 			this.setBackground(new Color(255,255,255));  // 배경색: 흰색
 			UIInit();
 			
-			
 			AddFriendIconAction action = new AddFriendIconAction();
 			btnAddFriendIcon.addActionListener(action);
+			
 		}
+		
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			g.setColor(new Color(234, 234, 234));
@@ -88,6 +87,7 @@ public class FriendListPanel extends JPanel{
 				addFriendFrame = new AddFriendFrame(clientView, chatMsg);
 			}
 		}
+		
 		public void UIInit() {
 			
 			lblFriend = new JLabel("친구");
@@ -95,7 +95,6 @@ public class FriendListPanel extends JPanel{
 			lblFriend.setBounds(20, 20, 50, 50);
 			this.add(lblFriend);	
 
-			
 			addFriendIconImg = addFriendIconImg.getScaledInstance(25, 25,  Image.SCALE_SMOOTH);
 			addFriendIcon = new ImageIcon(addFriendIconImg);
 			btnAddFriendIcon = new JButton(addFriendIcon);
@@ -105,8 +104,6 @@ public class FriendListPanel extends JPanel{
 			btnAddFriendIcon.setOpaque(false);
 			btnAddFriendIcon.setBounds(260, 32, 25, 25);
 			this.add(btnAddFriendIcon);
-		
-			
 			
 			profileImg = profileImg.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
 			profileIcon = new ImageIcon(profileImg);
@@ -118,14 +115,13 @@ public class FriendListPanel extends JPanel{
 			btnProfileImg.setOpaque(false);
 			btnProfileImg.setBounds(20, 80, 50, 50);
 			this.add(btnProfileImg);
-			//textArea.add(btnProfileImg);
 			
 			
 			lblUserName = new JLabel(chatMsg.getUsername());
 			lblUserName.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 			lblUserName.setBounds(90, 75, 100, 50);
 			this.add(lblUserName);
-			//textArea.add(lblUserName);
+			
 			
 		}
 	}
@@ -136,14 +132,29 @@ public class FriendListPanel extends JPanel{
 			this.setBackground(new Color(255,255,255));  // 배경색: 흰색
 			setSize(310,410);
 			//setBorder(null);
-			textArea = new JTextPane();
-			textArea.setEditable(false);
+			textPaneFriendList = new JTextPane();
+			textPaneFriendList.setEditable(false);
+			setViewportView(textPaneFriendList);
 		}
 		
-		
-		public void updateFriendList(ChatMsg cm) {
-			Friend friend = new Friend(clientView, cm.getImg(), cm.getUsername());
+		public void addFriend(ChatMsg cm) {
+			System.out.println("친구추가 함수 호출: " + cm.getUsername());
+			Friend friend = new Friend(clientView, cm.img, cm.getUsername());
 			System.out.println(friend.getUsername());
+			clientView.FriendVector.add(friend);
+		}
+		
+		public void updateFriendList() {
+			System.out.println("updateFriendList 함수 코드 시작");
+			for(int i = 0; i < clientView.FriendVector.size(); i++) {
+				Friend friend = clientView.FriendVector.elementAt(i);
+				textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength());
+				textPaneFriendList.insertComponent(friend);
+				textPaneFriendList.replaceSelection("\n");
+				textPaneFriendList.setCaretPosition(0);
+				System.out.println("friend: " + friend.getUsername());
+			}
+			repaint();			
 		}
 	}
 	

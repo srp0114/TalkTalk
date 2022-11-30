@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -41,7 +42,7 @@ public class TalkTalkClientView extends JFrame{
    private MenuPanel menuPanel;  // 메뉴 패널
    public static FriendListPanel friendListPanel;  // 친구창 패널
    public static ChatListPanel chatListPanel;
-
+   public Vector<Friend> FriendVector = new Vector<Friend>();
 
 
    public TalkTalkClientView(String username, String ip_addr, String port_no) {
@@ -130,11 +131,15 @@ public class TalkTalkClientView extends JFrame{
    					switch(cm.getCode()) {
    					case "302":  // 친구 검색
    						friendListPanel.addFriendFrame.updateSearchResult(cm);
-   						System.out.println(cm.getProfileImg().toString()+" clientViewAccept");
+   						System.out.println(cm.profileImg.toString()+" clientViewAccept");
    						break;
    						
    					case "303":  // 친구 추가
-   						friendListPanel.friendListScrollPane.updateFriendList(cm);
+   						System.out.println("clientView 303 서버로부터 cm 받음 : " + cm.getUsername());
+   						friendListPanel.friendListScrollPane.addFriend(cm);
+   						System.out.println("303 addFriend함수 호출");
+   						friendListPanel.friendListScrollPane.updateFriendList();
+   						System.out.println("303 updateFriendList함수 호출");
    						break;
    						
    					case "400":  // 채팅방 생성
