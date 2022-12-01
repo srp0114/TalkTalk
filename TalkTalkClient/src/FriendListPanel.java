@@ -17,10 +17,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyledDocument;
 
 
 public class FriendListPanel extends JPanel{
-	private JTextPane textPaneFriendList;
 	
 	private JLabel lblFriend;  // 친구 레이블
 	 
@@ -34,8 +36,8 @@ public class FriendListPanel extends JPanel{
 	private ImageIcon addFriendIcon;
 	private JButton btnAddFriendIcon;
 	
-	private Image profileImg = Toolkit.getDefaultToolkit().getImage("src/noProfileImg.jpg");
-	private ImageIcon profileIcon;
+	//private Image profileImg = Toolkit.getDefaultToolkit().getImage("src/noProfileImg.jpg");
+	private ImageIcon profileIcon = new ImageIcon("src/no_profile.jpg");
 	private JButton btnProfileImg;
 	
 	public AddFriendFrame addFriendFrame;
@@ -51,14 +53,16 @@ public class FriendListPanel extends JPanel{
 		setLayout(null);
 	
 		friendListHeaderPanel = new FriendListHeaderPanel();
-		friendListHeaderPanel.setBounds(0, 0, 310, 410);
+		friendListHeaderPanel.setBounds(0, 0, 310, 151);
 		friendListHeaderPanel.setVisible(true);
 		this.add(friendListHeaderPanel);
 		
 		friendListScrollPane = new FriendListScrollPane();
-		friendListScrollPane.setLocation(0, 165);
+		friendListScrollPane.setLocation(0, 152);
 		friendListScrollPane.setVisible(true);
 		this.add(friendListScrollPane);
+		
+		setVisible(true);
 	}	
 	
 	
@@ -66,7 +70,7 @@ public class FriendListPanel extends JPanel{
 	// 친구리스트패널의 헤더패널 
 	class FriendListHeaderPanel extends JPanel{
 		
-		FriendListHeaderPanel(){
+		public FriendListHeaderPanel(){
 			setSize(310, 151);
 			setLayout(null);
 			this.setBackground(new Color(255,255,255));  // 배경색: 흰색
@@ -74,7 +78,7 @@ public class FriendListPanel extends JPanel{
 			
 			AddFriendIconAction action = new AddFriendIconAction();
 			btnAddFriendIcon.addActionListener(action);
-			
+			setVisible(true);
 		}
 		
 		public void paintComponent(Graphics g) {
@@ -107,10 +111,10 @@ public class FriendListPanel extends JPanel{
 			btnAddFriendIcon.setBounds(260, 32, 25, 25);
 			this.add(btnAddFriendIcon);
 			
-			profileImg = profileImg.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
-			profileIcon = new ImageIcon(profileImg);
+			//profileImg = profileImg.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
+			profileIcon = new ImageIcon("src/no_profile.jpg");
 			chatMsg.setProfileImg(profileIcon);
-			btnProfileImg = new JButton(profileIcon);
+			btnProfileImg = new JButton(chatMsg.profileImg);
 			btnProfileImg.setBorderPainted(false);
 			btnProfileImg.setFocusPainted(false);
 			btnProfileImg.setContentAreaFilled(false);
@@ -129,40 +133,49 @@ public class FriendListPanel extends JPanel{
 	}
 	
 	class FriendListScrollPane extends JScrollPane{
+		private StyledDocument document;
+		private JTextPane textPaneFriendList;
 		
-		FriendListScrollPane(){
+		public FriendListScrollPane(){
 			this.setBackground(new Color(255,255,255));  // 배경색: 흰색
-			setSize(310,410);
-			setLayout(null);
+			this.setLayout(null);
+			this.setSize(305,410);
+			
 			setBorder(null);
-			textPaneFriendList = new JTextPane();
-			textPaneFriendList.setBounds(0, 0, 300, 410);
-			textPaneFriendList.setEditable(false);
-			setViewportView(textPaneFriendList);
+			//setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+			setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			this.textPaneFriendList = new JTextPane();
+			this.textPaneFriendList.setBounds(3, 20, 300, 400);
+			this.textPaneFriendList.setBackground(new Color(200, 200, 200));
+			this.textPaneFriendList.setEditable(false);
+			//this.textPaneFriendList.setAlignmentY(1.0f);
+			this.setViewportView(textPaneFriendList);
+			this.add(textPaneFriendList);
+			this.setVisible(true);
 		}
 		
-		public void addFriend(ChatMsg cm) {
-			System.out.println("친구추가 함수 호출: " + cm.getUsername());
-			Friend friend = new Friend(clientView, cm.img, cm.getUsername());
-			System.out.println(friend.getUsername());
-			clientView.FriendVector.add(friend);
-			System.out.print("친구이름들 : ");
-			for(int i = 0; i < clientView.FriendVector.size(); i++) {
-				System.out.print(clientView.FriendVector.get(i).getUsername());
-			}
-		}
 		
-		public void updateFriendList() {
+		
+		public void updateFriendList(Friend friend) {
+			document = textPaneFriendList.getStyledDocument();
+			SimpleAttributeSet sortMethod = new SimpleAttributeSet();
+			//friend.setSize(getPreferredSize());
 			System.out.println("updateFriendList 함수 코드 시작");
+			textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength());
+			textPaneFriendList.insertComponent(friend);
+			textPaneFriendList.setCaretPosition(0);
+			repaint();
+			
+			/*
 			for(int i = 0; i < clientView.FriendVector.size(); i++) {
 				Friend friend = clientView.FriendVector.elementAt(i);
 				textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength());
 				textPaneFriendList.insertComponent(friend);
-				//textPaneFriendList.replaceSelection("\n");
 				textPaneFriendList.setCaretPosition(0);
 				System.out.println("friend: " + friend.getUsername());
+				repaint();			
 			}
-			repaint();			
+			*/
 		}
 	}
 	

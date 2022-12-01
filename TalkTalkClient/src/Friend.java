@@ -9,29 +9,35 @@ import java.awt.Font;
 
 public class Friend extends JPanel{
    private TalkTalkClientView clientView = null;
+   
    private String username ="";
    private ImageIcon profileImage;
-   private JButton imageLabel;
+   
+   //private JButton imageLabel;
+   private JLabel imageLabel;
    private JLabel userName;
    
-   public Friend(TalkTalkClientView clientView, ImageIcon profileImage, String username) {
-      setBackground(new Color(200, 200, 200));
+   public Friend(ImageIcon profileImage, String username) {
+      setBackground(new Color(0, 255, 255));
       setSize(280, 100);
-      setBounds(0,0,250,100);
       setLayout(null);
       
+      //this.clientView = clientView;
       this.username = username;
+      this.profileImage = profileImage;
+      
       userName = new JLabel(username);
       userName.setBounds(100,25,100,50);
+      userName.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
       userName.setVisible(true);
 
-      imageLabel = new JButton(profileImage);
-      imageLabel.setBounds(20,20,60,60);
+      imageLabel = new JLabel(profileImage);
+      imageLabel.setBounds(20,20,50,50);
       imageLabel.setVisible(true);
 
-      add(userName);
-      add(imageLabel);
-      
+      this.add(userName);
+      this.add(imageLabel);
+      this.setVisible(true);
       /*
       this.clientView = clientView;
       this.profileImage = profileImage;

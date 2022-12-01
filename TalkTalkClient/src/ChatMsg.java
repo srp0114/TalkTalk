@@ -23,18 +23,18 @@ public class ChatMsg implements Serializable{
    public ChatMsg(String username, String code) {
       this.username = username;
       this.code = code; 
-      Image profile = Toolkit.getDefaultToolkit().getImage("src/noProfileImg.jpg");
-      profile = profile.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
-      profileImg = new ImageIcon(profile);
+//      Image profile = Toolkit.getDefaultToolkit().getImage("src/noProfileImg.jpg");
+//      profile = profile.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
+//      profileImg = new ImageIcon(profile);
    }
 
    public ChatMsg(String username, String code, String msg) {
       this.username = username;
       this.code = code;
       this.msg = msg;
-      Image profile = Toolkit.getDefaultToolkit().getImage("src/noProfileImg.jpg");
-      profile = profile.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
-      profileImg = new ImageIcon(profile);
+//      Image profile = Toolkit.getDefaultToolkit().getImage("src/noProfileImg.jpg");
+//      profile = profile.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
+//      profileImg = new ImageIcon(profile);
    }
    
    //userName

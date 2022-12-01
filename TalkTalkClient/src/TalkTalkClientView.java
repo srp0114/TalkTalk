@@ -24,7 +24,7 @@ public class TalkTalkClientView extends JFrame{
    private String ip_addr;
    private String port_no;
    private ChatMsg obcm;      // obui
-   
+   private ImageIcon profile = new ImageIcon("src/no_profile.jpg");
 
    private JButton btnprofileIcon;
    private JButton btnchatIcon;
@@ -61,7 +61,8 @@ public class TalkTalkClientView extends JFrame{
          oos.flush();
          ois = new ObjectInputStream(socket.getInputStream());
          
-         obcm = new ChatMsg(username, "100");         
+         obcm = new ChatMsg(username, "100");
+         obcm.setProfileImg(profile);
          SendObject(obcm);
          
          ListenNetwork net = new ListenNetwork();
@@ -135,9 +136,8 @@ public class TalkTalkClientView extends JFrame{
    						
    					case "303":  // 친구 추가
    						System.out.println("clientView 303 서버로부터 cm 받음 : " + cm.getUsername());
-   						friendListPanel.friendListScrollPane.addFriend(cm);
+   						addFriend(cm);
    						System.out.println("303 addFriend함수 호출");
-   						friendListPanel.friendListScrollPane.updateFriendList();
    						System.out.println("303 updateFriendList함수 호출");
    						break;
    						
@@ -161,6 +161,19 @@ public class TalkTalkClientView extends JFrame{
    				} // 바깥 catch문끝
    			}
    		}
+   		
+   		public void addFriend(ChatMsg cm) {
+			System.out.println("친구추가 함수 호출: " + cm.getUsername());
+			Friend friend = new Friend(cm.profileImg, cm.getUsername());
+			System.out.println(friend.getUsername());
+			FriendVector.add(friend);
+			System.out.print("친구이름들 : ");
+			for(int i = 0; i < FriendVector.size(); i++) {
+				System.out.print(FriendVector.get(i).getUsername());
+			}
+			System.out.println();
+			friendListPanel.friendListScrollPane.updateFriendList(friend);
+		}
    }
 
 }

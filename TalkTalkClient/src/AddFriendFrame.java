@@ -66,6 +66,7 @@ public class AddFriendFrame extends JFrame{
 			String friendName = tfUserName.getText().trim();
 			System.out.println("tfUserName: " + friendName);
 			ChatMsg chatmsg = new ChatMsg(chatMsg.getUsername(), "302");
+			chatmsg.setProfileImg(chatmsg.profileImg);
 			chatmsg.setSearchFriend(friendName);
 			System.out.println(chatmsg.getCode());
 			System.out.println(chatmsg.getSearchFriend());
@@ -96,6 +97,7 @@ public class AddFriendFrame extends JFrame{
 			String friendName = tfUserName.getText().trim();
 			System.out.println("tfUserName: " + friendName);
 			ChatMsg chatmsg = new ChatMsg(chatMsg.getUsername(), "303");
+			chatmsg.setProfileImg(chatMsg.profileImg);
 			chatmsg.setSearchFriend(friendName);
 			System.out.println("addFriendAction():" + chatmsg.getCode());
 			System.out.println("addFriendAction():" + chatmsg.getSearchFriend());
@@ -133,8 +135,8 @@ public class AddFriendFrame extends JFrame{
 		btnAddFriend.setVisible(false);
 		contentPane.add(btnAddFriend);
 		
-		profileImg = profileImg.getScaledInstance(100, 100,  Image.SCALE_SMOOTH);
-		searchedIcon = new ImageIcon(profileImg);
+		//profileImg = profileImg.getScaledInstance(100, 100,  Image.SCALE_SMOOTH);
+		searchedIcon = new ImageIcon("src/no_profile.jpg");
 		searchedImg = new JLabel();
 		searchedImg.setBounds(111, 180, 100, 100);
 		searchedImg.setVisible(false);
@@ -158,6 +160,5 @@ class MyPanel extends JPanel {
 		super.paintComponent(g);
 		g.setColor(new Color(200, 200, 200));
 		g.drawLine(10, 100, 260, 100);
-		System.out.println("drawLine");
 	}
 }

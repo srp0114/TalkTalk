@@ -128,7 +128,8 @@ public class TalkTalkMainServer extends JFrame {
 		private Socket client_socket;
 		private Vector user_vc;
 		public String username="";   // 유저 이름
-		public ImageIcon profileImg;  // 프로필 사진
+		public ImageIcon profileImg = new ImageIcon("src/no_profile.jpg");  // 프로필 사진
+		public String userStatus;
 		public String searchFriendName="";
 		int i = 0;
 		public Vector<UserService> FriendList = new Vector<UserService>();
@@ -150,6 +151,7 @@ public class TalkTalkMainServer extends JFrame {
 			while(true) {
 				try {
 					Object obcm = null;
+					String msg = null;
 					ChatMsg cm = null;
 					if(socket == null) {
 						System.out.println("socket is null");
@@ -173,6 +175,8 @@ public class TalkTalkMainServer extends JFrame {
 						cm = (ChatMsg)obcm;
 						System.out.println(cm.getUsername());
 						System.out.println(cm.getCode());
+						AppendObject(cm);
+
 					} else
 						continue;
 					System.out.println("실제 받아온 프로토콜: " + cm.getCode());
@@ -183,6 +187,50 @@ public class TalkTalkMainServer extends JFrame {
 						//userInfos.add(cm);
 						Login();
 					}
+					else if (cm.getCode().matches("200")) {
+		                   msg = String.format("[%s] %s", cm.getUsername(), cm.getCode());
+		                   AppendText(msg); // server 화면에 출력
+		                   String[] args = msg.split(" "); 
+		                   if (args.length == 1) { // Enter key 만 들어온 경우 Wakeup 처리만 한다.
+		                      userStatus = "O";
+		                   } else if (args[1].matches("/exit")) {
+		                       Logout();
+		                       break;
+		                   } else if (args[1].matches("/list")) {
+		                       WriteOne("User list\n");
+		                       WriteOne("Name\tStatus\n");
+		                       WriteOne("-----------------------------\n");
+		                       for (int i = 0; i < user_vc.size(); i++) {
+		                           UserService user = (UserService) user_vc.elementAt(i);
+		                           WriteOne(user.username + "\t" + user.userStatus + "\n");
+		                       }
+		                       WriteOne("-----------------------------\n");
+		                   } else if (args[1].matches("/sleep")) {
+		                      userStatus = "S";
+		                   } else if (args[1].matches("/wakeup")) {
+		                      userStatus = "O";
+		                   } else if (args[1].matches("/to")) { // 귓속말
+		                       for (int i = 0; i < user_vc.size(); i++) {
+		                           UserService user = (UserService) user_vc.elementAt(i);
+		                           if (user.username.matches(args[2]) && user.userStatus.matches("O")) {
+		                               String msg2 = "";
+		                               for (int j = 3; j < args.length; j++) {// 실제 message 부분
+		                                   msg2 += args[j];
+		                                   if (j < args.length - 1)
+		                                       msg2 += " ";
+		                               }
+		                               // /to 빼고.. [귓속말] [user1] Hello user2..                               
+		                               //user.WriteOne("[귓속말] " + args[0] + " " + msg2 + "\n");
+		                               break;
+		                           }
+		                       }
+		                   } else { // 일반 채팅 메시지
+		                       userStatus = "O";
+		                       //WriteAll(msg + "\n"); // Write All
+		                       WriteAllObject(cm);
+		                   }
+		               }
+
 					else if(cm.getCode().matches("302")) { // 친구 검색
 						System.out.println("cm.getCode() matches 302");
 						searchFriendName = cm.getSearchFriend();
@@ -271,6 +319,36 @@ public class TalkTalkMainServer extends JFrame {
 			}
 		}
 		
+		// 모든 User들에게 방송. 각각의 UserService Thread의 WriteONe() 을 호출한다.
+	      public void WriteAll(String str) {
+	          for (int i = 0; i < user_vc.size(); i++) {
+	              UserService user = (UserService) user_vc.elementAt(i);
+	              if (user.userStatus == "O")
+	                  user.WriteOne(str);
+	          }
+	      }
+
+		
+		  // 모든 User들에게 Object를 방송. 채팅 message와 image object를 보낼 수 있다
+	      public void WriteAllObject(Object ob) {
+	          for (int i = 0; i < user_vc.size(); i++) {
+	              UserService user = (UserService) user_vc.elementAt(i);
+	              if (user.userStatus == "O")
+	                  user.WriteOneObject(ob);
+	          }
+	      }
+
+		
+		 public void WriteOthers(String str) {
+	          for (int i = 0; i < user_vc.size(); i++) {
+	              UserService user = (UserService) user_vc.elementAt(i);
+	              if (user != this && user.userStatus == "O")
+	                  user.WriteOne(str);
+	          }
+	      }
+
+		
+		
 		// 특정 유저에게 ChatMsg 보내기
 		public void WriteOther(Object ob, String name) {
 			// 나를 제외한 User들에게 방송. 각각의 UserService Thread의 WriteONe() 을 호출한다.
@@ -280,7 +358,50 @@ public class TalkTalkMainServer extends JFrame {
 					user.WriteObject(ob);
 			}
 		}
+		public void WriteOne(String msg) {
+	          try {
+	              ChatMsg obcm = new ChatMsg("SERVER", "200", msg);
+	              oos.writeObject(obcm);
+	          } catch (IOException e) {
+	              AppendText("dos.writeObject() error");
+	              try {
+	                  ois.close();
+	                  oos.close();
+	                  client_socket.close();
+	                  client_socket = null;
+	                  ois = null;
+	                  oos = null;
+	              } catch (IOException e1) {
+	                  // TODO Auto-generated catch block
+	                  e1.printStackTrace();
+	              }
+	              Logout(); // 에러가난 현재 객체를 벡터에서 지운다
+	          }
+	      }
+
 		
+		
+		public void WriteOneObject(Object ob) {
+	          try {
+	              oos.writeObject(ob);
+	          }
+	          catch (IOException e) {
+	              AppendText("oos.writeObject(ob) error");
+	              try {
+	                  ois.close();
+	                  oos.close();
+	                  client_socket.close();
+	                  client_socket = null;
+	                  ois = null;
+	                  oos = null;
+	              } catch (IOException e1) {
+	                  // TODO Auto-generated catch block
+	                  e1.printStackTrace();
+	              }
+	              Logout();
+	          }
+	      }
+
 		
 		
 		public void WriteObject(Object ob) {
