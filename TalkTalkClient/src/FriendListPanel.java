@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyledDocument;
 
@@ -164,10 +165,16 @@ public class FriendListPanel extends JPanel{
 			SimpleAttributeSet sortMethod = new SimpleAttributeSet();
 			//friend.setSize(getPreferredSize());
 			System.out.println("updateFriendList 함수 코드 시작");
-			textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength());
+			try {
+				textPaneFriendList.getDocument().insertString(textPaneFriendList.getDocument().getLength(), " ", null);
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength()-1);
 			textPaneFriendList.insertComponent(friend);
 			//textPaneFriendList.replaceSelection("\n");
-			textPaneFriendList.setCaretPosition(0);
+			//textPaneFriendList.setCaretPosition(0);
 			repaint();
 			
 			/*
