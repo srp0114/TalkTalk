@@ -248,6 +248,8 @@ public class TalkTalkMainServer extends JFrame {
 							friendNames.add(((UserService)FriendList.get(i)).username);
 						}
 						
+						
+						
 						if(friendNames.contains(friendName)) {
 							System.out.println("Server(303): " + friendName+ "은 이미 친구!");
 						}

@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -58,7 +59,8 @@ public class FriendListPanel extends JPanel{
 		this.add(friendListHeaderPanel);
 		
 		friendListScrollPane = new FriendListScrollPane();
-		friendListScrollPane.setLocation(0, 152);
+		//friendListScrollPane.setLocation(0, 152);
+		friendListScrollPane.setBounds(0,152, 305, 410);
 		friendListScrollPane.setVisible(true);
 		this.add(friendListScrollPane);
 		
@@ -141,11 +143,12 @@ public class FriendListPanel extends JPanel{
 			this.setLayout(null);
 			this.setSize(305,410);
 			
-			setBorder(null);
+			//setBorder(null);
 			//setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 			setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			this.textPaneFriendList = new JTextPane();
-			this.textPaneFriendList.setBounds(3, 20, 300, 400);
+			textPaneFriendList.setLayout(new GridLayout(5,1));
+			this.textPaneFriendList.setBounds(3, 5, 300, 400);
 			this.textPaneFriendList.setBackground(new Color(200, 200, 200));
 			this.textPaneFriendList.setEditable(false);
 			//this.textPaneFriendList.setAlignmentY(1.0f);
@@ -163,6 +166,7 @@ public class FriendListPanel extends JPanel{
 			System.out.println("updateFriendList 함수 코드 시작");
 			textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength());
 			textPaneFriendList.insertComponent(friend);
+			//textPaneFriendList.replaceSelection("\n");
 			textPaneFriendList.setCaretPosition(0);
 			repaint();
 			
