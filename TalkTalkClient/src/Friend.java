@@ -5,6 +5,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -21,8 +22,9 @@ public class Friend extends JPanel{
    
    public Friend(ImageIcon profileImage, String username) {
       setBackground(new Color(255, 255, 255));
-      setSize(290, 60);
-      setLayout(new FlowLayout(FlowLayout.LEFT, 15, 10));
+      //setSize(290, 60);
+      setPreferredSize(new Dimension(290, 70));
+      setLayout(new FlowLayout(FlowLayout.LEFT, 15,10));
       
       //this.clientView = clientView;
       this.username = username;

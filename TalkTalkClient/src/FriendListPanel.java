@@ -148,7 +148,7 @@ public class FriendListPanel extends JPanel{
 			//setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 			setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			this.textPaneFriendList = new JTextPane();
-			textPaneFriendList.setLayout(new GridLayout(5,1));
+			//textPaneFriendList.setLayout(new GridLayout(5,1));
 			this.textPaneFriendList.setBounds(3, 5, 300, 400);
 			this.textPaneFriendList.setBackground(new Color(200, 200, 200));
 			this.textPaneFriendList.setEditable(false);
@@ -171,22 +171,13 @@ public class FriendListPanel extends JPanel{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength()-1);
+			textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength());
 			textPaneFriendList.insertComponent(friend);
-			//textPaneFriendList.replaceSelection("\n");
+			textPaneFriendList.replaceSelection("\n");
 			//textPaneFriendList.setCaretPosition(0);
 			repaint();
 			
-			/*
-			for(int i = 0; i < clientView.FriendVector.size(); i++) {
-				Friend friend = clientView.FriendVector.elementAt(i);
-				textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength());
-				textPaneFriendList.insertComponent(friend);
-				textPaneFriendList.setCaretPosition(0);
-				System.out.println("friend: " + friend.getUsername());
-				repaint();			
-			}
-			*/
+			
 		}
 	}
 	
