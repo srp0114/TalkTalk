@@ -71,6 +71,10 @@ public class Friend extends JPanel{
    public String getUsername() {
       return username;
    }
+   
+   public void setProfileImg(ImageIcon profileImg) {
+	   this.profileImage = profileImg;
+   }
 
 
 	public void SetSelect(boolean select) {

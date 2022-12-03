@@ -159,9 +159,20 @@ public class TalkTalkClientView extends JFrame{
 
    					case "301":  // 프로필 변경
    						System.out.println("clientView 301 서버로부터 cm 받음 : " + cm.getUsername());
-   						profile = cm.profileImg;
    						if(cm.getUsername().equals(username)) {
-   							
+   							System.out.println(username + "이랑 일치");
+   							profile = cm.profileImg;
+   						}
+   						else {
+   							for(int i = 0; i < FriendVector.size(); i++) {
+   								Friend f = FriendVector.get(i);
+   								if(f.username.equals(cm.getUsername())){
+   									System.out.println("f.username.equals(cm.getUsername()");
+   									f.setProfileImg(cm.profileImg);
+   									FriendVector.set(i, f);
+   									friendListPanel.friendListScrollPane.allUpdateFriendList();
+   								}
+   							}
    						}
    						break;
    					case "302":  // 친구 검색

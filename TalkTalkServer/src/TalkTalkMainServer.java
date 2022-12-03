@@ -228,6 +228,7 @@ public class TalkTalkMainServer extends JFrame {
 							ChatMsg newProfileCm = new ChatMsg(username, "301");
 							newProfileCm.setProfileImg(profileImg);
 							u.WriteObject(newProfileCm);
+							WriteObject(newProfileCm);
 						}
 					}
 

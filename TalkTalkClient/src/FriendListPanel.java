@@ -211,6 +211,25 @@ public class FriendListPanel extends JPanel{
 			
 			
 		}
+		
+		public synchronized void allUpdateFriendList() {
+			System.out.println("allUpdateFriendList() 호출됨.");
+			textPaneFriendList.remove(0);
+//			try {
+//				textPaneFriendList.getDocument().insertString(textPaneFriendList.getDocument().getLength(), " ", null);
+//			} catch (BadLocationException e) {
+//				e.printStackTrace();
+//			}
+//			for(int i = 0; i < clientView.FriendVector.size(); i++) {
+//				Friend f = clientView.FriendVector.get(i);
+//		
+//				textPaneFriendList.insertComponent(f);
+//				textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength());
+//				textPaneFriendList.setCaretPosition(0);
+//			}
+//			repaint();
+		
+		}
 	}
-	
 }
+		
