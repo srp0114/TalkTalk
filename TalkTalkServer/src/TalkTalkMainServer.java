@@ -29,9 +29,10 @@ public class TalkTalkMainServer extends JFrame {
 	private Vector UserVec = new Vector();
 	private Vector<ChatMsg> userInfos = new Vector();
 	private static final int BUF_LEN = 128;
+	private int roomId = 1000;
 	
 	//private Vector<Friend> FriendVector = new Vector();
-	private Vector<Room> RoomVector = new Vector();
+	private Vector<ChatRoom> RoomVector = new Vector();
 
 	
 	public static void main(String[] args){
@@ -134,6 +135,7 @@ public class TalkTalkMainServer extends JFrame {
 		int i = 0;
 		public Vector<UserService> FriendList = new Vector<UserService>();
 		public Vector<String> friendNames = new Vector<String>();
+		public ChatMsg userInfo;
 		
 		public UserService(Socket client_socket) {
 			this.client_socket = client_socket;
@@ -184,10 +186,12 @@ public class TalkTalkMainServer extends JFrame {
 					if(cm.getCode().matches("100")) { // 로그인
 						username = cm.getUsername();
 						profileImg = cm.profileImg;
+						userInfo = new ChatMsg(username, "100");
+						userInfo.setProfileImg(profileImg);
 						//userInfos.add(cm);
 						Login();
 					}
-					else if (cm.getCode().matches("200")) {
+					else if (cm.getCode().matches("200")) {  // 메시지 보내기
 		                   msg = String.format("[%s] %s", cm.getUsername(), cm.getCode());
 		                   AppendText(msg); // server 화면에 출력
 		                   String[] args = msg.split(" "); 
@@ -229,7 +233,17 @@ public class TalkTalkMainServer extends JFrame {
 		                       //WriteAll(msg + "\n"); // Write All
 		                       WriteAllObject(cm);
 		                   }
-		               }
+		            }
+					else if(cm.getCode().matches("301")) {  // 프로필 변경
+						System.out.println("cm.getCode() matches 301");
+						profileImg = cm.profileImg;
+						for(i = 0; i < FriendList.size(); i++) {
+							UserService u = (UserService)FriendList.get(i);
+							ChatMsg newProfileCm = new ChatMsg(username, "301");
+							newProfileCm.setProfileImg(profileImg);
+							u.WriteObject(newProfileCm);
+						}
+					}
 
 					else if(cm.getCode().matches("302")) { // 친구 검색
 						System.out.println("cm.getCode() matches 302");
@@ -237,7 +251,7 @@ public class TalkTalkMainServer extends JFrame {
 						System.out.println(searchFriendName);
 						SearchFriend();
 					}
-					else if(cm.getCode().matches("303")) {
+					else if(cm.getCode().matches("303")) {  // 친구 추가
 						System.out.println("cm.getCode() matches 303");
 						String userName = cm.getUsername();
 						String friendName = cm.getSearchFriend();
@@ -279,6 +293,43 @@ public class TalkTalkMainServer extends JFrame {
 						for(int i = 0; i < friendNames.size(); i++) {
 							System.out.print(friendNames.get(i));
 						}		
+						
+					}
+					else if(cm.getCode().matches("400")) { // 채팅방 만들기
+						System.out.println("cm.getCode() matches 400");
+						if(RoomVector.size() == 0) {
+							ChatRoom chatRoom = new ChatRoom(roomId, cm.getUserlist());
+							RoomVector.add(chatRoom);
+							String[] userlist = chatRoom.getUserlist();
+							for(i = 0; i < user_vc.size(); i++) {
+								UserService u = (UserService)user_vc.get(i);
+								for(int j = 0; j < userlist.length; j++) {
+									if(u.username.equals(userlist[j])){
+										ChatMsg rcm = new ChatMsg(u.username, "401");
+										rcm.setRoomId(roomId);
+										rcm.setUserlist(cm.getUserlist());
+										u.WriteObject(rcm);
+									}
+								}
+							}
+						}
+						else {
+							roomId++;
+							ChatRoom chatRoom = new ChatRoom(roomId, cm.getUserlist());
+							RoomVector.add(chatRoom);
+							String[] userlist = chatRoom.getUserlist();
+							for(i = 0; i < user_vc.size(); i++) {
+								UserService u = (UserService)user_vc.get(i);
+								for(int j = 0; j < userlist.length; j++) {
+									if(u.username.equals(userlist[j])){
+										ChatMsg rcm = new ChatMsg(u.username, "401");
+										rcm.setRoomId(roomId);
+										rcm.setUserlist(cm.getUserlist());
+										u.WriteObject(rcm);
+									}
+								}
+							}
+						}
 						
 					}
 					
@@ -424,5 +475,7 @@ public class TalkTalkMainServer extends JFrame {
 				Logout(); // 에러가난 현재 객체를 벡터에서 지운다
 			}
 		}	
+		
+		
 	}
 }

@@ -1,7 +1,9 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FileDialog;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -46,6 +48,9 @@ public class FriendListPanel extends JPanel{
 	public FriendListHeaderPanel friendListHeaderPanel;
 	public FriendListScrollPane friendListScrollPane;
 	
+	private Frame frame;  // 프로필 변경 프레임
+	private FileDialog fd;
+	
 	public FriendListPanel(TalkTalkClientView clientView, ChatMsg chatMsg) {  // 매개변수로 username 받는 생성자
 		this.clientView = clientView;
 		this.chatMsg = chatMsg;
@@ -79,8 +84,11 @@ public class FriendListPanel extends JPanel{
 			this.setBackground(new Color(255,255,255));  // 배경색: 흰색
 			UIInit();
 			
-			AddFriendIconAction action = new AddFriendIconAction();
-			btnAddFriendIcon.addActionListener(action);
+			AddFriendIconAction addFriendAction = new AddFriendIconAction();
+			btnAddFriendIcon.addActionListener(addFriendAction); // 친구 추가 버튼 액션 설정
+			
+			ChangeProfileAction changeProfileAction = new ChangeProfileAction();
+			btnProfileImg.addActionListener(changeProfileAction);  // 프로필 변경 버튼 액션 설정
 			setVisible(true);
 		}
 		
@@ -96,6 +104,31 @@ public class FriendListPanel extends JPanel{
 				addFriendFrame = new AddFriendFrame(clientView, chatMsg);
 			}
 		}
+		
+		class ChangeProfileAction implements ActionListener {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == btnProfileImg) {
+					frame = new Frame("이미지첨부");
+					fd = new FileDialog(frame, "이미지 선택", FileDialog.LOAD);
+					// frame.setVisible(true);
+					// fd.setDirectory(".\\");
+					fd.setVisible(true);
+					//System.out.println(fd.getDirectory() + fd.getFile());
+					ChatMsg obcm = new ChatMsg(chatMsg.getUsername(), "301");
+					ImageIcon img = new ImageIcon(fd.getDirectory() + fd.getFile());
+					changeMyProfile(img);
+					obcm.setProfileImg(img);
+					clientView.SendObject(obcm);
+				}
+			}
+		}
+		
+		public void changeMyProfile(ImageIcon profileImg) {
+			btnProfileImg.setIcon(profileImg);
+			repaint();
+		}
+		
 		
 		public void UIInit() {
 			
@@ -135,6 +168,7 @@ public class FriendListPanel extends JPanel{
 		}
 	}
 	
+	
 	class FriendListScrollPane extends JScrollPane{
 		private StyledDocument document;
 		private JTextPane textPaneFriendList;
@@ -144,13 +178,13 @@ public class FriendListPanel extends JPanel{
 			this.setLayout(null);
 			this.setSize(305,410);
 			
-			//setBorder(null);
+			setBorder(null);
 			//setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 			setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			this.textPaneFriendList = new JTextPane();
 			//textPaneFriendList.setLayout(new GridLayout(5,1));
 			this.textPaneFriendList.setBounds(3, 5, 300, 400);
-			this.textPaneFriendList.setBackground(new Color(200, 200, 200));
+			this.textPaneFriendList.setBackground(new Color(255, 255, 255));
 			this.textPaneFriendList.setEditable(false);
 			//this.textPaneFriendList.setAlignmentY(1.0f);
 			this.setViewportView(textPaneFriendList);
@@ -173,7 +207,6 @@ public class FriendListPanel extends JPanel{
 			}
 			textPaneFriendList.insertComponent(friend);
 			textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength());
-			//textPaneFriendList.insertComponent(friend);
 			//textPaneFriendList.replaceSelection("\n");
 			textPaneFriendList.setCaretPosition(0);
 			repaint();

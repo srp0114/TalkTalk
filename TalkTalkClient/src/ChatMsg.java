@@ -8,7 +8,7 @@ public class ChatMsg implements Serializable{
    private String username;
    private String code;
    private String userlist;
-   private String roomId;
+   private int roomId;
    private Image profile;
    public ImageIcon profileImg;
    private int friendNumber = 0;
@@ -98,10 +98,18 @@ public class ChatMsg implements Serializable{
    public void addRoom(String roomId) {
 	   roomlist += " " + roomId;
    }
+   public void setRoomId(int roomdId) {
+	   this.roomId = roomId;
+   }
+   public int getRoomId() {
+	   return roomId;
+   }
+   
    // profileImg
    public void setProfileImg(ImageIcon profileImg) {
       this.profileImg = profileImg;
    }
+   
 
    // msg
    public void setMsg(String msg) {

@@ -8,8 +8,7 @@ public class ChatMsg implements Serializable{
    private String username;
    private String code;
    private String userlist;
-   private String roomId;
-   
+   private int roomId;
    private Image profile;
    public ImageIcon profileImg;
    private int friendNumber = 0;
@@ -23,19 +22,19 @@ public class ChatMsg implements Serializable{
    
    public ChatMsg(String username, String code) {
       this.username = username;
-      this.code = code;      
-      Image profile = Toolkit.getDefaultToolkit().getImage("src/noProfileImg.jpg");
-      profile = profile.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
-      profileImg = new ImageIcon(profile);
+      this.code = code; 
+//      Image profile = Toolkit.getDefaultToolkit().getImage("src/noProfileImg.jpg");
+//      profile = profile.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
+//      profileImg = new ImageIcon(profile);
    }
 
    public ChatMsg(String username, String code, String msg) {
       this.username = username;
       this.code = code;
       this.msg = msg;
-      Image profile = Toolkit.getDefaultToolkit().getImage("src/noProfileImg.jpg");
-      profile = profile.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
-      profileImg = new ImageIcon(profile);
+//      Image profile = Toolkit.getDefaultToolkit().getImage("src/noProfileImg.jpg");
+//      profile = profile.getScaledInstance(50, 50,  Image.SCALE_SMOOTH);
+//      profileImg = new ImageIcon(profile);
    }
    
    //userName
@@ -85,6 +84,9 @@ public class ChatMsg implements Serializable{
    public String getFriendlist() {
       return friendlist;
    }
+   public void addFriend(String name) {
+	   friendlist += " " + name;
+   }
    
    // roomlist
    public void setRoomlist(String roomlist) {
@@ -93,11 +95,21 @@ public class ChatMsg implements Serializable{
    public String getRoomlist() {
       return roomlist;
    }
+   public void addRoom(String roomId) {
+	   roomlist += " " + roomId;
+   }
+   public void setRoomId(int roomdId) {
+	   this.roomId = roomId;
+   }
+   public int getRoomId() {
+	   return roomId;
+   }
    
    // profileImg
    public void setProfileImg(ImageIcon profileImg) {
       this.profileImg = profileImg;
    }
+   
 
    // msg
    public void setMsg(String msg) {
