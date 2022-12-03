@@ -171,10 +171,11 @@ public class FriendListPanel extends JPanel{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength());
 			textPaneFriendList.insertComponent(friend);
-			textPaneFriendList.replaceSelection("\n");
-			//textPaneFriendList.setCaretPosition(0);
+			textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength());
+			//textPaneFriendList.insertComponent(friend);
+			//textPaneFriendList.replaceSelection("\n");
+			textPaneFriendList.setCaretPosition(0);
 			repaint();
 			
 			

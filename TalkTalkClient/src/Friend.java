@@ -23,7 +23,7 @@ public class Friend extends JPanel{
    public Friend(ImageIcon profileImage, String username) {
       setBackground(new Color(255, 255, 255));
       //setSize(290, 60);
-      setPreferredSize(new Dimension(290, 70));
+      setPreferredSize(new Dimension(300, 70));
       setLayout(new FlowLayout(FlowLayout.LEFT, 15,10));
       
       //this.clientView = clientView;
@@ -32,14 +32,14 @@ public class Friend extends JPanel{
       
       userName = new JLabel(username);
       userName.setHorizontalAlignment(SwingConstants.LEFT);
-      //userName.setHorizontalAlignment(SwingConstants.CENTER);
+      userName.setVerticalAlignment(SwingConstants.CENTER);
       //userName.setBounds(55,12,100,50);
       userName.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
       userName.setVisible(true);
 
       imageButton = new JButton(profileImage);
       imageButton.setHorizontalAlignment(SwingConstants.LEFT);
-      //imageButton.setHorizontalAlignment(SwingConstants.LEFT);
+      imageButton.setVerticalAlignment(SwingConstants.CENTER);
       imageButton.setBorderPainted(false);
       imageButton.setFocusPainted(false);
       imageButton.setContentAreaFilled(false);
