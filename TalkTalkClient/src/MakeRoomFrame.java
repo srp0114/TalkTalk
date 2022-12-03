@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -16,6 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyledDocument;
 
 public class MakeRoomFrame extends JFrame {
 	private TalkTalkClientView clientView = null;
@@ -25,6 +29,11 @@ public class MakeRoomFrame extends JFrame {
 	private JPanel contentPane;
 	private JTextPane textPane;
 	private JButton okBtn;
+	private StyledDocument document;
+	private Friend f1;
+	public String userList ="";
+	public Vector<Friend> SelectVector = new Vector<Friend>();
+
 	
 	public MakeRoomFrame(TalkTalkClientView clientView, ChatMsg chatMsg) {
 		this.clientView = clientView;
@@ -32,17 +41,12 @@ public class MakeRoomFrame extends JFrame {
 		this.setSize(300,390);
 		this.setTitle("대화상대 선택");
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         contentPane = new JPanel();
         contentPane.setBackground(new Color(251, 252, 255));
         
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
-		
-        //JCheckBox cb = new JCheckBox("버튼 비활성화");
-        //JCheckBox cb1 = new JCheckBox("버튼 감추기");
-        //JButton btn = new JButton("확인");
             
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(0,0,300,325);
@@ -50,28 +54,59 @@ public class MakeRoomFrame extends JFrame {
 		
 		textPane = new JTextPane();
 		textPane.setBounds(0,0,300,325);
-		textPane.setEditable(true);
+		textPane.setEditable(false);
 		scrollPane.setViewportView(textPane);
 
-		okBtn = new JButton("확인");
-		okBtn.setBackground(new Color(252, 255, 255));
-		
-		okBtn.setBounds(215,328,80,30);
+		okBtn = new JButton("확인");		
+		okBtn.setBounds(215,328,80,30);		
+		okBtn.setBackground(new Color(255, 255, 255));
 		contentPane.add(okBtn);
 		
+		userList = chatMsg.getUsername();
+		
         for(int i = 0; i < clientView.FriendVector.size();i++) {
-            Friend f1 = clientView.FriendVector.elementAt(i);
-            System.out.println("??이름: " + f1.getUsername());
+			Friend f = clientView.FriendVector.elementAt(i);
+			f1 = new Friend(f.profileImage, f.username);
+			f1.SetSelect(true);
+			
+			SelectVector.add(f1);
+			System.out.println("===================");
+            System.out.println(f1.getUsername());    
             
-            //Friend f2 = new Friend(f1.getUsername());
-            //f2.setBounds(10,10,100,100);
-            //textPane.insertComponent(f2);
+            textPane.add(f1);
+            textPane.insertComponent(f1);
+            repaint();
          }  
-        
         setVisible(true);
-	}
-	
-
-	
+ 
+        
+        
+        okBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	f1.SetSelect(false);
+            	dispose();
+            }
+            
+        }
+	);     
+        
+        okBtn.addActionListener(event -> {
+          
+            for(int i = 0; i < SelectVector.size();i++) {
+                Friend friendList = SelectVector.elementAt(i);
+                if(friendList.isChecked == true) {
+                	userList += " " + friendList.username;
+                }
+                
+            }
+            	
+        	System.out.println("선택된 친구들" + userList);
+        	ChatMsg cm = new ChatMsg(chatMsg.getUsername(), "400");
+        	cm.setUserlist(userList);
+        	clientView.SendObject(cm);
+        });   
+	}	
 }
+
 

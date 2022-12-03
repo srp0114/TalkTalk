@@ -195,8 +195,6 @@ public class FriendListPanel extends JPanel{
 		
 		
 		public void updateFriendList(Friend friend) {
-			document = textPaneFriendList.getStyledDocument();
-			SimpleAttributeSet sortMethod = new SimpleAttributeSet();
 			//friend.setSize(getPreferredSize());
 			System.out.println("updateFriendList 함수 코드 시작");
 			try {

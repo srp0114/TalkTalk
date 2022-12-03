@@ -37,7 +37,16 @@ public class ChatMsg implements Serializable{
 //      profileImg = new ImageIcon(profile);
    }
    
-   //userName
+   public ChatMsg(int roomId, String username, String code, String msg) {
+	   
+	// TODO Auto-generated constructor stub
+	   this.roomId = roomId;
+	   this.username = username;
+	   this.code = code;
+	   this.msg = msg;
+}
+
+//userName
    public void setUsername(String username) {
       this.username = username;
    }
@@ -85,7 +94,7 @@ public class ChatMsg implements Serializable{
       return friendlist;
    }
    public void addFriend(String name) {
-	   friendlist += " " + name;
+      friendlist += " " + name;
    }
    
    // roomlist
@@ -96,13 +105,13 @@ public class ChatMsg implements Serializable{
       return roomlist;
    }
    public void addRoom(String roomId) {
-	   roomlist += " " + roomId;
+      roomlist += " " + roomId;
    }
-   public void setRoomId(int roomdId) {
-	   this.roomId = roomId;
+   public void setRoomId(int roomId) {
+      this.roomId = roomId;
    }
    public int getRoomId() {
-	   return roomId;
+      return roomId;
    }
    
    // profileImg

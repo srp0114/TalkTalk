@@ -1,5 +1,6 @@
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -8,19 +9,24 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 import javax.swing.SwingConstants;
 
 public class Friend extends JPanel{
    private TalkTalkClientView clientView = null;
    
-   private String username ="";
-   private ImageIcon profileImage;
-   
+   public String username ="";
+   public ImageIcon profileImage;
+   public String selectUser = "";
    //private JButton imageLabel;
    private JButton imageButton;
    private JLabel userName;
+   private JCheckBox checkBox;
+   public Boolean isChecked = false; 
    
-   public Friend(ImageIcon profileImage, String username) {
+   public Friend (ImageIcon profileImage, String username) {
       setBackground(new Color(255, 255, 255));
       //setSize(290, 60);
       setPreferredSize(new Dimension(300, 70));
@@ -30,6 +36,7 @@ public class Friend extends JPanel{
       this.username = username;
       this.profileImage = profileImage;
       
+
       userName = new JLabel(username);
       userName.setHorizontalAlignment(SwingConstants.LEFT);
       userName.setVerticalAlignment(SwingConstants.CENTER);
@@ -37,6 +44,13 @@ public class Friend extends JPanel{
       userName.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
       userName.setVisible(true);
 
+      MyItemListener listener = new MyItemListener();
+
+      checkBox = new JCheckBox();
+      checkBox.setHorizontalAlignment(SwingConstants.RIGHT);
+      checkBox.addItemListener(listener); // 체크박스에 Item 리스너 등록
+      SetSelect(false);
+      
       imageButton = new JButton(profileImage);
       imageButton.setHorizontalAlignment(SwingConstants.LEFT);
       imageButton.setVerticalAlignment(SwingConstants.CENTER);
@@ -50,10 +64,38 @@ public class Friend extends JPanel{
 
       this.add(imageButton);
       this.add(userName);
+      this.add(checkBox);
       this.setVisible(true);
    }
    
    public String getUsername() {
       return username;
    }
+
+
+	public void SetSelect(boolean select) {
+		if(select == true) {
+			checkBox.setVisible(true);
+			
+		}
+		else {
+			checkBox.setVisible(false);
+		}
+	}
+	
+	
+	class MyItemListener implements ItemListener {       
+	       // 체크박스의 선택 상태가 변하면 itemStateChanged()가 호출됨
+	       public void itemStateChanged(ItemEvent e) {
+	           if(e.getStateChange() == ItemEvent.SELECTED) { // 선택 경우
+		             isChecked = true;
+	           }
+	           else { // 해제 경우
+		             isChecked = false;
+	           }
+	       }
+	 }
+	
+	
+
 }

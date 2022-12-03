@@ -20,10 +20,10 @@ import javax.swing.JSplitPane;
 public class TalkTalkClientView extends JFrame{
 	private static final long serialVersionUID = 1L;
 	public JPanel contentPane;
-   private String username;  // username
+   public String username;  // username
    private String ip_addr;
    private String port_no;
-   private ChatMsg obcm;      // obui
+   public ChatMsg obcm;      // obui
    private ImageIcon profile = new ImageIcon("src/no_profile.jpg");
 
    private JButton btnprofileIcon;
@@ -40,8 +40,10 @@ public class TalkTalkClientView extends JFrame{
    private MenuPanel menuPanel = null;  // 메뉴 패널
    public FriendListPanel friendListPanel = null;  // 친구창 패널
    public ChatListPanel chatListPanel = null;
+   public ChatRoomFrame chatRoomFrame = null;
    public Vector<Friend> FriendVector = new Vector<Friend>();
-
+   public Vector<ChatRoom> RoomVector = new Vector<ChatRoom>();
+   public Vector<ChatRoomFrame> RoomFrameVector = new Vector<ChatRoomFrame>();
 
    public TalkTalkClientView(String username, String ip_addr, String port_no) {
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,7 +67,7 @@ public class TalkTalkClientView extends JFrame{
          obcm.setProfileImg(profile);
          SendObject(obcm);
          
-         ListenNetwork net = new ListenNetwork();
+         ListenNetwork net = new ListenNetwork(this);
          net.start();
       }catch(NumberFormatException | IOException e) {
          e.printStackTrace();
@@ -107,6 +109,10 @@ public class TalkTalkClientView extends JFrame{
    
  //Server Message를 수신해서 화면에 표시
    class ListenNetwork extends Thread {
+	   TalkTalkClientView clientView;
+	   public ListenNetwork(TalkTalkClientView clientView) {
+		   this.clientView = clientView;		   
+	   }
    		public void run() {
    			while (true) {
    				try {
@@ -129,7 +135,37 @@ public class TalkTalkClientView extends JFrame{
    						continue;
    					
    					switch(cm.getCode()) {
+   					case "200":
+                        System.out.println("200");
+                        System.out.println("나는 " + username + "이다. 서버로 부터 " + cm.getRoomId() + "방의 유저인" 
+                        + cm.getUsername() + "로 부터 메시지: " + cm.getMsg() + "를 받았징");
+                        
+                        for(int i=0; i<RoomFrameVector.size(); i++ ) {
+                            ChatRoomFrame cf = RoomFrameVector.get(i);
+                            int crRoomID = cf.roomId;
+                            if(crRoomID == cm.getRoomId()) {
+                          	  if(username.equals(cm.getUsername())) {
+                              	  cf.AppendTextUser(cm);
+
+                          	  }
+                          	  else {
+                          		  cf.AppendText(cm);
+                          	  }
+                            }
+                        }
+                   
+                        break; 
+   						
+
+   					case "301":  // 프로필 변경
+   						System.out.println("clientView 301 서버로부터 cm 받음 : " + cm.getUsername());
+   						profile = cm.profileImg;
+   						if(cm.getUsername().equals(username)) {
+   							
+   						}
+   						break;
    					case "302":  // 친구 검색
+   						System.out.println("clientView 302 서버로부터 cm 받음 : " + cm.getUsername());
    						friendListPanel.addFriendFrame.updateSearchResult(cm);
    						System.out.println(cm.profileImg.toString()+" clientViewAccept");
    						break;
@@ -141,7 +177,15 @@ public class TalkTalkClientView extends JFrame{
    						System.out.println("303 updateFriendList함수 호출");
    						break;
    						
-   					case "400":  // 채팅방 생성
+   					case "401":  // 채팅방 생성
+   						System.out.println("clientView 401 서버로부터 cm 받음 : " + cm.getUsername());
+   						System.out.println("clientView 채팅방 번호: " + cm.getRoomId());
+   						System.out.println("clientView 채팅방에 들어갈 유저들: " + cm.getUserlist());
+   						
+   						addChatRoom(cm);
+   						chatRoomFrame = new ChatRoomFrame(cm.getRoomId(), clientView, cm.getUserlist());
+   						chatRoomFrame.setVisible(false);
+   						RoomFrameVector.add(chatRoomFrame);
    						break;
    					
    						
@@ -173,6 +217,14 @@ public class TalkTalkClientView extends JFrame{
 			}
 			System.out.println();
 			friendListPanel.friendListScrollPane.updateFriendList(friend);
+		}
+   		
+   		public void addChatRoom(ChatMsg cm) {
+			System.out.println("친구추가 함수 호출: " + cm.getUsername());
+			ChatRoom chatRoom = new ChatRoom(clientView, cm.getRoomId(), cm.getUserlist());
+			System.out.println(chatRoom.getUserlist());
+			RoomVector.add(chatRoom);
+			chatListPanel.chatListScrollPane.updateChatRoomList(chatRoom);
 		}
    }
 

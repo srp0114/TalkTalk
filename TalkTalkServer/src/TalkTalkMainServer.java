@@ -192,48 +192,34 @@ public class TalkTalkMainServer extends JFrame {
 						Login();
 					}
 					else if (cm.getCode().matches("200")) {  // 메시지 보내기
-		                   msg = String.format("[%s] %s", cm.getUsername(), cm.getCode());
-		                   AppendText(msg); // server 화면에 출력
-		                   String[] args = msg.split(" "); 
-		                   if (args.length == 1) { // Enter key 만 들어온 경우 Wakeup 처리만 한다.
-		                      userStatus = "O";
-		                   } else if (args[1].matches("/exit")) {
-		                       Logout();
-		                       break;
-		                   } else if (args[1].matches("/list")) {
-		                       WriteOne("User list\n");
-		                       WriteOne("Name\tStatus\n");
-		                       WriteOne("-----------------------------\n");
-		                       for (int i = 0; i < user_vc.size(); i++) {
-		                           UserService user = (UserService) user_vc.elementAt(i);
-		                           WriteOne(user.username + "\t" + user.userStatus + "\n");
-		                       }
-		                       WriteOne("-----------------------------\n");
-		                   } else if (args[1].matches("/sleep")) {
-		                      userStatus = "S";
-		                   } else if (args[1].matches("/wakeup")) {
-		                      userStatus = "O";
-		                   } else if (args[1].matches("/to")) { // 귓속말
-		                       for (int i = 0; i < user_vc.size(); i++) {
-		                           UserService user = (UserService) user_vc.elementAt(i);
-		                           if (user.username.matches(args[2]) && user.userStatus.matches("O")) {
-		                               String msg2 = "";
-		                               for (int j = 3; j < args.length; j++) {// 실제 message 부분
-		                                   msg2 += args[j];
-		                                   if (j < args.length - 1)
-		                                       msg2 += " ";
-		                               }
-		                               // /to 빼고.. [귓속말] [user1] Hello user2..                               
-		                               //user.WriteOne("[귓속말] " + args[0] + " " + msg2 + "\n");
-		                               break;
-		                           }
-		                       }
-		                   } else { // 일반 채팅 메시지
-		                       userStatus = "O";
-		                       //WriteAll(msg + "\n"); // Write All
-		                       WriteAllObject(cm);
-		                   }
-		            }
+						System.out.println("cm.getCode() matches 200");
+                        msg = String.format("[%s] %s", cm.getUsername(), cm.getCode());
+                        AppendText(msg); // server 화면에 출력
+                        System.out.println(cm.getMsg());
+      
+                        for(int i = 0; i < RoomVector.size(); i++) {
+                        	ChatRoom cr = RoomVector.get(i);
+                        	int crRoomId = cr.roomId;
+                        	System.out.println(cr.roomId);
+                        	if(crRoomId == cm.getRoomId()) {
+                        		System.out.println("roomId 일치함!");
+                        		String[] users = cr.getUserlist();
+                        		for(i = 0; i < user_vc.size(); i++) {
+                        			UserService u = (UserService)user_vc.get(i);
+                        			for(int j = 0; j < users.length; j++) {
+                        				if(u.username.equals(users[j])) {
+                        					System.out.println(u.username  + " = " + users[j]);
+//                        					ChatMsg cm200 = new ChatMsg(cm.getUsername(), "200", cm.getMsg());
+//                        					cm200.setRoomId(cm.getRoomId());
+                        					u.WriteObject(cm);
+                       					System.out.println(users[i]+"에게 msg:" + cm.getMsg() + "보냄!");
+                      				}
+                        			}
+                        		}
+                        	}
+                        }
+					}
+
 					else if(cm.getCode().matches("301")) {  // 프로필 변경
 						System.out.println("cm.getCode() matches 301");
 						profileImg = cm.profileImg;
@@ -330,7 +316,8 @@ public class TalkTalkMainServer extends JFrame {
 								}
 							}
 						}
-						
+						System.out.println(roomId);
+						System.out.println("server userList: " + cm.getUserlist());
 					}
 					
 					

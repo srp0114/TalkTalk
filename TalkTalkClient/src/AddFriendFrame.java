@@ -75,10 +75,10 @@ public class AddFriendFrame extends JFrame{
 		}
 	}
 	
-	public void updateSearchResult(ChatMsg searchResult) {
+	public synchronized void updateSearchResult(ChatMsg searchResult) {
 		System.out.println("updateSearchResult(): " + searchResult.getUsername());
 		ImageIcon resultIcon = searchResult.profileImg;
-		Image img = resultIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+//		Image img = resultIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 		
 		searchedImg.setIcon(resultIcon);
 		searchedName.setText(searchResult.getUsername());
