@@ -213,21 +213,35 @@ public class FriendListPanel extends JPanel{
 		}
 		
 		public synchronized void allUpdateFriendList() {
+			this.removeAll();
+			textPaneFriendList = new JTextPane();
+			this.textPaneFriendList.setBounds(3, 5, 300, 400);
+			this.textPaneFriendList.setBackground(new Color(255, 255, 255));
+			this.textPaneFriendList.setEditable(false);
+			this.setViewportView(textPaneFriendList);
+			this.add(textPaneFriendList);
 			System.out.println("allUpdateFriendList() 호출됨.");
-			textPaneFriendList.remove(0);
 //			try {
-//				textPaneFriendList.getDocument().insertString(textPaneFriendList.getDocument().getLength(), " ", null);
+//				textPaneFriendList.getDocument().remove(0, clientView.FriendVector.size());
 //			} catch (BadLocationException e) {
+//				System.out.println("remove 에러:");
 //				e.printStackTrace();
 //			}
-//			for(int i = 0; i < clientView.FriendVector.size(); i++) {
-//				Friend f = clientView.FriendVector.get(i);
-//		
-//				textPaneFriendList.insertComponent(f);
-//				textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength());
-//				textPaneFriendList.setCaretPosition(0);
-//			}
-//			repaint();
+			
+			for(int i = 0; i < clientView.FriendVector.size(); i++) {
+				Friend f = clientView.FriendVector.get(i);
+				try {
+					textPaneFriendList.getDocument().insertString(textPaneFriendList.getDocument().getLength(), " ", null);
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+				System.out.println("업데이트 이름: " + f.getUsername());
+				textPaneFriendList.insertComponent(f);
+				textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength());
+				textPaneFriendList.setCaretPosition(0);
+				repaint();
+			}
+			repaint();
 		
 		}
 	}
