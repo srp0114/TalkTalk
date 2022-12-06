@@ -44,6 +44,10 @@ public class FriendListPanel extends JPanel{
 	private ImageIcon profileIcon = new ImageIcon("src/no_profile.jpg");
 	private JButton btnProfileImg;
 	
+	private JLabel friendLabel;  // "친구" 레이블
+	private String friendCount = "0";  // 친구 수
+	private JLabel friendCountLabel;  // 숫자 레이블
+	
 	public AddFriendFrame addFriendFrame;
 	public FriendListHeaderPanel friendListHeaderPanel;
 	public FriendListScrollPane friendListScrollPane;
@@ -60,18 +64,22 @@ public class FriendListPanel extends JPanel{
 		setLayout(null);
 	
 		friendListHeaderPanel = new FriendListHeaderPanel();
-		friendListHeaderPanel.setBounds(0, 0, 310, 151);
+		friendListHeaderPanel.setBounds(0, 0, 310, 167);
 		friendListHeaderPanel.setVisible(true);
 		this.add(friendListHeaderPanel);
 		
 		friendListScrollPane = new FriendListScrollPane();
 		//friendListScrollPane.setLocation(0, 152);
-		friendListScrollPane.setBounds(0,152, 305, 410);
+		friendListScrollPane.setBounds(0,168, 305, 410);
 		friendListScrollPane.setVisible(true);
 		this.add(friendListScrollPane);
 		
 		setVisible(true);
 	}	
+	public void updateFriendCount() {
+		friendCount = Integer.toString(clientView.FriendVector.size());
+		friendCountLabel.setText(friendCount);
+	}
 	
 	
 	
@@ -79,7 +87,7 @@ public class FriendListPanel extends JPanel{
 	class FriendListHeaderPanel extends JPanel{
 		
 		public FriendListHeaderPanel(){
-			setSize(310, 151);
+			setSize(310, 167);
 			setLayout(null);
 			this.setBackground(new Color(255,255,255));  // 배경색: 흰색
 			UIInit();
@@ -166,6 +174,18 @@ public class FriendListPanel extends JPanel{
 			lblUserName.setBounds(90, 75, 100, 50);
 			this.add(lblUserName);
 			
+			friendLabel = new JLabel("친구");
+			friendLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 9));
+			friendLabel.setBounds(20, 157, 20, 9);
+			this.add(friendLabel);
+			
+			friendCount = Integer.toString(clientView.FriendVector.size());
+			friendCountLabel = new JLabel(friendCount);
+			friendCountLabel.setText(friendCount);
+			friendCountLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 9));
+			friendCountLabel.setBounds(42, 157, 40, 9);
+			this.add(friendCountLabel);
+			
 			
 		}
 	}
@@ -185,7 +205,7 @@ public class FriendListPanel extends JPanel{
 			setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			this.textPaneFriendList = new JTextPane();
 			//textPaneFriendList.setLayout(new GridLayout(5,1));
-			this.textPaneFriendList.setBounds(3, 5, 300, 400);
+			this.textPaneFriendList.setBounds(3, 3, 300, 400);
 			this.textPaneFriendList.setBackground(new Color(255, 255, 255));
 			this.textPaneFriendList.setEditable(false);
 			//this.textPaneFriendList.setAlignmentY(1.0f);
@@ -197,7 +217,7 @@ public class FriendListPanel extends JPanel{
 		
 		
 		public void updateFriendList(Friend friend) {
-			//friend.setSize(getPreferredSize());
+			updateFriendCount();
 			System.out.println("updateFriendList 함수 코드 시작");
 			try {
 				textPaneFriendList.getDocument().insertString(textPaneFriendList.getDocument().getLength(), " ", null);
@@ -212,41 +232,6 @@ public class FriendListPanel extends JPanel{
 			repaint();
 			
 			
-		}
-		
-		public synchronized void allUpdateFriendList() {
-			this.removeAll();
-//			textPaneFriendList = new JTextPane();
-//			this.textPaneFriendList.setBounds(3, 5, 300, 400);
-//			this.textPaneFriendList.setBackground(new Color(255, 255, 255));
-//			this.textPaneFriendList.setEditable(false);
-//			this.setViewportView(textPaneFriendList);
-//			this.add(textPaneFriendList);
-			System.out.println("allUpdateFriendList() 호출됨.");
-			try {
-				textPaneFriendList.getDocument().remove(0, clientView.FriendVector.size() - 1);
-				textPaneFriendList.setCaretPosition(0);
-		
-			} catch (BadLocationException e) {
-				System.out.println("remove 에러:");
-				e.printStackTrace();
-			}
-			
-			for(int i = 0; i < clientView.FriendVector.size(); i++) {
-				Friend f = clientView.FriendVector.get(i);
-				try {
-					textPaneFriendList.getDocument().insertString(textPaneFriendList.getDocument().getLength(), " ", null);
-				} catch (BadLocationException e) {
-					e.printStackTrace();
-				}
-				System.out.println("업데이트 이름: " + f.getUsername());
-				textPaneFriendList.insertComponent(f);
-				textPaneFriendList.setCaretPosition(textPaneFriendList.getDocument().getLength());
-				textPaneFriendList.setCaretPosition(0);
-				repaint();
-			}
-			//repaint();
-		
 		}
 	}
 }
