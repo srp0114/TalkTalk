@@ -74,6 +74,7 @@ public class Friend extends JPanel{
    
    public void setProfileImg(ImageIcon profileImg) {
 	   this.profileImage = profileImg;
+	   imageButton.setIcon(profileImg);
    }
 
 

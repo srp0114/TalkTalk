@@ -166,15 +166,15 @@ public class TalkTalkClientView extends JFrame{
    						else {
    							for(int i = 0; i < FriendVector.size(); i++) {
    								Friend f = FriendVector.get(i);
+   								System.out.println("나는 " + f.getUsername());
    								if(f.username.equals(cm.getUsername())){
    									System.out.println("f.username.equals(cm.getUsername()");
-   									Image profile = cm.profileImg.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-   									ImageIcon pfImg = new ImageIcon(profile);
    									f.setProfileImg(cm.profileImg);
-   									FriendVector.set(i, f);
-   									friendListPanel.friendListScrollPane.allUpdateFriendList();
+   									//FriendVector.set(i, f);
+   									//friendListPanel.friendListScrollPane.allUpdateFriendList();
    								}
    							}
+   							
    						}
    						break;
    					case "302":  // 친구 검색

@@ -284,7 +284,7 @@ public class TalkTalkMainServer extends JFrame {
 					}
 					else if(cm.getCode().matches("400")) { // 채팅방 만들기
 						System.out.println("cm.getCode() matches 400");
-						if(RoomVector.size() == 0) {
+						if(RoomVector.size() == 0) {  // RoomVector에 요소가 없는 경우
 							ChatRoom chatRoom = new ChatRoom(roomId, cm.getUserlist());
 							RoomVector.add(chatRoom);
 							String[] userlist = chatRoom.getUserlist();
@@ -300,7 +300,7 @@ public class TalkTalkMainServer extends JFrame {
 								}
 							}
 						}
-						else {
+						else {  // RoomVector에 요소가 있는 경우
 							roomId++;
 							ChatRoom chatRoom = new ChatRoom(roomId, cm.getUserlist());
 							RoomVector.add(chatRoom);

@@ -117,6 +117,8 @@ public class FriendListPanel extends JPanel{
 					//System.out.println(fd.getDirectory() + fd.getFile());
 					ChatMsg obcm = new ChatMsg(chatMsg.getUsername(), "301");
 					ImageIcon img = new ImageIcon(fd.getDirectory() + fd.getFile());
+					Image newImg = img.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+					img.setImage(newImg);
 					changeMyProfile(img);
 					obcm.setProfileImg(img);
 					clientView.SendObject(obcm);
@@ -214,19 +216,21 @@ public class FriendListPanel extends JPanel{
 		
 		public synchronized void allUpdateFriendList() {
 			this.removeAll();
-			textPaneFriendList = new JTextPane();
-			this.textPaneFriendList.setBounds(3, 5, 300, 400);
-			this.textPaneFriendList.setBackground(new Color(255, 255, 255));
-			this.textPaneFriendList.setEditable(false);
-			this.setViewportView(textPaneFriendList);
-			this.add(textPaneFriendList);
+//			textPaneFriendList = new JTextPane();
+//			this.textPaneFriendList.setBounds(3, 5, 300, 400);
+//			this.textPaneFriendList.setBackground(new Color(255, 255, 255));
+//			this.textPaneFriendList.setEditable(false);
+//			this.setViewportView(textPaneFriendList);
+//			this.add(textPaneFriendList);
 			System.out.println("allUpdateFriendList() 호출됨.");
-//			try {
-//				textPaneFriendList.getDocument().remove(0, clientView.FriendVector.size());
-//			} catch (BadLocationException e) {
-//				System.out.println("remove 에러:");
-//				e.printStackTrace();
-//			}
+			try {
+				textPaneFriendList.getDocument().remove(0, clientView.FriendVector.size() - 1);
+				textPaneFriendList.setCaretPosition(0);
+		
+			} catch (BadLocationException e) {
+				System.out.println("remove 에러:");
+				e.printStackTrace();
+			}
 			
 			for(int i = 0; i < clientView.FriendVector.size(); i++) {
 				Friend f = clientView.FriendVector.get(i);
@@ -241,7 +245,7 @@ public class FriendListPanel extends JPanel{
 				textPaneFriendList.setCaretPosition(0);
 				repaint();
 			}
-			repaint();
+			//repaint();
 		
 		}
 	}

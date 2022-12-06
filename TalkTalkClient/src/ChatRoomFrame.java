@@ -68,7 +68,7 @@ private static final long serialVersionUID = 1L;
 	Color yellow = new Color(254,240,27);
 
 	public ChatRoomFrame(int roomId, TalkTalkClientView clientView, String userlist) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.clientView = clientView;
 		this.roomId = roomId;
 		this.userlist =userlist;
