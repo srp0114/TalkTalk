@@ -18,13 +18,13 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 public class TalkTalkClientView extends JFrame{
-	private static final long serialVersionUID = 1L;
-	public JPanel contentPane;
+   private static final long serialVersionUID = 1L;
+   public JPanel contentPane;
    public String username;  // username
    private String ip_addr;
    private String port_no;
    public ChatMsg obcm;      // obui
-   private ImageIcon profile = new ImageIcon("src/no_profile.jpg");
+   public ImageIcon profile = new ImageIcon("src/no_profile.jpg");
 
    private JButton btnprofileIcon;
    private JButton btnchatIcon;
@@ -75,25 +75,24 @@ public class TalkTalkClientView extends JFrame{
       }
       setPanel();
     
-
       setResizable(false);
       setVisible(true);
    }
    
    public void setPanel() {
-	   menuPanel = new MenuPanel(this);
-	      menuPanel.setBounds(0, 0, 70, 562);
-	      menuPanel.setVisible(true);
-	      friendListPanel = new FriendListPanel(this, obcm);
-	      friendListPanel.setBounds(70, 0, 310, 561);
-	      chatListPanel = new ChatListPanel(this, obcm);
-	      chatListPanel.setBounds(70, 0, 310, 562);
-	      chatListPanel.setVisible(true);
-	      
-	      contentPane.add(menuPanel);
-	      contentPane.add(friendListPanel);
-	      contentPane.add(chatListPanel);
-	      chatListPanel.setVisible(false);
+      menuPanel = new MenuPanel(this);
+         menuPanel.setBounds(0, 0, 70, 562);
+         menuPanel.setVisible(true);
+         friendListPanel = new FriendListPanel(this, obcm);
+         friendListPanel.setBounds(70, 0, 310, 561);
+         chatListPanel = new ChatListPanel(this, obcm);
+         chatListPanel.setBounds(70, 0, 310, 562);
+         chatListPanel.setVisible(true);
+         
+         contentPane.add(menuPanel);
+         contentPane.add(friendListPanel);
+         contentPane.add(chatListPanel);
+         chatListPanel.setVisible(false);
        
    }
    
@@ -109,33 +108,33 @@ public class TalkTalkClientView extends JFrame{
    
  //Server Message를 수신해서 화면에 표시
    class ListenNetwork extends Thread {
-	   TalkTalkClientView clientView;
-	   public ListenNetwork(TalkTalkClientView clientView) {
-		   this.clientView = clientView;		   
-	   }
-   		public void run() {
-   			while (true) {
-   				try {
-   					Object obcm = null;
-   					String msg = null;
-   					ChatMsg cm;
-   					try {
-   						obcm = ois.readObject();
-   					} catch (ClassNotFoundException e) {
-   						e.printStackTrace();
-   						break;
-   					}
-   					if (obcm == null)
-   						break;
-   					if (obcm instanceof ChatMsg) {
-   						cm = (ChatMsg) obcm;
-   						System.out.println(cm.getCode());
-   					} 
-   					else
-   						continue;
-   					
-   					switch(cm.getCode()) {
-   					case "200":
+      TalkTalkClientView clientView;
+      public ListenNetwork(TalkTalkClientView clientView) {
+         this.clientView = clientView;         
+      }
+         public void run() {
+            while (true) {
+               try {
+                  Object obcm = null;
+                  String msg = null;
+                  ChatMsg cm;
+                  try {
+                     obcm = ois.readObject();
+                  } catch (ClassNotFoundException e) {
+                     e.printStackTrace();
+                     break;
+                  }
+                  if (obcm == null)
+                     break;
+                  if (obcm instanceof ChatMsg) {
+                     cm = (ChatMsg) obcm;
+                     System.out.println(cm.getCode());
+                  } 
+                  else
+                     continue;
+                  
+                  switch(cm.getCode()) {
+                  case "200": //채팅방 메세지
                         System.out.println("200");
                         System.out.println("나는 " + username + "이다. 서버로 부터 " + cm.getRoomId() + "방의 유저인" 
                         + cm.getUsername() + "로 부터 메시지: " + cm.getMsg() + "를 받았징");
@@ -144,102 +143,143 @@ public class TalkTalkClientView extends JFrame{
                             ChatRoomFrame cf = RoomFrameVector.get(i);
                             int crRoomID = cf.roomId;
                             if(crRoomID == cm.getRoomId()) {
-                          	  if(username.equals(cm.getUsername())) {
-                              	  cf.AppendTextUser(cm);
+                               if(username.equals(cm.getUsername())) {
+                                   cf.AppendTextUser(cm);
 
-                          	  }
-                          	  else {
-                          		  cf.AppendText(cm);
-                          	  }
+                               }
+                               else {
+                                  cf.AppendText(cm);
+                               }
                             }
                         }
                    
                         break; 
-   						
+                     
+                  case "201": //채팅방 이미지 
+                      System.out.println("201");
+                      if(cm.getUsername().equals(username)) {  // 본인이 이미지 업로드 했을떄
+                    	  for(int i=0; i<RoomFrameVector.size(); i++ ) {
+	                            ChatRoomFrame cf = RoomFrameVector.get(i);
+	                            int crRoomID = cf.roomId;
+	                            if(crRoomID == cm.getRoomId()) {
+	                               cf.AppendImageUser(cm);
+	                            }
+                    	  }
+                      }
+                      else {  // 친구가 이미지 업로드 했을때
+                    	  for(int i = 0; i < RoomFrameVector.size(); i++) {
+                              ChatRoomFrame crf = RoomFrameVector.get(i);
+                              if(crf.roomId == cm.getRoomId()) {
+                            	  crf.AppendImage(cm);
+                              }
+                           }
+                      }                 
+                      break; 
+                      
+                  case "301":  // 프로필 변경
+                     System.out.println("clientView 301 서버로부터 cm 받음 : " + cm.getUsername());
+                     if(cm.getUsername().equals(username)) {  // 본인이 프사 변경했을 때
+                        System.out.println(username + "이랑 일치");
+                        profile = cm.profileImg;
+                        for(int i = 0; i < RoomFrameVector.size(); i++) {
+                           ChatRoomFrame crf = RoomFrameVector.get(i);
+                           for(int j = 0; j < crf.FriendLabelVector.size(); j++) {
+                              FriendLabel fl = crf.FriendLabelVector.get(j);
+                              if(fl.username.equals(cm.getUsername())){
+                                 fl.setProfileImage(cm.profileImg);
+                              }
+                           }
+                        }
+                     }
+                     else {  // 친구가 프사 변경했을 때
+                        for(int i = 0; i < FriendVector.size(); i++) {
+                           Friend f = FriendVector.get(i);
+                           System.out.println("나는 " + f.getUsername());
+                           if(f.username.equals(cm.getUsername())){
+                              System.out.println("f.username.equals(cm.getUsername()");
+                              f.setProfileImg(cm.profileImg);
+                              //FriendVector.set(i, f);
+                              //friendListPanel.friendListScrollPane.allUpdateFriendList();
+                           }
+                        }
+                        
+                        for(int i = 0; i < RoomFrameVector.size(); i++) {
+                           ChatRoomFrame crf = RoomFrameVector.get(i);
+                           for(int j = 0; j < crf.FriendLabelVector.size(); j++) {
+                              FriendLabel fl = crf.FriendLabelVector.get(j);
+                              if(fl.username.equals(cm.getUsername())){
+                                 fl.setProfileImage(cm.profileImg);
+                              }
+                           }
+                        }
+                        
+                     }
+                     break;
+                  case "302":  // 친구 검색
+                     System.out.println("clientView 302 서버로부터 cm 받음 : " + cm.getUsername());
+                     friendListPanel.addFriendFrame.updateSearchResult(cm);
+                     System.out.println(cm.profileImg.toString()+" clientViewAccept");
+                     break;
+                     
+                  case "303":  // 친구 추가
+                     System.out.println("clientView 303 서버로부터 cm 받음 : " + cm.getUsername());
+                     addFriend(cm);
+                     System.out.println("303 addFriend함수 호출");
+                     System.out.println("303 updateFriendList함수 호출");
+                     break;
+                     
+                  case "401":  // 채팅방 생성
+                     System.out.println("clientView 401 서버로부터 cm 받음 : " + cm.getUsername());
+                     System.out.println("clientView 채팅방 번호: " + cm.getRoomId());
+                     System.out.println("clientView 채팅방에 들어갈 유저들: " + cm.getUserlist());
+                     
+                     addChatRoom(cm);
+//                     chatRoomFrame = new ChatRoomFrame(cm.getRoomId(), clientView, cm.getUserlist());
+//                     chatRoomFrame.setVisible(false);
+//                     RoomFrameVector.add(chatRoomFrame);
+                     break;
+                  
+                     
+                  }
+                  
+               } catch (IOException e) {
+                  System.out.println("ois.readObject() error");
+                  try {
+                     ois.close();
+                     oos.close();
+                     socket.close();
 
-   					case "301":  // 프로필 변경
-   						System.out.println("clientView 301 서버로부터 cm 받음 : " + cm.getUsername());
-   						if(cm.getUsername().equals(username)) {
-   							System.out.println(username + "이랑 일치");
-   							profile = cm.profileImg;
-   						}
-   						else {
-   							for(int i = 0; i < FriendVector.size(); i++) {
-   								Friend f = FriendVector.get(i);
-   								System.out.println("나는 " + f.getUsername());
-   								if(f.username.equals(cm.getUsername())){
-   									System.out.println("f.username.equals(cm.getUsername()");
-   									f.setProfileImg(cm.profileImg);
-   									//FriendVector.set(i, f);
-   									//friendListPanel.friendListScrollPane.allUpdateFriendList();
-   								}
-   							}
-   							
-   						}
-   						break;
-   					case "302":  // 친구 검색
-   						System.out.println("clientView 302 서버로부터 cm 받음 : " + cm.getUsername());
-   						friendListPanel.addFriendFrame.updateSearchResult(cm);
-   						System.out.println(cm.profileImg.toString()+" clientViewAccept");
-   						break;
-   						
-   					case "303":  // 친구 추가
-   						System.out.println("clientView 303 서버로부터 cm 받음 : " + cm.getUsername());
-   						addFriend(cm);
-   						System.out.println("303 addFriend함수 호출");
-   						System.out.println("303 updateFriendList함수 호출");
-   						break;
-   						
-   					case "401":  // 채팅방 생성
-   						System.out.println("clientView 401 서버로부터 cm 받음 : " + cm.getUsername());
-   						System.out.println("clientView 채팅방 번호: " + cm.getRoomId());
-   						System.out.println("clientView 채팅방에 들어갈 유저들: " + cm.getUserlist());
-   						
-   						addChatRoom(cm);
-   						chatRoomFrame = new ChatRoomFrame(cm.getRoomId(), clientView, cm.getUserlist());
-   						chatRoomFrame.setVisible(false);
-   						RoomFrameVector.add(chatRoomFrame);
-   						break;
-   					
-   						
-   					}
-   					
-   				} catch (IOException e) {
-   					System.out.println("ois.readObject() error");
-   					try {
-   						ois.close();
-   						oos.close();
-   						socket.close();
-
-   						break;
-   					} catch (Exception ee) {
-   						break;
-   					} // catch문 끝
-   				} // 바깥 catch문끝
-   			}
-   		}
-   		
-   		public void addFriend(ChatMsg cm) {
-			System.out.println("친구추가 함수 호출: " + cm.getUsername());
-			Friend friend = new Friend(cm.profileImg, cm.getUsername());
-			System.out.println(friend.getUsername());
-			FriendVector.add(friend);
-			System.out.print("친구이름들 : ");
-			for(int i = 0; i < FriendVector.size(); i++) {
-				System.out.print(FriendVector.get(i).getUsername());
-			}
-			System.out.println();
-			friendListPanel.friendListScrollPane.updateFriendList(friend);
-		}
-   		
-   		public void addChatRoom(ChatMsg cm) {
-			System.out.println("친구추가 함수 호출: " + cm.getUsername());
-			ChatRoom chatRoom = new ChatRoom(clientView, cm.getRoomId(), cm.getUserlist());
-			System.out.println(chatRoom.getUserlist());
-			RoomVector.add(chatRoom);
-			chatListPanel.chatListScrollPane.updateChatRoomList(chatRoom);
-		}
+                     break;
+                  } catch (Exception ee) {
+                     break;
+                  } // catch문 끝
+               } // 바깥 catch문끝
+            }
+         }
+         
+         public void addFriend(ChatMsg cm) {
+         System.out.println("친구추가 함수 호출: " + cm.getUsername());
+         Friend friend = new Friend(cm.profileImg, cm.getUsername());
+         System.out.println(friend.getUsername());
+         FriendVector.add(friend);
+         System.out.print("친구이름들 : ");
+         for(int i = 0; i < FriendVector.size(); i++) {
+            System.out.print(FriendVector.get(i).getUsername());
+         }
+         System.out.println();
+         friendListPanel.friendListScrollPane.updateFriendList(friend);
+      }
+         
+         public void addChatRoom(ChatMsg cm) {
+         System.out.println("친구추가 함수 호출: " + cm.getUsername());
+         ChatRoom chatRoom = new ChatRoom(clientView, cm.getRoomId(), cm.getUserlist());
+         System.out.println(chatRoom.getUserlist());
+         RoomVector.add(chatRoom);
+         chatListPanel.chatListScrollPane.updateChatRoomList(chatRoom);
+         chatRoomFrame = new ChatRoomFrame(cm.getRoomId(), clientView, cm.getUserlist(), chatRoom);
+         chatRoomFrame.setVisible(false);
+         RoomFrameVector.add(chatRoomFrame);
+      }
    }
 
 }
-

@@ -219,6 +219,27 @@ public class TalkTalkMainServer extends JFrame {
                         	}
                         }
 					}
+					else if(cm.getCode().matches("201")) {
+		                  System.out.println("IMG: cm.getCode() matches 201");
+		                  for(int i = 0; i < RoomVector.size(); i++) {
+		                           ChatRoom cr = RoomVector.get(i);
+		                           int crRoomId = cr.roomId;
+		                           System.out.println(cr.roomId);
+		                           if(crRoomId == cm.getRoomId()) {
+		                              System.out.println("roomId 일치함!");
+		                              String[] users = cr.getUserlist();
+		                              for(i = 0; i < user_vc.size(); i++) {
+		                                 UserService u = (UserService)user_vc.get(i);
+		                                 for(int j = 0; j < users.length; j++) {
+		                                    if(u.username.equals(users[j])) {
+		                                       System.out.println(u.username  + " = " + users[j]);
+		                                       u.WriteObject(cm);
+		                                  }
+		                                 }
+		                              }
+		                           }
+		                        }
+		            }
 
 					else if(cm.getCode().matches("301")) {  // 프로필 변경
 						System.out.println("cm.getCode() matches 301");
