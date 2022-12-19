@@ -1,0 +1,66 @@
+// JavaObjClient.java
+// ObjecStream »ç¿ëÇÏ´Â Ã¤ÆÃ Client
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class Chat extends JPanel {
+	Color yellow = new Color(254,240,27);
+
+	public String username;
+	public String message;
+	public ImageIcon profileImage;
+	
+	private JLabel userName;
+	private JLabel msgLabel;
+	private JButton imageButton;
+
+	public Chat(String username, String message) {
+		setPreferredSize(new Dimension(225, 56));
+	    setLayout(null);
+	      
+		this.username= username;
+		this.message = message;
+		this.profileImage = profileImage;
+		
+		userName = new JLabel(username);
+		userName.setBounds(10,4,100,20);
+	    userName.setVerticalAlignment(SwingConstants.CENTER);
+		userName.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 12));
+	    userName.setVisible(true);
+	    this.add(userName);
+	    
+	    imageButton = new JButton(profileImage);
+	    imageButton.setBounds(165,10,40,40);
+	    imageButton.setBorderPainted(false);
+	    imageButton.setFocusPainted(false);
+	    imageButton.setContentAreaFilled(false);
+	    imageButton.setOpaque(false);
+	    imageButton.setBorder(null);
+	    imageButton.setVisible(true);
+	    this.add(imageButton);
+	    
+	    msgLabel = new JLabel(message);
+	    msgLabel.setBounds(10,30, 200,20);
+	    this.add(msgLabel);
+	    this.setVisible(true);
+	}
+	
+}
+
+

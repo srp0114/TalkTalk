@@ -1,0 +1,12 @@
+import java.awt.Color;
+
+import javax.swing.JLabel;
+
+public class ChatList extends JLabel {
+	public ChatList() {
+		setBounds(0,70,306,70);
+		setOpaque(true);
+		setBackground(Color.white);
+	}
+	
+}

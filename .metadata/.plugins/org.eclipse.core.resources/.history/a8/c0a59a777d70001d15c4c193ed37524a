@@ -1,0 +1,15 @@
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
+
+public class FriendPanel extends JPanel {
+	public FriendPanel() {
+		setBounds(100,100,200, 80);
+		JPanel profileLabel = new JPanel();
+		profileLabel.setBounds(0, 0, 50, 50);
+		profileLabel.setOpaque(true);
+		this.add(profileLabel);
+
+	}
+	
+}
