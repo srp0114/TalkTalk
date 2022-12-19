@@ -6,7 +6,7 @@
 <br/>
 
 #### 팀원
-
+----
 |조유진|
 |:---:|
 |<img src="https://avatars.githubusercontent.com/u/77273340?v=4" width="100" height="100"/>|
